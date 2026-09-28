@@ -43,7 +43,7 @@
     const iTr = col('TRASLADO'), iPe = H.findIndex(h => h.startsWith('PERNOCTA'));
     const leg = (r, m) => {
       if (!m || empty(r[m['VUELO']])) return null;
-      return { v: clean(r[m['VUELO']]).toUpperCase(), f: toDate(r[m['FECHA']]), o: up(r[m['ORIGEN']] ?? ''), d: up(r[m['DESTINO']]),
+      return { v: clean(r[m['VUELO']]).toUpperCase().replace(/VIVAAEROBUS/g, 'VIVA AEROBUS').replace(/\s+/g, ' '), f: toDate(r[m['FECHA']]), o: up(r[m['ORIGEN']] ?? ''), d: up(r[m['DESTINO']]),
                s: toTime(r[m['SALE']]), l: toTime(r[m['LLEGA']]) };
     };
     const rows = [];
@@ -57,7 +57,8 @@
       const regKey = rk.find(k => /^RESERVA (REGRESO|VUELTA|SALIDA)/.test(k));
       const unaKey = rk.find(k => /^RESERVA AEROLINEA/.test(k));
       const code = k => k && !empty(r[res[k]]) ? clean(r[res[k]]).toUpperCase() : '';
-      const x = { n: up(r[iName]), st: clean(r[iSt]).toUpperCase(), rol: iRol >= 0 ? clean(r[iRol]) : '', rg: iRegion >= 0 && !empty(r[iRegion]) ? up(r[iRegion]) : '',
+      const x = { n: up(r[iName]).replace(/AEROMEXICO/g, 'AM'), // corrige reemplazo accidental de AM -> AEROMEXICO en nombres
+                 st: clean(r[iSt]).toUpperCase(), rol: iRol >= 0 ? clean(r[iRol]) : '', rg: iRegion >= 0 && !empty(r[iRegion]) ? up(r[iRegion]) : '',
         c1: leg(r, C.c1), ida: leg(r, C.ida), reg: leg(r, C.reg), c2: leg(r, C.c2),
         ci: idaKey ? code(idaKey) : code(unaKey), cr: regKey ? code(regKey) : code(unaKey) };
       if (!x.cr && x.ci && x.reg) x.cr = x.ci; // sin reserva de regreso: es la misma clave de la ida
