@@ -132,7 +132,7 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
     <img class="logo" src="logo.png" alt="Viajes El Corte Inglés Grupos" width="469" height="131">
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Manifiesto de vuelos</h1>
-    <p class="sub">Busca por nombre, clave de reserva o número de vuelo para ver tu ida y tu regreso.</p>
+    <p class="sub">Escribe tu nombre (palabras completas) o tu clave de reserva para ver tu ida y tu regreso.</p>
     <div class="stats" id="stats"></div>
     <div class="sub" id="upd"></div>
   </div>
@@ -142,7 +142,7 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
   <div class="wrap">
     <div class="search">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Nombre, clave, vuelo o ciudad…" autocomplete="off" aria-label="Buscar">
+      <input id="q" type="search" placeholder="Escribe tu nombre o tu clave de reserva…" autocomplete="off" aria-label="Buscar">
       <button class="clear" id="clear" aria-label="Borrar búsqueda" hidden>×</button>
     </div>
     <div class="row">
@@ -253,7 +253,7 @@ function filtered(){
     (!state.st || (state.st==='CONF') === confirmed(r)) &&
     (!state.ida || (r.ida&&r.ida.v===state.ida) || (r.c1&&r.c1.v===state.ida)) &&
     (!state.reg || (r.reg&&r.reg.v===state.reg) || (r.c2&&r.c2.v===state.reg)) &&
-    terms.every(t=>r._k.includes(t)));
+    (!terms.length || terms.every(t=>r._w.has(t)) || (terms.length===1 && r._c.includes(terms[0]))));
 }
 function render(){
   const rows = filtered();
@@ -268,7 +268,8 @@ function fillSelect(sel, keys, label){
   sel.innerHTML = `<option value="">${label}</option>` + opts.map(l=>`<option value="${esc(l.v)}">${esc(l.v)} · ${esc(l.o)}→${esc(l.d)} · ${fmtDate(l.f)}</option>`).join('');
 }
 function init(){
-  DATA.forEach(r => r._k = norm([r.n,r.rg,r.rol,r.ci,r.cr,...legs(r).flatMap(l=>[l.v,l.v.replace(/\s/g,''),l.o,l.d,AP[l.o],AP[l.d]])].join(' ')));
+  // Búsqueda exacta: cada palabra escrita debe ser una palabra completa del nombre; o la clave de reserva completa.
+  DATA.forEach(r => { r._w = new Set(norm(r.n).split(/\s+/).filter(Boolean)); r._c = [r.ci, r.cr].filter(Boolean).map(norm); });
   // Orden por llegada: fecha y hora en que aterriza el vuelo de ida; sin vuelo al final.
   const arr = r => r.ida ? r.ida.f+' '+(r.ida.l||r.ida.s) : '9999';
   DATA.sort((a,b)=> arr(a).localeCompare(arr(b)) || a.n.localeCompare(b.n,'es'));
@@ -304,7 +305,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 7;
+const APP_V = 8;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
