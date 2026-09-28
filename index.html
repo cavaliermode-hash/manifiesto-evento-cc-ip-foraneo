@@ -4,17 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Manifiesto Evento CC IP Foráneo</title>
+<title>Manifiesto de Salidas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
 :root{
   color-scheme:light;
-  --green:#126B30;--green-dark:#0C4F23;--green-soft:#E6F2EA;--green-line:#B9D9C3;
+  --green:#126B30;--green-dark:#0C4F23;--green-soft:#E6F2EA;
   --bg:#FFFFFF;--surface:#FFFFFF;--ink:#16301F;--muted:#55705E;--line:#D3E4D8;
   --board:var(--green);--board-ink:#FFFFFF;--board-muted:#CFE6D6;--amber:#CDE8D4;--amber-ink:#0C4F23;
   --chip:var(--green-soft);--accent:var(--green);--ok:var(--green);--ok-bg:var(--green-soft);--warn:#55705E;--warn-bg:#EEF2EF;
-  --ida:var(--green);--reg:var(--green-dark);
   --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -22,11 +21,12 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body)}
 .wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
-header.board{background:#FFFFFF;color:var(--ink);padding-block:20px 18px;border-bottom:4px solid var(--green)}
+header.board{padding-block:20px 18px;border-bottom:4px solid var(--green)}
 .logo{display:block;width:min(300px,78vw);height:auto;margin-bottom:14px}
 .eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 h1{color:var(--green);font:700 clamp(30px,6vw,46px)/1 var(--display);letter-spacing:.01em;margin:8px 0 4px;text-transform:uppercase;text-wrap:balance}
 .sub{color:var(--muted);margin:0;font-size:15px}
+.sub b{color:var(--ink)}
 .stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font-size:14px;color:var(--muted)}
 .stats b{font:700 20px/1 var(--mono);color:var(--green);margin-right:6px}
 #upd{font-size:13px;margin-top:8px}
@@ -48,81 +48,59 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outlin
 .count b{color:var(--ink);font-family:var(--mono)}
 
 main{padding-block:16px 48px}
-.list{display:grid;gap:12px}
-.pax{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.phead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:14px 16px 10px}
-.name{font:600 19px/1.2 var(--body);margin:0;flex:1 1 240px}
-.who{font-size:14px;color:var(--muted);width:100%}
-.bigkey{display:inline-flex;align-items:baseline;gap:8px;background:var(--amber);color:var(--amber-ink);border-radius:8px;padding:6px 10px}
-.bigkey small{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase}
-.bigkey b{font:700 20px/1 var(--mono);letter-spacing:.05em}
-.bigkey mark{background:var(--surface);color:var(--ink)}
-.pill{font:600 12px/1 var(--body);letter-spacing:.04em;border-radius:99px;padding:6px 10px;text-transform:uppercase}
-.pill.ok{background:var(--ok-bg);color:var(--ok)}
-.pill.pend{background:var(--warn-bg);color:var(--warn)}
-.clave{padding:0 16px 12px}
-.clave h4{margin:0 0 6px;font:700 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.clave .keys{display:flex;flex-wrap:wrap;gap:8px}
-.key.na b{color:var(--board-muted);font-weight:500}
-.key{display:inline-flex;align-items:center;gap:8px;background:var(--board);color:var(--board-ink);border-radius:8px;padding:6px 6px 6px 10px}
-.key small{font:600 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--board-muted)}
-.key b{font:700 17px var(--mono);letter-spacing:.06em}
-.key.locked b{letter-spacing:.2em;color:var(--board-muted)}
-.hint{font-size:13px;color:var(--muted);align-self:center}
-.verified{font:600 13px var(--body);color:var(--ok);align-self:center}
-.copy{border:0;background:rgba(255,255,255,.12);color:var(--board-ink);font:600 12px var(--body);border-radius:6px;padding:5px 8px;cursor:pointer}
-.legs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
-.leg{padding:12px 16px;display:grid;gap:8px;align-content:start}
-.leg+.leg{border-left:1px solid var(--line)}
-.leg h4{margin:0;font:700 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
-.leg.ida h4{color:var(--ida)} .leg.reg h4{color:var(--reg)}
-.seg-f{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;padding:8px 10px;background:var(--chip);border-radius:8px}
-.fl{font:700 16px var(--mono);border:0;background:none;color:var(--ink);padding:0;cursor:pointer;text-align:left}
-.fl:hover{text-decoration:underline}
-.route{display:flex;align-items:center;gap:8px;font:700 22px/1 var(--display);letter-spacing:.04em;justify-content:center}
-.route i{flex:1;height:1px;background:var(--muted);max-width:48px;position:relative}
-.route i:after{content:"";position:absolute;right:-1px;top:-3px;border:3.5px solid transparent;border-left:6px solid var(--muted)}
-.date{font-size:13px;color:var(--muted);text-align:right}
-.hrs{grid-column:1/-1;display:flex;justify-content:space-between;font:500 13px var(--body);color:var(--muted)}
-.hrs b{font:700 17px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums;margin-left:4px}
-.conn{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.none{color:var(--muted);font-size:14px;padding:4px 0}
-.notes{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px dashed var(--line)}
-.note-t{font:500 13px var(--body);background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:5px 8px}
-mark{background:var(--amber);color:var(--amber-ink);border-radius:2px;padding:0 1px}
+.list{display:grid;gap:14px}
+.tbar{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.tbar button{font:600 14px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+.dayh{font:700 22px/1 var(--display);text-transform:uppercase;letter-spacing:.03em;color:var(--green-dark);margin:10px 0 0;padding-bottom:6px;border-bottom:2px solid var(--line)}
 
-.flight{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.fhead{background:var(--board);color:var(--board-ink);display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:12px 16px}
-.fcode{font:700 24px/1 var(--display);letter-spacing:.03em}
-.tag-dir{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;border-radius:4px;padding:4px 6px;background:var(--amber);color:var(--amber-ink)}
-.froute{font:500 14px var(--body);color:var(--board-muted)}
-.fdep{margin-left:auto;display:flex;gap:14px;align-items:baseline}
-.fdep span{font:600 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--board-muted);margin-right:4px}
-.fdep b{font:700 19px var(--mono)}
-.names{columns:2 260px;column-gap:24px;margin:0;padding:10px 16px 12px;list-style:none;font-size:15px}
-.names li{padding:4px 0;break-inside:avoid;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:10px}
-.names li code{font:600 13px var(--mono);color:var(--muted);text-align:right}
-.names li code small{font:600 10px var(--body);letter-spacing:.08em;margin-right:3px}
+.pu{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;break-inside:avoid}
+.puh{background:var(--board);color:var(--board-ink);display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;padding:12px 16px}
+.putime span{display:block;font:600 10.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--board-muted)}
+.putime b{font:700 30px/1 var(--mono)}
+.pudate{font:500 15px var(--body);color:var(--board-muted)}
+.pucount{margin-left:auto;background:var(--amber);color:var(--amber-ink);border-radius:8px;padding:6px 10px;font:700 12px var(--body);letter-spacing:.08em;text-transform:uppercase}
+.pucount b{font:700 20px/1 var(--mono);margin-right:4px}
+.fls{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px 0}
+.flc{font:600 13px var(--body);background:var(--chip);border-radius:6px;padding:4px 8px}
+.flc b{font-family:var(--mono)}
+table.pl{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+.pl th{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 16px 6px}
+.pl td{padding:7px 16px;border-top:1px dashed var(--line)}
+.pl td.n{width:36px;color:var(--muted);font-family:var(--mono);font-size:13px}
+.pl td.m{font-family:var(--mono);white-space:nowrap}
+.pl .dim{color:var(--muted);font-size:13px}
+.st{font:600 11px var(--body);border-radius:99px;padding:3px 8px;text-transform:uppercase;white-space:nowrap}
+.st.ok{background:var(--ok-bg);color:var(--ok)} .st.pend{background:var(--warn-bg);color:var(--warn)}
+
 .tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
 table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .rep th{position:sticky;top:0;background:var(--board);color:var(--board-ink);font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:9px 10px}
-.rep thead tr:first-child th{background:var(--chip);color:var(--muted);text-align:center;border-left:1px solid var(--line)}
 .rep td{padding:8px 10px;border-top:1px solid var(--line)}
 .rep tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--chip) 45%,transparent)}
-.rep td.k{font:700 14px var(--mono);letter-spacing:.04em}
 .rep td.m{font-family:var(--mono)}
-.rep td.g{border-left:1px solid var(--line)}
-.rep .st{font:600 11px var(--body);border-radius:99px;padding:3px 8px;text-transform:uppercase}
-.rep .st.ok{background:var(--ok-bg);color:var(--ok)} .rep .st.pend{background:var(--warn-bg);color:var(--warn)}
-.tbar{display:flex;justify-content:flex-end;margin-bottom:8px}
-.tbar button{font:600 14px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+.rep td.pk{font:700 14px var(--mono);color:var(--green-dark)}
+.nof{background:var(--warn-bg);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--warn)}
+.nof b{color:var(--ink)}
+mark{background:var(--amber);color:var(--amber-ink);border-radius:2px;padding:0 1px}
 .empty{text-align:center;color:var(--muted);padding:48px 16px}
 .foot{font-size:13px;color:var(--muted);margin-top:28px}
 @media (max-width:640px){
-  .legs{grid-template-columns:1fr}
-  .leg+.leg{border-left:0;border-top:1px solid var(--line)}
   .count{margin-left:0;width:100%}
-  .fdep{margin-left:0}
+  .pucount{margin-left:0}
+  .pl .hide-s{display:none}
+}
+@media print{
+  .controls,.tbar,.foot{display:none}
+  header.board{padding-block:0 8px}
+  .logo{width:200px;margin-bottom:6px}
+  .stats{display:none}
+  main{padding-block:8px 0}
+  body{font-size:12px}
+  .puh,.rep th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pu{margin-bottom:10px}
+  .pl td{padding:4px 12px}
+  .tablewrap{overflow:visible;border:0}
+  table.rep{font-size:10px;white-space:normal}
 }
 </style>
 </head>
@@ -130,9 +108,9 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
 <header class="board">
   <div class="wrap">
     <img class="logo" src="logo.png" alt="Viajes El Corte Inglés Grupos" width="469" height="131">
-    <div class="eyebrow" id="ev">Vuelos del evento</div>
-    <h1>Manifiesto de vuelos</h1>
-    <p class="sub">Escribe tu nombre (palabras completas) para ver tu ida, tu regreso y tu clave de reserva.</p>
+    <div class="eyebrow" id="ev">Evento</div>
+    <h1>Manifiesto de salidas</h1>
+    <p class="sub">Pick up al aeropuerto <b id="hrslabel">3 horas antes</b> de la salida del vuelo de regreso, agrupado por horario.</p>
     <div class="stats" id="stats"></div>
     <div class="sub" id="upd"></div>
   </div>
@@ -142,7 +120,7 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
   <div class="wrap">
     <div class="search">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Escribe tu nombre…" autocomplete="off" aria-label="Buscar por nombre">
+      <input id="q" type="search" placeholder="Buscar por nombre…" autocomplete="off" aria-label="Buscar por nombre">
       <button class="clear" id="clear" aria-label="Borrar búsqueda" hidden>×</button>
     </div>
     <div class="row">
@@ -151,11 +129,10 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
         <button data-st="CONF" aria-pressed="false">Confirmados</button>
         <button data-st="PEND" aria-pressed="false">Pendientes</button>
       </div>
-      <select id="fida" aria-label="Vuelo de ida"></select>
+      <select id="fday" aria-label="Día de pick up"></select>
       <select id="freg" aria-label="Vuelo de regreso"></select>
       <div class="seg" role="group" aria-label="Vista">
-        <button data-view="pax" aria-pressed="true">Pasajeros</button>
-        <button data-view="flight" aria-pressed="false">Por vuelo</button>
+        <button data-view="pu" aria-pressed="true">Por pick up</button>
         <button data-view="table" aria-pressed="false">Tabla</button>
       </div>
       <div class="count" id="count"></div>
@@ -165,22 +142,34 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
 
 <main class="wrap">
   <div id="out" class="list"><div class="empty">Cargando…</div></div>
-  <p class="foot">Horarios en hora local de cada aeropuerto. La reserva de ida y la de regreso son las claves para hacer check-in en la aerolínea.</p>
+  <p class="foot">Horarios en hora local del aeropuerto de salida. Pick up = hora de salida del vuelo de regreso menos 3 horas.</p>
 </main>
 
-<script src="parse.js"></script>
 <script>
+// Horas de anticipación del pick up respecto a la salida del vuelo de regreso.
+const HORAS_ANTES = 3;
+
 let DATA = [];
 const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2,'0');
 const norm = s => (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
 const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 const DIA = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-function fmtDate(s){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); if(!m) return s||''; const d=new Date(Date.UTC(+m[1],m[2]-1,+m[3])); return `${DIA[d.getUTCDay()]} ${+m[3]} ${MES[m[2]-1]}`; }
-const AP = {MEX:'Cd. de México',TIJ:'Tijuana',GDL:'Guadalajara',MTY:'Monterrey',HMO:'Hermosillo',LMM:'Los Mochis',TLC:'Toluca',PBC:'Puebla',NLU:'AIFA',CUN:'Cancún',SJD:'Los Cabos',MID:'Mérida',QRO:'Querétaro',BJX:'León',CUL:'Culiacán',MZT:'Mazatlán',VER:'Veracruz',OAX:'Oaxaca',VSA:'Villahermosa',CJS:'Cd. Juárez',CUU:'Chihuahua',TRC:'Torreón',SLP:'San Luis Potosí',AGU:'Aguascalientes',MXL:'Mexicali',PVR:'Puerto Vallarta'};
-const legs = r => [r.c1,r.ida,r.reg,r.c2].filter(Boolean);
+const DIAL = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+function fmtDate(s, long){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); if(!m) return s||''; const d=new Date(Date.UTC(+m[1],m[2]-1,+m[3])); return `${(long?DIAL:DIA)[d.getUTCDay()]} ${+m[3]} ${MES[m[2]-1]}`; }
 const confirmed = r => /CONFIRM/.test(r.st);
-const state = {q:'', st:'', ida:'', reg:'', view:'pax', hits:new Map()};
+const state = {q:'', st:'', day:'', reg:'', view:'pu'};
+
+// Pick up: fecha y hora de salida del vuelo de regreso menos HORAS_ANTES (cruza la medianoche si hace falta).
+function pickup(l){
+  if(!l) return null;
+  const d=/^(\d{4})-(\d{2})-(\d{2})$/.exec(l.f||''), t=/^(\d{1,2}):(\d{2})$/.exec(l.s||'');
+  if(!d || !t) return null;
+  const x = new Date(Date.UTC(+d[1], d[2]-1, +d[3], +t[1], +t[2]) - HORAS_ANTES*36e5);
+  return { f:`${x.getUTCFullYear()}-${pad(x.getUTCMonth()+1)}-${pad(x.getUTCDate())}`, h:`${pad(x.getUTCHours())}:${pad(x.getUTCMinutes())}` };
+}
+const finalDest = r => (r.c2 && r.c2.d) || (r.reg && r.reg.d) || '';
 
 function hl(text){
   text = String(text??''); if(!state.q) return esc(text);
@@ -189,127 +178,95 @@ function hl(text){
   let o='',op=false; for(let i=0;i<text.length;i++){ if(mk[i]&&!op){o+='<mark>';op=true} if(!mk[i]&&op){o+='</mark>';op=false} o+=esc(text[i]); }
   return o+(op?'</mark>':'');
 }
+const stPill = r => `<span class="st ${confirmed(r)?'ok':'pend'}">${confirmed(r)?'Confirmado':'Pendiente'}</span>`;
 
-function segHTML(l, conn){
-  return `<div class="seg-f">
-    <button class="fl" data-flight="${esc(l.v)}" title="Ver pasajeros de este vuelo">${hl(l.v)}</button>
-    <div class="route"><span title="${esc(AP[l.o]||'')}">${hl(l.o||'—')}</span><i></i><span title="${esc(AP[l.d]||'')}">${hl(l.d)}</span></div>
-    <div class="date">${fmtDate(l.f)}</div>
-    <div class="hrs"><span>Sale<b>${l.s||'—'}</b></span>${conn?`<span class="conn">${conn}</span>`:''}<span>Llega<b>${l.l||'—'}</b></span></div>
-  </div>`;
-}
-function legBlock(cls, title, main, conn, connFirst){
-  if(!main) return `<div class="leg ${cls}"><h4>${title}</h4><div class="none">Sin vuelo asignado todavía</div></div>`;
-  const parts = conn ? (connFirst ? [segHTML(conn,'Conexión'), segHTML(main,'')] : [segHTML(main,''), segHTML(conn,'Conexión')]) : [segHTML(main,'')];
-  return `<div class="leg ${cls}"><h4>${title}</h4>${parts.join('')}</div>`;
-}
-function paxCard(r){
-  const keys = [];
-  const kf = (label, v) => v
-    ? `<span class="key"><small>${label}</small><b>${hl(v)}</b><button class="copy" data-copy="${esc(v)}">Copiar</button></span>`
-    : `<span class="key na"><small>${label}</small><b>—</b></span>`;
-  if(r.ci && r.cr && r.ci !== r.cr) keys.push(kf('Clave de reserva de ida', r.ci), kf('Clave de reserva de regreso', r.cr));
-  else if(r.ci || r.cr || confirmed(r)) keys.push(kf('Clave de reserva', r.ci || r.cr));
-  return `<article class="pax">
-    <div class="phead"><p class="name">${hl(r.n)}</p>
-      <span class="pill ${confirmed(r)?'ok':'pend'}">${confirmed(r)?'Confirmado':'Pendiente'}</span>
-      <div class="who">${[r.rol, r.rg].filter(Boolean).map(hl).join(' · ')}</div></div>
-    ${keys.length?`<div class="clave"><h4>Datos de la reserva</h4><div class="keys">${keys.join('')}</div></div>`:''}
-    <div class="legs">${legBlock('ida','Ida', r.ida, r.c1, true)}${legBlock('reg','Regreso', r.reg, r.c2, false)}</div>
-  </article>`;
-}
-function flightView(rows){
+function groups(rows){
   const g = new Map();
-  rows.forEach(r=>{ [['ida','Ida'],['c1','Conexión ida'],['reg','Regreso'],['c2','Conexión regreso']].forEach(([k,lab])=>{ const l=r[k]; if(!l) return;
-    const key=l.f+'|'+l.s+'|'+l.v+'|'+lab; if(!g.has(key)) g.set(key,{l,lab,list:[]}); g.get(key).list.push(r); }); });
-  const groups=[...g.values()].sort((a,b)=>(a.l.f+a.l.l+a.l.s).localeCompare(b.l.f+b.l.l+b.l.s));
-  if(!groups.length) return `<div class="empty">Estas personas aún no tienen vuelo asignado.</div>`;
-  return groups.map(({l,lab,list})=>`<section class="flight">
-    <div class="fhead"><span class="tag-dir">${lab}</span><div class="fcode">${hl(l.v)}</div>
-      <div class="froute">${fmtDate(l.f)} · ${esc(l.o)} → ${esc(l.d)} · ${list.length} pax</div>
-      <div class="fdep"><div><span>Sale</span><b>${l.s}</b></div><div><span>Llega</span><b>${l.l}</b></div></div></div>
-    <ul class="names">${list.map(r=>`<li><span>${hl(r.n)}</span><code>${(()=>{const c=/^Regreso|regreso/.test(lab)?r.cr:r.ci; return c?`<small>CLAVE</small>${hl(c)}`:''})()}</code></li>`).join('')}</ul>
-  </section>`).join('');
+  rows.filter(r=>r._pu).forEach(r=>{ const k=r._pu.f+' '+r._pu.h; if(!g.has(k)) g.set(k,{pu:r._pu,list:[]}); g.get(k).list.push(r); });
+  return [...g.values()].sort((a,b)=>(a.pu.f+a.pu.h).localeCompare(b.pu.f+b.pu.h));
 }
-const LEGCOLS = [['ida','Ida'],['reg','Regreso'],['c1','Conexión ida'],['c2','Conexión regreso']];
+function puView(rows){
+  const gs = groups(rows); let html = `<div class="tbar"><button id="print">Imprimir manifiesto</button><button id="copytable">Copiar tabla para Excel</button></div>`;
+  let day='';
+  gs.forEach(({pu,list})=>{
+    if(pu.f!==day){ day=pu.f; html+=`<h2 class="dayh">${fmtDate(pu.f,true)}</h2>`; }
+    const fl = new Map(); list.forEach(r=>{ const l=r.reg; if(!fl.has(l.v)) fl.set(l.v,{l,n:0}); fl.get(l.v).n++; });
+    html += `<section class="pu">
+      <div class="puh"><div class="putime"><span>Pick up</span><b>${pu.h}</b></div>
+        <div class="pudate">${fmtDate(pu.f)}</div>
+        <div class="pucount"><b>${list.length}</b>pax</div></div>
+      <div class="fls">${[...fl.values()].map(({l,n})=>`<span class="flc">Vuelo <b>${esc(l.v)}</b> · ${esc(l.o)}→${esc(l.d)} · sale <b>${esc(l.s)}</b> · ${n} pax</span>`).join('')}</div>
+      <table class="pl"><thead><tr><th>#</th><th>Nombre</th><th>Vuelo</th><th>Sale</th><th>Destino</th><th class="hide-s">Estatus</th></tr></thead><tbody>
+      ${list.map((r,i)=>`<tr><td class="n">${i+1}</td><td>${hl(r.n)}${r.rg?`<div class="dim">${esc(r.rg)}</div>`:''}</td>
+        <td class="m">${esc(r.reg.v)}${r.c2?`<div class="dim">+ ${esc(r.c2.v)}</div>`:''}</td><td class="m">${esc(r.reg.s)}</td>
+        <td>${esc(finalDest(r))}${r.c2?`<div class="dim">vía ${esc(r.reg.d)}</div>`:''}</td><td class="hide-s">${stPill(r)}</td></tr>`).join('')}
+      </tbody></table></section>`;
+  });
+  const sin = rows.filter(r=>!r._pu);
+  if(sin.length) html += `<div class="nof"><b>${sin.length} sin vuelo de regreso</b> (no entran al manifiesto): ${sin.map(r=>hl(r.n)).join(', ')}</div>`;
+  if(!gs.length && !sin.length) html += `<div class="empty">Sin resultados.</div>`;
+  return html;
+}
+const TCOLS = ['Fecha pick up','Hora pick up','Nombre','Estatus','Región','Vuelo regreso','Fecha vuelo','Sale','Origen','Destino','Conexión','Destino final'];
+function tRows(rows){
+  return rows.filter(r=>r._pu).sort((a,b)=>(a._pu.f+a._pu.h).localeCompare(b._pu.f+b._pu.h) || a.n.localeCompare(b.n,'es'))
+    .map(r=>[r._pu.f, r._pu.h, r.n, confirmed(r)?'Confirmado':'Pendiente', r.rg||'', r.reg.v, r.reg.f, r.reg.s, r.reg.o, r.reg.d, r.c2?r.c2.v:'', finalDest(r)]);
+}
 function tableView(rows){
-  const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const top = `<tr><th colspan="2"></th><th colspan="2" class="g">Datos de la reserva</th><th></th>${used.map(([,lab])=>`<th colspan="6" class="g">${lab}</th>`).join('')}</tr>`;
-  const sub = `<tr><th>#</th><th>Nombre</th><th class="g">Clave de reserva ida</th><th>Clave de reserva regreso</th><th>Estatus</th>${used.map(()=>'<th>Vuelo</th><th>Fecha</th><th>Origen</th><th>Destino</th><th>Sale</th><th>Llega</th>').join('')}</tr>`;
-  const body = rows.map((r,i)=>`<tr><td>${i+1}</td><td>${hl(r.n)}</td>
-    <td class="k g">${hl(r.ci||'—')}</td><td class="k">${hl(r.cr||'—')}</td>
-    <td><span class="st ${confirmed(r)?'ok':'pend'}">${confirmed(r)?'Confirmado':'Pendiente'}</span></td>
-    ${used.map(([k])=>{const l=r[k]; return l?`<td class="m g">${hl(l.v)}</td><td>${fmtDate(l.f)}</td><td>${hl(l.o)}</td><td>${hl(l.d)}</td><td class="m">${l.s}</td><td class="m">${l.l}</td>`:'<td class="g">—</td><td></td><td></td><td></td><td></td><td></td>'}).join('')}</tr>`).join('');
-  return `<div class="tbar"><button id="copytable">Copiar tabla para Excel</button></div><div class="tablewrap"><table class="rep"><thead>${top}${sub}</thead><tbody>${body}</tbody></table></div>`;
+  const body = tRows(rows).map((a,i)=>`<tr><td>${i+1}</td><td>${fmtDate(a[0])}</td><td class="pk">${a[1]}</td><td>${hl(a[2])}</td>
+    <td><span class="st ${a[3]==='Confirmado'?'ok':'pend'}">${a[3]}</span></td><td>${esc(a[4])}</td><td class="m">${esc(a[5])}</td>
+    <td>${fmtDate(a[6])}</td><td class="m">${a[7]}</td><td>${esc(a[8])}</td><td>${esc(a[9])}</td><td class="m">${esc(a[10])||'—'}</td><td>${esc(a[11])}</td></tr>`).join('');
+  const sin = rows.filter(r=>!r._pu);
+  return `<div class="tbar"><button id="print">Imprimir</button><button id="copytable">Copiar tabla para Excel</button></div>
+    <div class="tablewrap"><table class="rep"><thead><tr><th>#</th>${TCOLS.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>
+    ${sin.length?`<div class="nof"><b>${sin.length} sin vuelo de regreso:</b> ${sin.map(r=>hl(r.n)).join(', ')}</div>`:''}`;
 }
-function tableTSV(rows){
-  const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const head = ['Nombre','Clave de reserva ida','Clave de reserva regreso','Estatus'].concat(...used.map(([,lab])=>['Vuelo','Fecha','Origen','Destino','Sale','Llega'].map(c=>`${c} ${lab}`)));
-  return [head].concat(rows.map(r=>[r.n, r.ci||'', r.cr||'', confirmed(r)?'Confirmado':'Pendiente'].concat(...used.map(([k])=>{const l=r[k]; return l?[l.v,l.f,l.o,l.d,l.s,l.l]:['','','','','','']})))).map(a=>a.join('\t')).join('\n');
-}
+const tableTSV = rows => [TCOLS].concat(tRows(rows)).map(a=>a.join('\t')).join('\n');
+
 function filtered(){
   const terms = norm(state.q).split(/\s+/).filter(Boolean);
   return DATA.filter(r =>
     (!state.st || (state.st==='CONF') === confirmed(r)) &&
-    (!state.ida || (r.ida&&r.ida.v===state.ida) || (r.c1&&r.c1.v===state.ida)) &&
-    (!state.reg || (r.reg&&r.reg.v===state.reg) || (r.c2&&r.c2.v===state.reg)) &&
-    (!terms.length || terms.every(t=>r._w.has(t))));
+    (!state.day || (r._pu && r._pu.f===state.day)) &&
+    (!state.reg || (r.reg&&r.reg.v===state.reg)) &&
+    (!terms.length || terms.every(t=>r._w.some(w=>w.startsWith(t)))));
 }
 function render(){
-  const rows = filtered();
-  $('#count').innerHTML = `<b>${rows.length}</b> resultado${rows.length===1?'':'s'}`;
+  const rows = filtered(), n = rows.filter(r=>r._pu).length;
+  $('#count').innerHTML = `<b>${n}</b> pax en manifiesto`;
   $('#clear').hidden = !state.q;
   if(!rows.length){ $('#out').innerHTML = `<div class="empty">No hay coincidencias${state.q?` con “${esc(state.q)}”`:''}. Revisa la ortografía o quita un filtro.</div>`; return; }
-  $('#out').innerHTML = state.view==='flight' ? flightView(rows) : state.view==='table' ? tableView(rows) : rows.map(paxCard).join('');
-}
-function fillSelect(sel, keys, label){
-  const m = new Map(); DATA.forEach(r=>keys.forEach(k=>{ const l=r[k]; if(l && !m.has(l.v)) m.set(l.v,l); }));
-  const opts=[...m.values()].sort((a,b)=>(a.f+a.s).localeCompare(b.f+b.s));
-  sel.innerHTML = `<option value="">${label}</option>` + opts.map(l=>`<option value="${esc(l.v)}">${esc(l.v)} · ${esc(l.o)}→${esc(l.d)} · ${fmtDate(l.f)}</option>`).join('');
+  $('#out').innerHTML = state.view==='table' ? tableView(rows) : puView(rows);
 }
 function init(){
-  // Búsqueda solo por nombre: cada palabra escrita debe ser una palabra completa del nombre.
-  DATA.forEach(r => { r._w = new Set(norm(r.n).split(/\s+/).filter(Boolean)); });
-  // Orden por llegada: fecha y hora en que aterriza el vuelo de ida; sin vuelo al final.
-  const arr = r => r.ida ? r.ida.f+' '+(r.ida.l||r.ida.s) : '9999';
-  DATA.sort((a,b)=> arr(a).localeCompare(arr(b)) || a.n.localeCompare(b.n,'es'));
-  const conf = DATA.filter(confirmed).length;
-  const fl = new Set(DATA.flatMap(r=>legs(r).map(l=>l.v+l.f)));
-  $('#stats').innerHTML = `<div><b>${DATA.length}</b>invitados</div><div><b>${conf}</b>confirmados</div><div><b>${DATA.length-conf}</b>pendientes</div><div><b>${fl.size}</b>vuelos</div>`;
-  fillSelect($('#fida'),['ida','c1'],'Todos los vuelos de ida');
-  fillSelect($('#freg'),['reg','c2'],'Todos los vuelos de regreso');
+  DATA.forEach(r => { r._w = norm(r.n).split(/\s+/).filter(Boolean); r._pu = pickup(r.reg); });
+  const days = [...new Set(DATA.filter(r=>r._pu).map(r=>r._pu.f))].sort();
+  $('#fday').innerHTML = `<option value="">Todos los días</option>` + days.map(d=>`<option value="${d}">Pick up ${fmtDate(d)}</option>`).join('');
+  const fl = new Map(); DATA.forEach(r=>{ if(r.reg && !fl.has(r.reg.v)) fl.set(r.reg.v, r.reg); });
+  $('#freg').innerHTML = `<option value="">Todos los vuelos de regreso</option>` + [...fl.values()].sort((a,b)=>(a.f+a.s).localeCompare(b.f+b.s))
+    .map(l=>`<option value="${esc(l.v)}">${esc(l.v)} · ${esc(l.o)}→${esc(l.d)} · ${fmtDate(l.f)} ${esc(l.s)}</option>`).join('');
+  const withPu = DATA.filter(r=>r._pu), slots = new Set(withPu.map(r=>r._pu.f+r._pu.h));
+  $('#stats').innerHTML = `<div><b>${withPu.length}</b>pax con regreso</div><div><b>${slots.size}</b>horarios de pick up</div><div><b>${days.length}</b>día${days.length===1?'':'s'}</div><div><b>${DATA.length-withPu.length}</b>sin vuelo de regreso</div>`;
+  $('#hrslabel').textContent = `${HORAS_ANTES} hora${HORAS_ANTES===1?'':'s'} antes`;
   render();
 }
 let t;
-let seq=0;
-async function findKeys(q){
-  const my=++seq, hits=new Map();
-  const cands=new Set(); const whole=normClave(q); if(whole.length>=5&&whole.length<=14) cands.add(whole);
-  q.split(/[\s,;]+/).forEach(p=>{const c=normClave(p); if(c.length>=5&&c.length<=14) cands.add(c);});
-  for(const c of cands){ let h; try{ h=await claveHash(c); }catch(e){ continue; } if(my!==seq) return;
-    DATA.forEach(r=>{ if(r.k&&r.k.includes(h)&&!hits.has(r)) hits.set(r,c); }); }
-  if(my!==seq) return; state.hits=hits; render();
-}
-$('#q').addEventListener('input', e=>{clearTimeout(t); t=setTimeout(()=>{state.q=e.target.value.trim(); state.hits=new Map(); render();},150)});
-$('#clear').addEventListener('click', ()=>{$('#q').value=''; state.q=''; state.hits=new Map(); seq++; render(); $('#q').focus()});
+$('#q').addEventListener('input', e=>{clearTimeout(t); t=setTimeout(()=>{state.q=e.target.value.trim(); render();},150)});
+$('#clear').addEventListener('click', ()=>{$('#q').value=''; state.q=''; render(); $('#q').focus()});
 $('#stf').addEventListener('click', e=>{const b=e.target.closest('button'); if(!b) return; state.st=b.dataset.st;
   $('#stf').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); render()});
-$('#fida').addEventListener('change', e=>{state.ida=e.target.value; render()});
+$('#fday').addEventListener('change', e=>{state.day=e.target.value; render()});
 $('#freg').addEventListener('change', e=>{state.reg=e.target.value; render()});
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ state.view=b.dataset.view;
   document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',x===b)); render()}));
 $('#out').addEventListener('click', e=>{
-  const c = e.target.closest('[data-copy]');
-  if(c){ const v=c.dataset.copy; Promise.resolve().then(()=>navigator.clipboard.writeText(v)).then(()=>{c.textContent='Copiada'; setTimeout(()=>c.textContent='Copiar',1500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(c.previousElementSibling); s.removeAllRanges(); s.addRange(rg); }); return; }
-  if(e.target.id==='copytable'){ const b=e.target; Promise.resolve().then(()=>navigator.clipboard.writeText(tableTSV(filtered()))).then(()=>{b.textContent='Tabla copiada: pégala en Excel'; setTimeout(()=>b.textContent='Copiar tabla para Excel',2500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(document.querySelector('table.rep')); s.removeAllRanges(); s.addRange(rg); b.textContent='Tabla seleccionada: usa Ctrl+C'; }); return; }
-  const f = e.target.closest('[data-flight]');
-  if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
+  if(e.target.id==='print'){ window.print(); return; }
+  if(e.target.id==='copytable'){ const b=e.target; Promise.resolve().then(()=>navigator.clipboard.writeText(tableTSV(filtered())))
+    .then(()=>{b.textContent='Tabla copiada: pégala en Excel'; setTimeout(()=>b.textContent='Copiar tabla para Excel',2500)})
+    .catch(()=>{ b.textContent='No se pudo copiar'; }); }
 });
-const APP_V = 9;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
-  if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
-    if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
-  DATA=j.filas; if(j.evento) $('#ev').textContent=j.evento; $('#upd').textContent='Actualizado: '+j.actualizado; init(); })
+  DATA=j.filas||[]; if(j.evento) $('#ev').textContent=j.evento; $('#upd').textContent='Actualizado: '+j.actualizado; init(); })
   .catch(()=>{ $('#out').innerHTML='<div class="empty">No se pudo cargar la información. Recarga la página.</div>'; });
 </script>
 </body>
