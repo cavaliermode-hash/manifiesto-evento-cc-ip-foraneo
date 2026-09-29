@@ -170,6 +170,11 @@ main{padding-block:10px 36px}
 table.rep{font-size:13px}
 .rep td{padding:6px 8px}
 .rep th{padding:7px 8px}
+.important{margin-top:24px;border:1px solid var(--green-line);border-top:4px solid var(--green);border-radius:10px;background:var(--green-soft);padding:14px 16px}
+.important h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.important ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;line-height:1.45;color:var(--ink);max-width:75ch}
+.important li::marker{color:var(--green)}
+.foot{font-size:12px;color:var(--muted);margin-top:12px}
 </style>
 </head>
 <body>
@@ -208,7 +213,15 @@ table.rep{font-size:13px}
 
 <main class="wrap">
   <div id="out" class="list"><div class="empty">Cargando…</div></div>
-  <p class="foot">Horarios en hora local de cada aeropuerto. La reserva de ida y la de regreso son las claves para hacer check-in en la aerolínea.</p>
+  <section class="important" aria-labelledby="imp-t">
+    <h2 id="imp-t">Puntos importantes de su vuelo</h2>
+    <ul>
+      <li>El check-in podrá realizarse 24 horas antes de la salida del itinerario, si la aerolínea lo permite. De lo contrario, deberá presentarse 2 horas antes en los mostradores de la línea aérea.</li>
+      <li>Identifique la clave con la leyenda <b>Reserva de la aerolínea</b>.</li>
+      <li>Para administrar su reserva o confirmar su itinerario utilice únicamente las 6 letras de la reservación para entrar a la página de la aerolínea.</li>
+    </ul>
+  </section>
+  <p class="foot">Horarios en hora local de cada aeropuerto.</p>
 </main>
 
 <script src="parse.js"></script>
@@ -344,7 +357,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 16;
+const APP_V = 17;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
