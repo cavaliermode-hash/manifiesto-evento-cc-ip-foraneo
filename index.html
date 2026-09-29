@@ -126,6 +126,50 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
   .count{margin-left:0;width:100%}
   .fdep{margin-left:0}
 }
+
+/* Compacto: buscador, filtros y tarjetas en menos espacio */
+body{font-size:15px}
+header.board{padding-block:14px 12px}
+.logos{margin-bottom:10px}
+h1{font-size:clamp(24px,5vw,36px);margin:6px 0 2px}
+.sub{font-size:14px}
+#upd{font-size:12px;margin-top:6px}
+.controls{padding-block:8px 6px}
+.search input{font:500 15px var(--body);padding:9px 38px 9px 38px;border-radius:8px;border-width:1.5px}
+.search svg{left:11px;width:17px;height:17px}
+.clear{width:24px;height:24px;font-size:14px;right:7px}
+.row{gap:6px;margin-top:6px}
+.seg{padding:2px;border-radius:7px}
+.seg button{font:600 12.5px var(--body);padding:5px 9px;border-radius:5px}
+select{flex:1 1 140px;min-width:0;font:500 12.5px var(--body);padding:6px 8px;border-radius:7px}
+.count{font-size:12.5px}
+main{padding-block:10px 36px}
+.list{gap:8px}
+.phead{padding:10px 12px 6px;gap:4px 10px}
+.name{font-size:16.5px}
+.who{font-size:13px}
+.pill{font-size:11px;padding:4px 8px}
+.clave{padding:0 12px 8px}
+.clave h4{font-size:11px;margin-bottom:4px}
+.key{padding:4px 4px 4px 8px;gap:6px}
+.key small{font-size:9.5px}
+.key b{font-size:15px}
+.copy{font-size:11px;padding:4px 6px}
+.leg{padding:8px 12px;gap:6px}
+.leg h4{font-size:11.5px}
+.seg-f{padding:6px 8px;gap:4px 10px}
+.fl{font-size:14px}
+.route{font-size:19px}
+.date{font-size:12px}
+.hrs{font-size:12px}
+.hrs b{font-size:15px}
+.fhead{padding:8px 12px}
+.fcode{font-size:20px}
+.fdep b{font-size:16px}
+.names{font-size:14px;padding:6px 12px 8px}
+table.rep{font-size:13px}
+.rep td{padding:6px 8px}
+.rep th{padding:7px 8px}
 </style>
 </head>
 <body>
@@ -279,8 +323,8 @@ function init(){
   DATA.sort((a,b)=> arr(a).localeCompare(arr(b)) || a.n.localeCompare(b.n,'es'));
   const conf = DATA.filter(confirmed).length;
   const fl = new Set(DATA.flatMap(r=>legs(r).map(l=>l.v+l.f)));
-  fillSelect($('#fida'),['ida','c1'],'Todos los vuelos de ida');
-  fillSelect($('#freg'),['reg','c2'],'Todos los vuelos de regreso');
+  fillSelect($('#fida'),['ida','c1'],'Ida: todos los vuelos');
+  fillSelect($('#freg'),['reg','c2'],'Regreso: todos los vuelos');
   render();
 }
 let t;
@@ -308,7 +352,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 13;
+const APP_V = 14;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
