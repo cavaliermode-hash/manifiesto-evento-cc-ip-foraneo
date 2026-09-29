@@ -277,18 +277,17 @@ function flightView(rows){
 const LEGCOLS = [['ida','Ida'],['reg','Regreso'],['c1','Conexión ida'],['c2','Conexión regreso']];
 function tableView(rows){
   const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const top = `<tr><th colspan="2"></th><th colspan="2" class="g">Datos de la reserva</th><th></th>${used.map(([,lab])=>`<th colspan="6" class="g">${lab}</th>`).join('')}</tr>`;
-  const sub = `<tr><th>#</th><th>Nombre</th><th class="g">Clave de reserva ida</th><th>Clave de reserva regreso</th><th>Estatus</th>${used.map(()=>'<th>Vuelo</th><th>Fecha</th><th>Origen</th><th>Destino</th><th>Sale</th><th>Llega</th>').join('')}</tr>`;
+  const top = `<tr><th colspan="2"></th><th colspan="2" class="g">Datos de la reserva</th>${used.map(([,lab])=>`<th colspan="6" class="g">${lab}</th>`).join('')}</tr>`;
+  const sub = `<tr><th>#</th><th>Nombre</th><th class="g">Clave de reserva ida</th><th>Clave de reserva regreso</th>${used.map(()=>'<th>Vuelo</th><th>Fecha</th><th>Origen</th><th>Destino</th><th>Sale</th><th>Llega</th>').join('')}</tr>`;
   const body = rows.map((r,i)=>`<tr><td>${i+1}</td><td>${hl(r.n)}</td>
     <td class="k g">${hl(r.ci||'—')}</td><td class="k">${hl(r.cr||'—')}</td>
-    <td><span class="st ${confirmed(r)?'ok':'pend'}">${confirmed(r)?'Confirmado':'Pendiente'}</span></td>
     ${used.map(([k])=>{const l=r[k]; return l?`<td class="m g">${hl(l.v)}</td><td>${fmtDate(l.f)}</td><td>${hl(l.o)}</td><td>${hl(l.d)}</td><td class="m">${l.s}</td><td class="m">${l.l}</td>`:'<td class="g">—</td><td></td><td></td><td></td><td></td><td></td>'}).join('')}</tr>`).join('');
   return `<div class="tbar"><button id="copytable">Copiar tabla para Excel</button></div><div class="tablewrap"><table class="rep"><thead>${top}${sub}</thead><tbody>${body}</tbody></table></div>`;
 }
 function tableTSV(rows){
   const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const head = ['Nombre','Clave de reserva ida','Clave de reserva regreso','Estatus'].concat(...used.map(([,lab])=>['Vuelo','Fecha','Origen','Destino','Sale','Llega'].map(c=>`${c} ${lab}`)));
-  return [head].concat(rows.map(r=>[r.n, r.ci||'', r.cr||'', confirmed(r)?'Confirmado':'Pendiente'].concat(...used.map(([k])=>{const l=r[k]; return l?[l.v,l.f,l.o,l.d,l.s,l.l]:['','','','','','']})))).map(a=>a.join('\t')).join('\n');
+  const head = ['Nombre','Clave de reserva ida','Clave de reserva regreso'].concat(...used.map(([,lab])=>['Vuelo','Fecha','Origen','Destino','Sale','Llega'].map(c=>`${c} ${lab}`)));
+  return [head].concat(rows.map(r=>[r.n, r.ci||'', r.cr||'', ].concat(...used.map(([k])=>{const l=r[k]; return l?[l.v,l.f,l.o,l.d,l.s,l.l]:['','','','','','']})))).map(a=>a.join('\t')).join('\n');
 }
 function filtered(){
   const terms = norm(state.q).split(/\s+/).filter(Boolean);
@@ -345,7 +344,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 15;
+const APP_V = 16;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
