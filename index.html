@@ -31,7 +31,7 @@ h1{color:var(--green);font:700 clamp(30px,6vw,46px)/1 var(--display);letter-spac
 .sub{color:var(--muted);margin:0;font-size:15px}
 .stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font-size:14px;color:var(--muted)}
 .stats b{font:700 20px/1 var(--mono);color:var(--green);margin-right:6px}
-#upd{font-size:13px;margin-top:8px}
+#upd{font-size:13px;margin-top:10px}
 
 .controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;border-bottom:1px solid var(--line)}
 .search{position:relative}
@@ -138,7 +138,6 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Manifiesto de vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas) para ver tu ida, tu regreso y tu clave de reserva.</p>
-    <div class="stats" id="stats"></div>
     <div class="sub" id="upd"></div>
   </div>
 </header>
@@ -280,7 +279,6 @@ function init(){
   DATA.sort((a,b)=> arr(a).localeCompare(arr(b)) || a.n.localeCompare(b.n,'es'));
   const conf = DATA.filter(confirmed).length;
   const fl = new Set(DATA.flatMap(r=>legs(r).map(l=>l.v+l.f)));
-  $('#stats').innerHTML = `<div><b>${DATA.length}</b>invitados</div><div><b>${conf}</b>confirmados</div><div><b>${DATA.length-conf}</b>pendientes</div><div><b>${fl.size}</b>vuelos</div>`;
   fillSelect($('#fida'),['ida','c1'],'Todos los vuelos de ida');
   fillSelect($('#freg'),['reg','c2'],'Todos los vuelos de regreso');
   render();
@@ -310,7 +308,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 12;
+const APP_V = 13;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
