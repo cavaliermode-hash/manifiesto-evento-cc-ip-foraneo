@@ -194,11 +194,6 @@ table.rep{font-size:13px}
       <button class="clear" id="clear" aria-label="Borrar búsqueda" hidden>×</button>
     </div>
     <div class="row">
-      <div class="seg" role="group" aria-label="Estatus" id="stf">
-        <button data-st="" aria-pressed="true">Todos</button>
-        <button data-st="CONF" aria-pressed="false">Confirmados</button>
-        <button data-st="PEND" aria-pressed="false">Pendientes</button>
-      </div>
       <select id="fida" aria-label="Vuelo de ida"></select>
       <select id="freg" aria-label="Vuelo de regreso"></select>
       <div class="seg" role="group" aria-label="Vista">
@@ -339,8 +334,6 @@ async function findKeys(q){
 }
 $('#q').addEventListener('input', e=>{clearTimeout(t); t=setTimeout(()=>{state.q=e.target.value.trim(); state.hits=new Map(); render();},150)});
 $('#clear').addEventListener('click', ()=>{$('#q').value=''; state.q=''; state.hits=new Map(); seq++; render(); $('#q').focus()});
-$('#stf').addEventListener('click', e=>{const b=e.target.closest('button'); if(!b) return; state.st=b.dataset.st;
-  $('#stf').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); render()});
 $('#fida').addEventListener('change', e=>{state.ida=e.target.value; render()});
 $('#freg').addEventListener('change', e=>{state.reg=e.target.value; render()});
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ state.view=b.dataset.view;
@@ -352,7 +345,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 14;
+const APP_V = 15;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
