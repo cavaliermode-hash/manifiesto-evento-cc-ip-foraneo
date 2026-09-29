@@ -23,7 +23,9 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body)}
 .wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
 header.board{background:#FFFFFF;color:var(--ink);padding-block:20px 18px;border-bottom:4px solid var(--green)}
-.logo{display:block;width:min(300px,78vw);height:auto;margin-bottom:14px}
+.logos{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.logo{display:block;width:min(300px,52vw);height:auto}
+.logo-client{display:block;width:min(200px,34vw);height:auto}
 .eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 h1{color:var(--green);font:700 clamp(30px,6vw,46px)/1 var(--display);letter-spacing:.01em;margin:8px 0 4px;text-transform:uppercase;text-wrap:balance}
 .sub{color:var(--muted);margin:0;font-size:15px}
@@ -129,7 +131,10 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
 <body>
 <header class="board">
   <div class="wrap">
-    <img class="logo" src="logo.png" alt="Viajes El Corte Inglés Grupos" width="469" height="131">
+    <div class="logos">
+      <img class="logo" src="logo.png" alt="Viajes El Corte Inglés Grupos" width="469" height="131">
+      <img class="logo-client" src="logo-metlife.png" alt="MetLife" width="438" height="113">
+    </div>
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Manifiesto de vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas) para ver tu ida, tu regreso y tu clave de reserva.</p>
@@ -305,7 +310,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 11;
+const APP_V = 12;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
