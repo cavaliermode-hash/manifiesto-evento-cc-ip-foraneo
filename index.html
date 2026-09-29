@@ -111,6 +111,7 @@ table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeri
 .rep thead tr:first-child th{background:var(--chip);color:var(--muted);text-align:center;border-left:1px solid var(--line)}
 .rep td{padding:8px 10px;border-top:1px solid var(--line)}
 .rep tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--chip) 45%,transparent)}
+.rep td b{font-weight:700}
 .rep td.k{font:700 14px var(--mono);letter-spacing:.04em}
 .rep td.m{font-family:var(--mono)}
 .rep td.g{border-left:1px solid var(--line)}
@@ -175,6 +176,8 @@ table.rep{font-size:13px}
 .important ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;line-height:1.45;color:var(--ink);max-width:75ch}
 .important li::marker{color:var(--green)}
 .foot{font-size:12px;color:var(--muted);margin-top:12px}
+.rep.simple thead tr:first-child th{background:var(--board);color:var(--board-ink);text-align:left;border-left:0}
+.rep.simple td:nth-child(2){white-space:normal;min-width:150px}
 </style>
 </head>
 <body>
@@ -287,19 +290,21 @@ function flightView(rows){
   </section>`).join('');
 }
 const LEGCOLS = [['ida','Ida'],['reg','Regreso'],['c1','Conexión ida'],['c2','Conexión regreso']];
+// Apellidos = últimas dos palabras del nombre más partículas previas (DE, LA, DEL...).
+const PART = new Set(['DE','LA','DEL','LAS','LOS','Y','SAN']);
+function splitName(n){
+  const w = n.split(/\s+/).filter(Boolean); if(w.length<3) return {ap:w.slice(1).join(' '), nom:w[0]||''};
+  let i = w.length-2; while(i>1 && PART.has(w[i-1])) i--;
+  return {ap:w.slice(i).join(' '), nom:w.slice(0,i).join(' ')};
+}
+const byApellido = rows => rows.map(r=>({r, ...splitName(r.n)})).sort((x,y)=>norm(x.ap).localeCompare(norm(y.ap),'es') || norm(x.nom).localeCompare(norm(y.nom),'es'));
 function tableView(rows){
-  const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const top = `<tr><th colspan="2"></th><th colspan="2" class="g">Datos de la reserva</th>${used.map(([,lab])=>`<th colspan="6" class="g">${lab}</th>`).join('')}</tr>`;
-  const sub = `<tr><th>#</th><th>Nombre</th><th class="g">Clave de reserva ida</th><th>Clave de reserva regreso</th>${used.map(()=>'<th>Vuelo</th><th>Fecha</th><th>Origen</th><th>Destino</th><th>Sale</th><th>Llega</th>').join('')}</tr>`;
-  const body = rows.map((r,i)=>`<tr><td>${i+1}</td><td>${hl(r.n)}</td>
-    <td class="k g">${hl(r.ci||'—')}</td><td class="k">${hl(r.cr||'—')}</td>
-    ${used.map(([k])=>{const l=r[k]; return l?`<td class="m g">${hl(l.v)}</td><td>${fmtDate(l.f)}</td><td>${hl(l.o)}</td><td>${hl(l.d)}</td><td class="m">${l.s}</td><td class="m">${l.l}</td>`:'<td class="g">—</td><td></td><td></td><td></td><td></td><td></td>'}).join('')}</tr>`).join('');
-  return `<div class="tbar"><button id="copytable">Copiar tabla para Excel</button></div><div class="tablewrap"><table class="rep"><thead>${top}${sub}</thead><tbody>${body}</tbody></table></div>`;
+  const body = byApellido(rows).map(({r,ap,nom},i)=>`<tr><td>${i+1}</td><td><b>${hl(ap)}</b>, ${hl(nom)}</td>
+    <td class="k g">${hl(r.ci||'—')}</td><td class="k">${hl(r.cr||'—')}</td></tr>`).join('');
+  return `<div class="tbar"><button id="copytable">Copiar tabla para Excel</button></div><div class="tablewrap"><table class="rep simple"><thead><tr><th>#</th><th>Apellidos, nombre</th><th class="g">Clave ida</th><th>Clave regreso</th></tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function tableTSV(rows){
-  const used = LEGCOLS.filter(([k])=>rows.some(r=>r[k]));
-  const head = ['Nombre','Clave de reserva ida','Clave de reserva regreso'].concat(...used.map(([,lab])=>['Vuelo','Fecha','Origen','Destino','Sale','Llega'].map(c=>`${c} ${lab}`)));
-  return [head].concat(rows.map(r=>[r.n, r.ci||'', r.cr||'', ].concat(...used.map(([k])=>{const l=r[k]; return l?[l.v,l.f,l.o,l.d,l.s,l.l]:['','','','','','']})))).map(a=>a.join('\t')).join('\n');
+  return [['Apellidos','Nombre','Clave de reserva ida','Clave de reserva regreso']].concat(byApellido(rows).map(({r,ap,nom})=>[ap, nom, r.ci||'', r.cr||''])).map(a=>a.join('\t')).join('\n');
 }
 function filtered(){
   const terms = norm(state.q).split(/\s+/).filter(Boolean);
@@ -356,7 +361,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 18;
+const APP_V = 19;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
