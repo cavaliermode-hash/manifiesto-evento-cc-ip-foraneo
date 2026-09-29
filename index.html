@@ -268,7 +268,6 @@ function paxCard(r){
   else if(r.ci || r.cr || confirmed(r)) keys.push(kf('Clave de reserva', r.ci || r.cr));
   return `<article class="pax">
     <div class="phead"><p class="name">${hl(r.n)}</p>
-      <span class="pill ${confirmed(r)?'ok':'pend'}">${confirmed(r)?'Confirmado':'Pendiente'}</span>
       <div class="who">${[r.rol, r.rg].filter(Boolean).map(hl).join(' · ')}</div></div>
     ${keys.length?`<div class="clave"><h4>Datos de la reserva</h4><div class="keys">${keys.join('')}</div></div>`:''}
     <div class="legs">${legBlock('ida','Ida', r.ida, r.c1, true)}${legBlock('reg','Regreso', r.reg, r.c2, false)}</div>
@@ -357,7 +356,7 @@ $('#out').addEventListener('click', e=>{
   const f = e.target.closest('[data-flight]');
   if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
 });
-const APP_V = 17;
+const APP_V = 18;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
