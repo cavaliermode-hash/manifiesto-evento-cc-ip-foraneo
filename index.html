@@ -206,6 +206,12 @@ table.rep{font-size:13px}
 .ifl{font:700 12px var(--mono)}
 .idt{font-weight:700;color:var(--green)}
 @media (max-width:480px){.prow{flex-direction:column;align-items:stretch}.prow-b{align-self:flex-start}}
+.il{font-size:14.5px;grid-template-columns:74px 1fr;line-height:1.45}
+.ilab{font-size:12px}
+.ifl{font-size:13.5px}
+.prow-n{font-size:17px}
+.prow-c{font-size:13px}
+.prow-b{font-size:13.5px;padding:8px 12px}
 </style>
 </head>
 <body>
@@ -422,7 +428,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 26;
+const APP_V = 27;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
