@@ -196,6 +196,15 @@ table.rep{font-size:13px}
 .dsub{margin:0;font-size:14px;color:var(--muted);max-width:60ch}
 .detail .pax{border-color:var(--green-line);border-top:4px solid var(--green)}
 .detail .key b{font-size:18px}
+.prow{align-items:flex-start}
+.prow-b{margin-top:2px}
+.itin{display:grid;gap:4px;margin-top:6px}
+.il{display:grid;grid-template-columns:62px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.35;color:var(--ink)}
+.ilab{font:700 10.5px/1.6 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.iseg{grid-column:2;font-variant-numeric:tabular-nums}
+.iseg b{font-weight:700}
+.ifl{font:700 12px var(--mono)}
+@media (max-width:480px){.prow{flex-direction:column;align-items:stretch}.prow-b{align-self:flex-start}}
 </style>
 </head>
 <body>
@@ -290,10 +299,16 @@ function paxCard(r){
   </article>`;
 }
 const tcase = s => String(s||'').toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+function itinLine(lab, ls){
+  ls = ls.filter(Boolean);
+  if(!ls.length) return `<span class="il"><b class="ilab">${lab}</b><span class="iseg">Sin vuelo asignado</span></span>`;
+  return `<span class="il"><b class="ilab">${lab}</b>${ls.map(l=>`<span class="iseg"><span class="ifl">${esc(l.v)}</span> · ${fmtDate(l.f)} · <b>${esc(l.o)}</b> ${l.s||''} → <b>${esc(l.d)}</b> ${l.l||''}</span>`).join('')}</span>`;
+}
 function paxRow(r){
   const i = DATA.indexOf(r);
   return `<button class="prow" data-open="${i}" aria-label="Ver la reserva de ${esc(r.n)}">
-    <span class="prow-t"><span class="prow-n">${hl(r.n)}</span>${r.rg?`<span class="prow-c">${esc(r.rg)}</span>`:''}</span>
+    <span class="prow-t"><span class="prow-n">${hl(r.n)}</span>${r.rg?`<span class="prow-c">${esc(r.rg)}</span>`:''}
+      <span class="itin">${itinLine('Ida', r.c1 ? [r.c1, r.ida] : [r.ida])}${itinLine('Regreso', r.c2 ? [r.reg, r.c2] : [r.reg])}</span></span>
     <span class="prow-b">Ver mi reserva <span aria-hidden="true">›</span></span>
   </button>`;
 }
@@ -406,7 +421,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 24;
+const APP_V = 25;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
