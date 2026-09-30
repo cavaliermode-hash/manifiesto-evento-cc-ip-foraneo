@@ -265,6 +265,7 @@ table.rep{font-size:13px}
 @media (min-width:900px){.services{grid-template-columns:repeat(3,1fr)}}
 @media (prefers-reduced-motion:reduce){.svc{transition:none}}
 .svc-n{margin:8px 0 0;font-size:13px;line-height:1.4;color:var(--green-dark);background:var(--green-soft);border-left:3px solid var(--green);border-radius:4px;padding:6px 8px}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -288,7 +289,7 @@ table.rep{font-size:13px}
       <input id="q" type="search" placeholder="Escribe tu nombre…" autocomplete="off" aria-label="Buscar por nombre">
       <button class="clear" id="clear" aria-label="Borrar búsqueda" hidden>×</button>
     </div>
-    <div class="row">
+    <div class="row" hidden>
       <select id="fida" aria-label="Vuelo de ida"></select>
       <select id="freg" aria-label="Vuelo de regreso"></select>
       <div class="count" id="count"></div>
@@ -577,7 +578,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 31;
+const APP_V = 32;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
