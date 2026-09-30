@@ -222,10 +222,6 @@ table.rep{font-size:13px}
     <div class="row">
       <select id="fida" aria-label="Vuelo de ida"></select>
       <select id="freg" aria-label="Vuelo de regreso"></select>
-      <div class="seg" role="group" aria-label="Vista">
-        <button data-view="pax" aria-pressed="true">Pasajeros</button>
-        <button data-view="flight" aria-pressed="false">Por vuelo</button>
-      </div>
       <div class="count" id="count"></div>
     </div>
   </div>
@@ -410,7 +406,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 23;
+const APP_V = 24;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
