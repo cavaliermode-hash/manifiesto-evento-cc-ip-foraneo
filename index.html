@@ -212,6 +212,48 @@ table.rep{font-size:13px}
 .prow-n{font-size:17px}
 .prow-c{font-size:13px}
 .prow-b{font-size:13.5px;padding:8px 12px}
+
+/* ---------- Guía interactiva ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.plist .prow,.detail>*{animation:rise .28s ease both}
+.plist .prow:nth-child(2){animation-delay:.03s}.plist .prow:nth-child(3){animation-delay:.06s}.plist .prow:nth-child(n+4){animation-delay:.09s}
+.prow{transition:background .15s}
+.prow-b{transition:transform .15s}
+.prow:hover .prow-b{transform:translateX(3px)}
+.count-card{margin:10px 0 12px;background:var(--green);color:#fff;border-radius:12px;padding:14px 16px}
+.cc-big{font:700 22px/1.15 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.cc-big b{font-size:30px}
+.cc-small{font-size:14px;opacity:.9;margin-top:4px}
+.guide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.steps{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.steps h3{margin:0 0 8px;font:700 16px/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:var(--green)}
+.steps ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:18px 1fr;gap:10px;position:relative;padding-bottom:12px;font-size:14px}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:6px;top:16px;bottom:0;width:2px;background:var(--line)}
+.steps .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--green);background:#fff;margin-top:2px;position:relative;z-index:1}
+.steps .st-done .dot{background:var(--green)}
+.steps .st-now .dot{background:#F2B233;border-color:#C98A00;box-shadow:0 0 0 4px rgba(242,178,51,.25)}
+.steps .st-done b{color:var(--muted)}
+.sd{color:var(--muted);font-size:13px;margin-top:1px}
+.pill-now{display:inline-block;font:700 11px var(--body);background:var(--green-soft);color:var(--green);border-radius:99px;padding:2px 8px;margin-left:4px;vertical-align:1px}
+.st-now .pill-now{background:#FCEBCB;color:#7A4B00}
+.abtn{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font:700 13.5px var(--body);color:var(--green);border:1.5px solid var(--green);border-radius:8px;padding:8px 12px;text-decoration:none}
+.abtn:hover{background:var(--green);color:#fff}
+.dactions{margin-top:12px}
+.abtn2{font:700 14px var(--body);background:var(--green);color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+.abtn2:hover{background:var(--green-dark)}
+.faq{margin-top:16px}
+.faq h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.faq details{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:8px;overflow:hidden}
+.faq summary{cursor:pointer;list-style:none;padding:12px 40px 12px 14px;font:600 15px/1.35 var(--body);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:14px;top:50%;transform:translateY(-50%);font:700 20px var(--body);color:var(--green);transition:transform .2s}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details[open] summary{background:var(--green-soft)}
+.faq p{margin:0;padding:10px 14px 14px;font-size:14.5px;line-height:1.5;max-width:75ch}
+.empty{line-height:1.6}
+@media (max-width:640px){.guide{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.plist .prow,.detail>*{animation:none}.prow-b,.faq summary::after{transition:none}}
 </style>
 </head>
 <body>
@@ -252,6 +294,17 @@ table.rep{font-size:13px}
       <li>Identifique la clave con la leyenda <b>Reserva de la aerolínea</b>.</li>
       <li>Para administrar su reserva o confirmar su itinerario utilice únicamente las 6 letras de la reservación para entrar a la página de la aerolínea.</li>
     </ul>
+  </section>
+  <section class="faq" aria-labelledby="faq-t">
+    <h2 id="faq-t">Preguntas frecuentes</h2>
+    <details><summary>¿Dónde encuentro mi clave de reserva?</summary><p>Escribe tu nombre en el buscador y toca <b>Ver mi reserva</b>. Tu clave tiene 6 letras y números. Si tu vuelo de ida y el de regreso tienen claves distintas, verás las dos. Usa el botón <b>Copiar</b> para pegarla en la página de la aerolínea.</p></details>
+    <details><summary>¿Cuándo y cómo hago mi check-in?</summary><p>Se abre 24 horas antes de tu vuelo, si la aerolínea lo permite. Entra a la página o app de tu aerolínea con tu clave de reserva y tu apellido. En <b>Ver mi reserva</b> te decimos la fecha y hora exacta en que abre. Si no puedes hacerlo en línea, preséntate 2 horas antes en el mostrador de la aerolínea.</p></details>
+    <details><summary>¿Con cuánto tiempo debo llegar al aeropuerto?</summary><p>Al menos 2 horas antes de la salida de tu vuelo. En <b>Ver mi reserva</b> aparece la hora límite calculada para tu vuelo.</p></details>
+    <details><summary>¿Qué necesito llevar?</summary><p>Una identificación oficial vigente (INE o pasaporte) con el mismo nombre de tu reserva, y tu clave de reserva o pase de abordar.</p></details>
+    <details><summary>¿Los horarios están en hora de qué ciudad?</summary><p>Cada horario está en la hora local del aeropuerto. En estas fechas, Tijuana tiene 1 hora menos que la Ciudad de México: si sales de Tijuana a las 12:39, en la Ciudad de México son las 13:39.</p></details>
+    <details><summary>No encuentro mi nombre, ¿qué hago?</summary><p>Escribe tu nombre o apellido completo, sin abreviar (por ejemplo, <b>GARCIA</b> en lugar de <b>GAR</b>). Los acentos no importan. Si aun así no apareces o algún dato está mal, contacta a tu coordinador de Viajes El Corte Inglés.</p></details>
+    <details><summary>¿Cuánto equipaje puedo llevar?</summary><p>Depende de la tarifa de tu boleto. Consúltalo en la página de tu aerolínea con tu clave de reserva.</p></details>
+    <details><summary>¿Puedo cambiar mi vuelo?</summary><p>Antes de hacer cualquier cambio, consúltalo con tu coordinador de Viajes El Corte Inglés.</p></details>
   </section>
   <p class="foot">Horarios en hora local de cada aeropuerto.</p>
 </main>
@@ -329,8 +382,78 @@ function detailView(r){
       <h2>Hola, ${esc(first)}</h2>
       <p class="dsub">Estos son los datos de tu viaje. Guarda tu clave de reserva: la necesitarás para hacer check-in.</p>
     </div>
+    ${countdownHTML(r)}
     ${card}
+    ${tripSteps(r)}
   </div>`;
+}
+/* ---------- Guía del viaje ---------- */
+// Diferencia con UTC en octubre de 2026 (Tijuana en horario de verano; CDMX sin horario de verano).
+const TZ = {TIJ:{off:-7,iana:'America/Tijuana',c:'Tijuana'},HMO:{off:-7,iana:'America/Hermosillo',c:'Hermosillo'},LMM:{off:-7,iana:'America/Mazatlan',c:'Los Mochis'},
+  MEX:{off:-6,iana:'America/Mexico_City',c:'Ciudad de México'},NLU:{off:-6,iana:'America/Mexico_City',c:'AIFA'},PBC:{off:-6,iana:'America/Mexico_City',c:'Puebla'},
+  TLC:{off:-6,iana:'America/Mexico_City',c:'Toluca'},GDL:{off:-6,iana:'America/Mexico_City',c:'Guadalajara'},MTY:{off:-6,iana:'America/Monterrey',c:'Monterrey'}};
+const tzOf = c => TZ[c] || {off:-6,iana:'America/Mexico_City',c:c};
+function when(l, which){ // Date absoluto de salida ('s') o llegada ('l')
+  const code = which==='s' ? l.o : l.d, hm = (which==='s'?l.s:l.l)||'00:00';
+  const [y,m,d] = l.f.split('-').map(Number), [H,M] = hm.split(':').map(Number);
+  return new Date(Date.UTC(y,m-1,d,H,M) - tzOf(code).off*3600e3);
+}
+function fmtAt(date, code){ // fecha y hora en la zona del aeropuerto
+  const o = tzOf(code).off, x = new Date(date.getTime() + o*3600e3);
+  const p=n=>String(n).padStart(2,'0');
+  return `${DIA[x.getUTCDay()]} ${x.getUTCDate()} ${MES[x.getUTCMonth()]}, ${p(x.getUTCHours())}:${p(x.getUTCMinutes())}`;
+}
+function airline(v){ const s=(v||'').toUpperCase();
+  if(/AEROMEXICO|^AM\b/.test(s)) return {n:'Aeroméxico',u:'https://aeromexico.com/es-mx'};
+  if(/VOLARIS|^Y4\b/.test(s)) return {n:'Volaris',u:'https://www.volaris.com/'};
+  if(/VIVA|^VB\b/.test(s)) return {n:'Viva Aerobus',u:'https://www.vivaaerobus.com/es-mx'};
+  return null; }
+function relTxt(ms){ const h=Math.round(ms/36e5); if(h<1) return 'en menos de 1 hora'; if(h<48) return `en ${h} h`; return `en ${Math.round(h/24)} días`; }
+function countdownHTML(r){
+  const first = r.c1 || r.ida, last = r.reg;
+  if(!first) return '';
+  const now = new Date(), dep = when(first,'s'), back = last ? when(last,'l') : null;
+  let big, small;
+  if(now < dep){ const days = Math.ceil((dep-now)/864e5);
+    big = days<=1 ? 'Tu vuelo sale en menos de 24 horas' : `Faltan <b>${days}</b> días para tu viaje`;
+    small = `Salida: ${fmtAt(dep, first.o)} desde ${tzOf(first.o).c}`; }
+  else if(back && now < back){ big = 'Estás de viaje'; small = `Tu regreso: ${fmtAt(when(last,'s'), last.o)}`; }
+  else { big = 'Tu viaje ya terminó'; small = '¡Gracias por viajar con nosotros!'; }
+  return `<div class="count-card"><div class="cc-big">${big}</div><div class="cc-small">${esc(small)}</div></div>`;
+}
+function stepBlock(title, legs){
+  legs = legs.filter(Boolean); if(!legs.length) return '';
+  const l0 = legs[0], lz = legs[legs.length-1], dep = when(l0,'s'), now = new Date();
+  const ci = new Date(dep - 24*36e5), apt = new Date(dep - 2*36e5), al = airline(l0.v);
+  const st = (t0,t1) => now>=t1 ? 'done' : now>=t0 ? 'now' : 'next';
+  const ciState = st(ci, dep);
+  const steps = [
+    {k:ciState, t:'Check-in en línea', d:`Abre ${fmtAt(ci,l0.o)} (24 h antes)`, x: ciState==='now' ? 'Disponible ahora' : ciState==='next' ? 'Abre '+relTxt(ci-now) : ''},
+    {k:st(apt,dep), t:'Llega al aeropuerto', d:`A más tardar ${fmtAt(apt,l0.o)} · ${tzOf(l0.o).c}`, x:''},
+    ...legs.map(l=>({k:st(when(l,'s'),when(l,'l')), t:`Vuelo ${esc(l.v)}`, d:`${esc(l.o)} ${l.s} → ${esc(l.d)} ${l.l} · ${fmtDate(l.f)}`, x:''})),
+    {k: now>=when(lz,'l') ? 'done':'next', t:`Llegada a ${tzOf(lz.d).c}`, d:`${fmtAt(when(lz,'l'),lz.d)} (hora local)`, x:''}
+  ];
+  return `<section class="steps">
+    <h3>${title}</h3>
+    <ol>${steps.map(s=>`<li class="st-${s.k}"><span class="dot" aria-hidden="true"></span><div><b>${s.t}</b>${s.x?` <span class="pill-now">${s.x}</span>`:''}<div class="sd">${s.d}</div></div></li>`).join('')}</ol>
+    ${al?`<a class="abtn" href="${al.u}" target="_blank" rel="noopener">Hacer check-in en ${al.n} <span aria-hidden="true">↗</span></a>`:''}
+  </section>`;
+}
+function tripSteps(r){
+  const a = stepBlock('Tu viaje de ida, paso a paso', [r.c1, r.ida]);
+  const b = stepBlock('Tu regreso, paso a paso', [r.reg, r.c2]);
+  if(!a && !b) return '';
+  return `<div class="guide">${a}${b}</div>
+    <div class="dactions"><button class="abtn2" data-ics="${DATA.indexOf(r)}">📅 Agregar vuelos a mi calendario</button></div>`;
+}
+function icsFor(r){
+  const p=n=>String(n).padStart(2,'0'), z=d=>`${d.getUTCFullYear()}${p(d.getUTCMonth()+1)}${p(d.getUTCDate())}T${p(d.getUTCHours())}${p(d.getUTCMinutes())}00Z`;
+  const legs=[r.c1,r.ida,r.reg,r.c2].filter(Boolean), stamp=z(new Date());
+  const ev = legs.map((l,i)=>{ const code = r.reg===l||r.c2===l ? (r.cr||r.ci) : (r.ci||r.cr);
+    return ['BEGIN:VEVENT',`UID:${Date.now()}-${i}@manifiestodevuelos.com`,`DTSTAMP:${stamp}`,`DTSTART:${z(when(l,'s'))}`,`DTEND:${z(when(l,'l'))}`,
+      `SUMMARY:Vuelo ${l.v} ${l.o}-${l.d}`,`DESCRIPTION:Clave de reserva: ${code||'-'}\\nCheck-in 24 h antes. Llega al aeropuerto 2 h antes.`,`LOCATION:Aeropuerto ${tzOf(l.o).c} (${l.o})`,
+      'BEGIN:VALARM','TRIGGER:-PT24H','ACTION:DISPLAY','DESCRIPTION:Ya puedes hacer check-in','END:VALARM','END:VEVENT'].join('\r\n'); });
+  return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Viajes El Corte Ingles//Manifiesto//ES','CALSCALE:GREGORIAN',...ev,'END:VCALENDAR'].join('\r\n');
 }
 function flightView(rows){
   const g = new Map();
@@ -379,7 +502,7 @@ function render(){
   const rows = filtered();
   $('#count').innerHTML = `<b>${rows.length}</b> resultado${rows.length===1?'':'s'}`;
   $('#clear').hidden = !state.q;
-  if(!rows.length){ $('#out').innerHTML = `<div class="empty">No hay coincidencias${state.q?` con “${esc(state.q)}”`:''}. Revisa la ortografía o quita un filtro.</div>`; return; }
+  if(!rows.length){ $('#out').innerHTML = `<div class="empty"><b>No encontramos a nadie${state.q?` con “${esc(state.q)}”`:''}.</b><br>Escribe tu nombre o apellido completo, sin abreviar (por ejemplo <b>GARCIA</b>, no <b>GAR</b>). Los acentos no importan.</div>`; return; }
   $('#out').innerHTML = state.view==='flight' ? flightView(rows) : state.view==='table' ? tableView(rows) : `<div class="plist">${rows.map(paxRow).join('')}</div>`;
 }
 function fillSelect(sel, keys, label){
@@ -419,6 +542,9 @@ $('#out').addEventListener('click', e=>{
   const c = e.target.closest('[data-copy]');
   if(c){ const v=c.dataset.copy; Promise.resolve().then(()=>navigator.clipboard.writeText(v)).then(()=>{c.textContent='Copiada'; setTimeout(()=>c.textContent='Copiar',1500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(c.previousElementSibling); s.removeAllRanges(); s.addRange(rg); }); return; }
   if(e.target.id==='copytable'){ const b=e.target; Promise.resolve().then(()=>navigator.clipboard.writeText(tableTSV(filtered()))).then(()=>{b.textContent='Tabla copiada: pégala en Excel'; setTimeout(()=>b.textContent='Copiar tabla para Excel',2500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(document.querySelector('table.rep')); s.removeAllRanges(); s.addRange(rg); b.textContent='Tabla seleccionada: usa Ctrl+C'; }); return; }
+  const ic = e.target.closest('[data-ics]');
+  if(ic){ const r=DATA[+ic.dataset.ics]; const blob=new Blob([icsFor(r)],{type:'text/calendar'}); const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='mis-vuelos.ics'; document.body.appendChild(a); a.click(); a.remove(); ic.textContent='✓ Archivo de calendario descargado'; return; }
   const o = e.target.closest('[data-open]');
   if(o){ openPax(+o.dataset.open); return; }
   if(e.target.closest('#back')){ if(history.state && history.state.sel!=null) history.back(); else closePax(); return; }
@@ -428,7 +554,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 27;
+const APP_V = 28;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
