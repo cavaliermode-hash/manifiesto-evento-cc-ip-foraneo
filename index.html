@@ -275,7 +275,7 @@ table.rep{font-size:13px}
 .nota+.nota{border-top:1px dashed #F2D58A}
 .nota-i{font-size:22px;line-height:1.2}
 .nota b{font-size:15px}
-.nota p{margin:2px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.nota p{margin:3px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -404,7 +404,7 @@ const NOTA = {
   tr:{i:'🚗', s:'Traslado a tu regreso', t:'Traslado a tu regreso'} };
 function notasHTML(r){
   if(!(r.notas||[]).length) return '';
-  return `<section class="notas" aria-label="Indicaciones especiales"><h3>Indicaciones especiales para ti</h3>${r.notas.map(n=>`<div class="nota"><span class="nota-i" aria-hidden="true">${NOTA[n.k].i}</span><div><b>${NOTA[n.k].t}</b><p>${esc(n.t)}</p></div></div>`).join('')}</section>`;
+  return `<section class="notas" aria-label="Indicaciones especiales"><h3>Indicaciones especiales para ti</h3>${r.notas.map(n=>`<div class="nota"><span class="nota-i" aria-hidden="true">${NOTA[n.k].i}</span><div><p>${esc(n.t)}</p></div></div>`).join('')}</section>`;
 }
 function paxRow(r){
   const i = DATA.indexOf(r);
@@ -598,7 +598,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 33;
+const APP_V = 34;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
