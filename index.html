@@ -2,27 +2,706 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Manifiesto Evento CC IP Foráneo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-:root{--green:#126B30;--ink:#16301F;--muted:#55705E;--soft:#E6F2EA}
+:root{
+  color-scheme:light;
+  --green:#126B30;--green-dark:#0C4F23;--green-soft:#E6F2EA;--green-line:#B9D9C3;
+  --bg:#FFFFFF;--surface:#FFFFFF;--ink:#16301F;--muted:#55705E;--line:#D3E4D8;
+  --board:var(--green);--board-ink:#FFFFFF;--board-muted:#CFE6D6;--amber:#CDE8D4;--amber-ink:#0C4F23;
+  --chip:var(--green-soft);--accent:var(--green);--ok:var(--green);--ok-bg:var(--green-soft);--warn:#55705E;--warn-bg:#EEF2EF;
+  --ida:var(--green);--reg:var(--green-dark);
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:#fff;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column}
-header{padding:18px 16px 14px;border-bottom:4px solid var(--green)}
-.logos{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logos img{display:block;height:auto}
-.eci{width:min(280px,50vw)}.ml{width:min(180px,34vw)}
-main{flex:1;display:grid;place-items:center;padding:32px 16px}
-.box{max-width:520px;text-align:center;background:var(--soft);border:1px solid #B9D9C3;border-radius:14px;padding:28px 22px}
-.ic{font-size:40px;line-height:1}
-h1{margin:12px 0 6px;font-size:24px;color:var(--green);text-transform:uppercase;letter-spacing:.03em}
-p{margin:0;color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px}
+header.board{background:#FFFFFF;color:var(--ink);padding-block:20px 18px;border-bottom:4px solid var(--green)}
+.logos{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.logo{display:block;width:min(300px,50vw);height:auto}
+.logo-client{display:block;width:min(190px,34vw);height:auto}
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{color:var(--green);font:700 clamp(30px,6vw,46px)/1 var(--display);letter-spacing:.01em;margin:8px 0 4px;text-transform:uppercase;text-wrap:balance}
+.sub{color:var(--muted);margin:0;font-size:15px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font-size:14px;color:var(--muted)}
+.stats b{font:700 20px/1 var(--mono);color:var(--green);margin-right:6px}
+#upd{font-size:13px;margin-top:10px}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;border-bottom:1px solid var(--line)}
+.search{position:relative}
+.search input{width:100%;font:500 18px var(--body);padding:14px 44px 14px 46px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--accent)}
+input[type=search]::-webkit-search-cancel-button{display:none}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:var(--chip);color:var(--ink);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.seg{display:inline-flex;background:var(--chip);border-radius:8px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 14px var(--body);padding:7px 12px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+select{flex:1 1 150px;font:500 14px var(--body);padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{margin-left:auto;font-size:14px;color:var(--muted)}
+.count b{color:var(--ink);font-family:var(--mono)}
+
+main{padding-block:16px 48px}
+.list{display:grid;gap:12px}
+.pax{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.phead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:14px 16px 10px}
+.name{font:600 19px/1.2 var(--body);margin:0;flex:1 1 240px}
+.who{font-size:14px;color:var(--muted);width:100%}
+.bigkey{display:inline-flex;align-items:baseline;gap:8px;background:var(--amber);color:var(--amber-ink);border-radius:8px;padding:6px 10px}
+.bigkey small{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase}
+.bigkey b{font:700 20px/1 var(--mono);letter-spacing:.05em}
+.bigkey mark{background:var(--surface);color:var(--ink)}
+.pill{font:600 12px/1 var(--body);letter-spacing:.04em;border-radius:99px;padding:6px 10px;text-transform:uppercase}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.pend{background:var(--warn-bg);color:var(--warn)}
+.clave{padding:0 16px 12px}
+.clave h4{margin:0 0 6px;font:700 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.clave .keys{display:flex;flex-wrap:wrap;gap:8px}
+.key.na b{color:var(--board-muted);font-weight:500}
+.key{display:inline-flex;align-items:center;gap:8px;background:var(--board);color:var(--board-ink);border-radius:8px;padding:6px 6px 6px 10px}
+.key small{font:600 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--board-muted)}
+.key b{font:700 17px var(--mono);letter-spacing:.06em}
+.key.locked b{letter-spacing:.2em;color:var(--board-muted)}
+.hint{font-size:13px;color:var(--muted);align-self:center}
+.verified{font:600 13px var(--body);color:var(--ok);align-self:center}
+.copy{border:0;background:rgba(255,255,255,.12);color:var(--board-ink);font:600 12px var(--body);border-radius:6px;padding:5px 8px;cursor:pointer}
+.legs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.leg{padding:12px 16px;display:grid;gap:8px;align-content:start}
+.leg+.leg{border-left:1px solid var(--line)}
+.leg h4{margin:0;font:700 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.leg.ida h4{color:var(--ida)} .leg.reg h4{color:var(--reg)}
+.seg-f{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;padding:8px 10px;background:var(--chip);border-radius:8px}
+.fl{font:700 16px var(--mono);border:0;background:none;color:var(--ink);padding:0;text-align:left}
+
+.route{grid-column:1/-1;display:flex;align-items:center;gap:10px;font:700 22px/1 var(--display);letter-spacing:.04em;justify-content:center}
+.route i{flex:1;height:1px;background:var(--muted);max-width:48px;position:relative}
+.route i:after{content:"";position:absolute;right:-1px;top:-3px;border:3.5px solid transparent;border-left:6px solid var(--muted)}
+.date{font-size:13px;color:var(--muted);text-align:right}
+.hrs{grid-column:1/-1;display:flex;justify-content:space-between;font:500 13px var(--body);color:var(--muted)}
+.hrs b{font:700 17px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums;margin-left:4px}
+.conn{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.none{color:var(--muted);font-size:14px;padding:4px 0}
+.notes{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-top:1px dashed var(--line)}
+.note-t{font:500 13px var(--body);background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:5px 8px}
+mark{background:var(--amber);color:var(--amber-ink);border-radius:2px;padding:0 1px}
+
+.flight{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.fhead{background:var(--board);color:var(--board-ink);display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:12px 16px}
+.fcode{font:700 24px/1 var(--display);letter-spacing:.03em}
+.tag-dir{font:700 11px var(--body);letter-spacing:.12em;text-transform:uppercase;border-radius:4px;padding:4px 6px;background:var(--amber);color:var(--amber-ink)}
+.froute{font:500 14px var(--body);color:var(--board-muted)}
+.fdep{margin-left:auto;display:flex;gap:14px;align-items:baseline}
+.fdep span{font:600 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--board-muted);margin-right:4px}
+.fdep b{font:700 19px var(--mono)}
+.names{columns:2 260px;column-gap:24px;margin:0;padding:10px 16px 12px;list-style:none;font-size:15px}
+.names li{padding:4px 0;break-inside:avoid;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:10px}
+.names li code{font:600 13px var(--mono);color:var(--muted);text-align:right}
+.names li code small{font:600 10px var(--body);letter-spacing:.08em;margin-right:3px}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table.rep{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rep th{position:sticky;top:0;background:var(--board);color:var(--board-ink);font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:9px 10px}
+.rep thead tr:first-child th{background:var(--chip);color:var(--muted);text-align:center;border-left:1px solid var(--line)}
+.rep td{padding:8px 10px;border-top:1px solid var(--line)}
+.rep tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--chip) 45%,transparent)}
+.rep td b{font-weight:700}
+.rep td.k{font:700 14px var(--mono);letter-spacing:.04em}
+.rep td.m{font-family:var(--mono)}
+.rep td.g{border-left:1px solid var(--line)}
+.rep .st{font:600 11px var(--body);border-radius:99px;padding:3px 8px;text-transform:uppercase}
+.rep .st.ok{background:var(--ok-bg);color:var(--ok)} .rep .st.pend{background:var(--warn-bg);color:var(--warn)}
+.tbar{display:flex;justify-content:flex-end;margin-bottom:8px}
+.tbar button{font:600 14px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
+.empty{text-align:center;color:var(--muted);padding:48px 16px}
+.foot{font-size:13px;color:var(--muted);margin-top:28px}
+@media (max-width:640px){
+  .legs{grid-template-columns:1fr}
+  .leg+.leg{border-left:0;border-top:1px solid var(--line)}
+  .count{margin-left:0;width:100%}
+  .fdep{margin-left:0}
+}
+
+/* Compacto: buscador, filtros y tarjetas en menos espacio */
+body{font-size:15px}
+header.board{padding-block:14px 12px}
+.logos{margin-bottom:10px}
+h1{font-size:clamp(24px,5vw,36px);margin:6px 0 2px}
+.sub{font-size:14px}
+#upd{font-size:12px;margin-top:6px}
+.controls{padding-block:8px 6px}
+.search input{font:500 15px var(--body);padding:9px 38px 9px 38px;border-radius:8px;border-width:1.5px}
+.search svg{left:11px;width:17px;height:17px}
+.clear{width:24px;height:24px;font-size:14px;right:7px}
+.row{gap:6px;margin-top:6px}
+.seg{padding:2px;border-radius:7px}
+.seg button{font:600 12.5px var(--body);padding:5px 9px;border-radius:5px}
+select{flex:1 1 140px;min-width:0;font:500 12.5px var(--body);padding:6px 8px;border-radius:7px}
+.count{font-size:12.5px}
+main{padding-block:10px 36px}
+.list{gap:8px}
+.phead{padding:10px 12px 6px;gap:4px 10px}
+.name{font-size:16.5px}
+.who{font-size:13px}
+.pill{font-size:11px;padding:4px 8px}
+.clave{padding:0 12px 8px}
+.clave h4{font-size:11px;margin-bottom:4px}
+.key{padding:4px 4px 4px 8px;gap:6px}
+.key small{font-size:9.5px}
+.key b{font-size:15px}
+.copy{font-size:11px;padding:4px 6px}
+.leg{padding:8px 12px;gap:6px}
+.leg h4{font-size:11.5px}
+.seg-f{padding:6px 8px;gap:4px 10px}
+.fl{font-size:14px}
+.route{font-size:19px}
+.date{font-size:12px}
+.hrs{font-size:12px}
+.hrs b{font-size:15px}
+.fhead{padding:8px 12px}
+.fcode{font-size:20px}
+.fdep b{font-size:16px}
+.names{font-size:14px;padding:6px 12px 8px}
+table.rep{font-size:13px}
+.rep td{padding:6px 8px}
+.rep th{padding:7px 8px}
+.important{margin-top:24px;border:1px solid var(--green-line);border-top:4px solid var(--green);border-radius:10px;background:var(--green-soft);padding:14px 16px}
+.important h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.important ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px;line-height:1.45;color:var(--ink);max-width:75ch}
+.important li::marker{color:var(--green)}
+.foot{font-size:12px;color:var(--muted);margin-top:12px}
+.rep.simple thead tr:first-child th{background:var(--board);color:var(--board-ink);text-align:left;border-left:0}
+.rep.simple td:nth-child(2){white-space:normal;min-width:150px}
+.plist{display:grid;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:var(--surface);color:var(--ink);padding:11px 14px;cursor:pointer;font:inherit}
+.prow:first-child{border-top:0}
+.prow:hover{background:var(--green-soft)}
+.prow:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.prow-t{display:grid;gap:1px;min-width:0}
+.prow-n{font:600 15px/1.25 var(--body)}
+.prow-c{font-size:12px;color:var(--muted)}
+.prow-b{flex:none;font:700 12.5px var(--body);color:#fff;background:var(--green);border-radius:7px;padding:7px 10px;white-space:nowrap}
+.detail{display:grid;gap:12px}
+.back{justify-self:start;border:1px solid var(--line);background:var(--surface);color:var(--green);font:700 13px var(--body);border-radius:7px;padding:7px 12px;cursor:pointer}
+.back:hover{background:var(--green-soft)}
+.dhello{padding:4px 2px}
+.dk{margin:0;font:700 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dhello h2{margin:2px 0 4px;font:700 clamp(24px,5vw,32px)/1.1 var(--display);color:var(--green);text-transform:uppercase;letter-spacing:.02em}
+.dsub{margin:0;font-size:14px;color:var(--muted);max-width:60ch}
+.detail .pax{border-color:var(--green-line);border-top:4px solid var(--green)}
+.detail .key b{font-size:18px}
+.prow{align-items:flex-start}
+.prow-b{margin-top:2px}
+.itin{display:grid;gap:4px;margin-top:6px}
+.il{display:grid;grid-template-columns:62px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.35;color:var(--ink)}
+.ilab{font:700 10.5px/1.6 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.iseg{grid-column:2;font-variant-numeric:tabular-nums}
+.iseg b{font-weight:700}
+.ifl{font:700 12px var(--mono)}
+.idt{font-weight:700;color:var(--green)}
+@media (max-width:480px){.prow{flex-direction:column;align-items:stretch}.prow-b{align-self:flex-start}}
+.il{font-size:14.5px;grid-template-columns:74px 1fr;line-height:1.45}
+.ilab{font-size:12px}
+.ifl{font-size:13.5px}
+.prow-n{font-size:17px}
+.prow-c{font-size:13px}
+.prow-b{font-size:13.5px;padding:8px 12px}
+
+/* ---------- Guía interactiva ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.plist .prow,.detail>*{animation:rise .28s ease both}
+.plist .prow:nth-child(2){animation-delay:.03s}.plist .prow:nth-child(3){animation-delay:.06s}.plist .prow:nth-child(n+4){animation-delay:.09s}
+.prow{transition:background .15s}
+.prow-b{transition:transform .15s}
+.prow:hover .prow-b{transform:translateX(3px)}
+.count-card{margin:10px 0 12px;background:var(--green);color:#fff;border-radius:12px;padding:14px 16px}
+.cc-big{font:700 22px/1.15 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.cc-big b{font-size:30px}
+.cc-small{font-size:14px;opacity:.9;margin-top:4px}
+.guide{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.steps{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.steps h3{margin:0 0 8px;font:700 16px/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:var(--green)}
+.steps ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.steps li{display:grid;grid-template-columns:18px 1fr;gap:10px;position:relative;padding-bottom:12px;font-size:14px}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:6px;top:16px;bottom:0;width:2px;background:var(--line)}
+.steps .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--green);background:#fff;margin-top:2px;position:relative;z-index:1}
+.steps .st-done .dot{background:var(--green)}
+.steps .st-now .dot{background:#F2B233;border-color:#C98A00;box-shadow:0 0 0 4px rgba(242,178,51,.25)}
+.steps .st-done b{color:var(--muted)}
+.sd{color:var(--muted);font-size:13px;margin-top:1px}
+.pill-now{display:inline-block;font:700 11px var(--body);background:var(--green-soft);color:var(--green);border-radius:99px;padding:2px 8px;margin-left:4px;vertical-align:1px}
+.st-now .pill-now{background:#FCEBCB;color:#7A4B00}
+.abtn{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font:700 13.5px var(--body);color:var(--green);border:1.5px solid var(--green);border-radius:8px;padding:8px 12px;text-decoration:none}
+.abtn:hover{background:var(--green);color:#fff}
+.dactions{margin-top:12px}
+.abtn2{font:700 14px var(--body);background:var(--green);color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+.abtn2:hover{background:var(--green-dark)}
+.faq{margin-top:16px}
+.faq h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.faq details{border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:8px;overflow:hidden}
+.faq summary{cursor:pointer;list-style:none;padding:12px 40px 12px 14px;font:600 15px/1.35 var(--body);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:14px;top:50%;transform:translateY(-50%);font:700 20px var(--body);color:var(--green);transition:transform .2s}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details[open] summary{background:var(--green-soft)}
+.faq p{margin:0;padding:10px 14px 14px;font-size:14.5px;line-height:1.5;max-width:75ch}
+.empty{line-height:1.6}
+@media (max-width:640px){.guide{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.plist .prow,.detail>*{animation:none}.prow-b,.faq summary::after{transition:none}}
+
+.services{display:grid;gap:10px;margin-top:20px}
+.svc{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(12,79,35,.06);transition:transform .15s,box-shadow .15s}
+.svc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(12,79,35,.12)}
+.svc-i{width:44px;height:44px;border-radius:10px;background:var(--green);color:#fff;display:grid;place-items:center}
+.svc-k{margin:0 0 3px;font:700 11.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.svc h3{margin:0;font:700 18px/1.25 var(--body);color:var(--ink)}
+.svc-d{margin:4px 0 0;font-size:14.5px;color:var(--muted)}
+@media (min-width:900px){.services{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){.svc{transition:none}}
+.svc-n{margin:8px 0 0;font-size:13px;line-height:1.4;color:var(--green-dark);background:var(--green-soft);border-left:3px solid var(--green);border-radius:4px;padding:6px 8px}
+[hidden]{display:none!important}
+
+.nchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nchip{font:600 12.5px var(--body);background:#FFF4D6;color:#6B4A00;border:1px solid #F2D58A;border-radius:99px;padding:3px 10px}
+.notas{margin:0 0 12px;border:1.5px solid #F2D58A;background:#FFFBEF;border-radius:12px;padding:12px 14px;animation:rise .28s ease both}
+.notas h3{margin:0 0 8px;font:700 16px/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:#6B4A00}
+.nota{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:6px 0}
+.nota+.nota{border-top:1px dashed #F2D58A}
+.nota-i{font-size:22px;line-height:1.2}
+.nota b{font-size:15px}
+.nota p{margin:3px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}
+.svc-sede{margin:8px 0 0;font:700 15px/1.35 var(--body);color:var(--green)}
+.svc-sede span{display:block;font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* ---------- Agenda e información ---------- */
+.agenda-link{display:inline-block;margin-top:8px;font:700 13.5px var(--body);color:var(--green);text-decoration:none;border:1.5px solid var(--green);border-radius:99px;padding:5px 12px}
+.agenda-link:hover{background:var(--green);color:#fff}
+.agenda{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);scroll-margin-top:16px}
+.ag-head{background:var(--green);color:#fff;padding:14px 16px}
+.ag-head h2{margin:0;font:700 22px/1.1 var(--display);letter-spacing:.05em;text-transform:uppercase}
+.ag-head p{margin:4px 0 0;font-size:13px;opacity:.9}
+.ag-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.ag-tabs button{border:0;background:var(--surface);padding:10px 6px;cursor:pointer;display:grid;justify-items:center;gap:0;color:var(--muted);border-bottom:3px solid transparent;font:inherit}
+.ag-tabs button b{font:700 26px/1 var(--display);color:inherit}
+.ag-tabs button span{font:600 12.5px var(--body);text-transform:uppercase;letter-spacing:.06em}
+.ag-tabs button[aria-selected="true"]{color:var(--green);border-bottom-color:var(--green);background:var(--green-soft)}
+.ag-tabs button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.ag-day{padding:12px 16px 14px;animation:rise .25s ease both}
+.ag-day h3{margin:0 0 8px;font:700 16px var(--body);color:var(--ink)}
+.ag-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ag-list li{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;background:var(--green-soft);border-radius:8px;padding:10px 12px}
+.ag-h{font:700 15px var(--mono);color:var(--green);font-variant-numeric:tabular-nums}
+.ag-h i{font-style:normal}
+.ag-t b{display:block;font:700 16px/1.25 var(--body)}
+.ag-t small{display:block;font-size:13px;color:var(--muted);margin-top:1px}
+.ag-list li.tr{background:transparent;padding:2px 12px}
+.ag-list li.tr .ag-h{font-size:12.5px;color:var(--muted)}
+.ag-list li.tr .ag-t b{font:600 13.5px var(--body);color:var(--muted)}
+.ag-list li.tr .ag-t b::before{content:"🚐 "}
+.ag-list li.live{background:#FFF4D6;outline:2px solid #F2B233}
+.ag-list li.past{opacity:.55}
+.ag-t em{display:inline-block;margin-top:4px;font:700 11px var(--body);font-style:normal;background:#F2B233;color:#3A2600;border-radius:99px;padding:2px 8px}
+.info{margin-top:16px}
+.info h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.icard{display:grid;grid-template-columns:34px 1fr;gap:10px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.ii{font-size:24px;line-height:1.1}
+.ik{margin:0 0 3px;font:700 11.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.iv{margin:0;font-size:15px;line-height:1.45}
+.tmax{color:#B45309;font-size:18px}.tmin{color:#1D4ED8;font-size:18px}
+.icard ul{margin:2px 0 0;padding-left:18px;font-size:14.5px;line-height:1.5}
+@media (max-width:640px){.info-grid{grid-template-columns:1fr}.ag-list li{grid-template-columns:96px 1fr;gap:10px}.ag-h{font-size:13.5px}}
+
+.ag-dl{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;border-top:1px solid var(--line);padding:14px 16px;background:var(--green-soft)}
+.ag-thumb img{display:block;width:120px;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s}
+.ag-thumb:hover img{transform:scale(1.03)}
+.ag-dl-t b{display:block;font-size:16px}
+.ag-dl-t span{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.ag-dl-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ag-dl-b a{text-decoration:none}
+.ag-dl .abtn{margin-top:0;background:#fff}
+@media (max-width:480px){.ag-dl{grid-template-columns:84px 1fr}.ag-thumb img{width:84px}}
+.ag-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.ag-pdf{flex:none;font:700 14px var(--body);background:#fff;color:var(--green);text-decoration:none;border-radius:8px;padding:9px 14px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.ag-pdf:hover{background:var(--green-soft)}
 </style>
 </head>
 <body>
-<header><div class="logos"><img class="eci" src="logo-eci.png" alt="Viajes El Corte Inglés" width="900" height="126"><img class="ml" src="logo-metlife-v2.png" alt="MetLife" width="900" height="175"></div></header>
-<main><div class="box"><div class="ic" aria-hidden="true">🔒</div><h1>Página no disponible por el momento</h1><p>La consulta de vuelos está temporalmente cerrada. Vuelve a intentarlo más tarde o contacta a tu coordinador de Viajes El Corte Inglés.</p></div></main>
+<header class="board">
+  <div class="wrap">
+    <div class="logos">
+      <img class="logo" src="logo-eci.png" alt="Viajes El Corte Inglés" width="900" height="126">
+      <img class="logo-client" src="logo-metlife-v2.png" alt="MetLife" width="900" height="175">
+    </div>
+    <div class="eyebrow" id="ev">Vuelos del evento</div>
+    <h1>Vuelos</h1>
+    <p class="sub">Escribe tu nombre (palabras completas)</p>
+    <div class="sub" id="upd"></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Escribe tu nombre…" autocomplete="off" aria-label="Buscar por nombre">
+      <button class="clear" id="clear" aria-label="Borrar búsqueda" hidden>×</button>
+    </div>
+    <div class="row" hidden>
+      <select id="fida" aria-label="Vuelo de ida"></select>
+      <select id="freg" aria-label="Vuelo de regreso"></select>
+      <div class="count" id="count"></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div id="out" class="list"><div class="empty">Cargando…</div></div>
+  <section class="services" aria-label="Servicios de tu viaje">
+    <div class="svc">
+      <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"/><path d="M6.4 17.5 3 14l2-1 3 1.5 3.5-2-5-5 2-1 7 3.5 4-2.2a2 2 0 0 1 2 3.4L7.8 17.9a1.4 1.4 0 0 1-1.4-.4z"/></svg></span>
+      <div><p class="svc-k">Vuelos</p><h3>Itinerario a su medida</h3><p class="svc-d">Desde su ciudad de origen o aeropuerto más cercano.</p></div>
+    </div>
+    <div class="svc">
+      <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16"/><path d="M8 18v3M16 18v3"/><circle cx="8" cy="14.5" r=".6" fill="currentColor"/><circle cx="16" cy="14.5" r=".6" fill="currentColor"/></svg></span>
+      <div><p class="svc-k">Traslados</p><h3>Aeropuerto-Hotel-Aeropuerto</h3><p class="svc-d">Recepción a su llegada y regreso al aeropuerto.</p><p class="svc-n">*Le recordamos que MetLife cubre únicamente las noches de hotel y traslados terrestres que estén dentro del evento o por ruta.</p></div>
+    </div>
+    <div class="svc">
+      <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M11 21v-3h2v3"/></svg></span>
+      <div><p class="svc-k">Hospedaje</p><h3>Hospedaje coordinado por nuestro equipo.</h3><p class="svc-sede"><span>Sede del evento</span>Hotel Torre Lucerna Ensenada</p></div>
+    </div>
+  </section>
+  <section class="agenda" id="agenda" aria-labelledby="ag-t">
+    <div class="ag-head"><div><h2 id="ag-t">Agenda del evento</h2><p>CC26 · Consejo Consultivo · Ensenada, B.C. · Horarios en hora local de Ensenada</p></div><a class="ag-pdf" href="agenda-cc26.pdf" target="_blank" rel="noopener">📄 Ver agenda en PDF ↗</a></div>
+    <div class="ag-tabs" role="tablist" aria-label="Días del evento">
+      <button role="tab" id="tab-14" aria-controls="day-14" data-day="14"><b>14</b><span>Miércoles</span></button>
+      <button role="tab" id="tab-15" aria-controls="day-15" data-day="15"><b>15</b><span>Jueves</span></button>
+      <button role="tab" id="tab-16" aria-controls="day-16" data-day="16"><b>16</b><span>Viernes</span></button>
+    </div>
+    <div id="ag-days"></div>
+  </section>
+  <section class="info" aria-labelledby="inf-t">
+    <h2 id="inf-t">Información general</h2>
+    <div class="info-grid">
+      <div class="icard"><span class="ii" aria-hidden="true">🏨</span><div><p class="ik">Hotel sede</p><p class="iv">Lucerna Ensenada, Baja California</p></div></div>
+      <div class="icard"><span class="ii" aria-hidden="true">✈️</span><div><p class="ik">Vuelos desde tu ciudad de origen</p><p class="iv">A tu llegada al aeropuerto de Tijuana te pedimos localizar el logo de MetLife para trasladarte a Ensenada, B.C.</p></div></div>
+      <div class="icard"><span class="ii" aria-hidden="true">☀️</span><div><p class="ik">Clima</p><p class="iv"><b class="tmax">27°</b> máxima · <b class="tmin">14°</b> mínima</p></div></div>
+      <div class="icard dress"><span class="ii" aria-hidden="true">👔</span><div><p class="ik">Código de vestimenta</p>
+        <ul><li><b>Sesiones de trabajo:</b> casual de negocios.</li><li><b>Tour:</b> considera zapato cómodo (botas).</li><li><b>Cena:</b> casual de negocios (considera chamarra).</li></ul></div></div>
+    </div>
+  </section>
+  <section class="important" aria-labelledby="imp-t">
+    <h2 id="imp-t">Puntos importantes de su vuelo</h2>
+    <ul>
+      <li>El check-in podrá realizarse 24 horas antes de la salida del itinerario, si la aerolínea lo permite. De lo contrario, deberá presentarse 2 horas antes en los mostradores de la línea aérea.</li>
+      <li>Identifique la clave con la leyenda <b>Reserva de la aerolínea</b>.</li>
+      <li>Para administrar su reserva o confirmar su itinerario utilice únicamente las 6 letras de la reservación para entrar a la página de la aerolínea.</li>
+    </ul>
+  </section>
+  <section class="faq" aria-labelledby="faq-t">
+    <h2 id="faq-t">Preguntas frecuentes</h2>
+    <details><summary>¿Dónde encuentro mi clave de reserva?</summary><p>Escribe tu nombre en el buscador y toca <b>Ver mi reserva</b>. Tu clave tiene 6 letras y números. Si tu vuelo de ida y el de regreso tienen claves distintas, verás las dos. Usa el botón <b>Copiar</b> para pegarla en la página de la aerolínea.</p></details>
+    <details><summary>¿Cuándo y cómo hago mi check-in?</summary><p>Se abre 24 horas antes de tu vuelo, si la aerolínea lo permite. Entra a la página o app de tu aerolínea con tu clave de reserva y tu apellido. En <b>Ver mi reserva</b> te decimos la fecha y hora exacta en que abre. Si no puedes hacerlo en línea, preséntate 2 horas antes en el mostrador de la aerolínea.</p></details>
+    <details><summary>¿Con cuánto tiempo debo llegar al aeropuerto?</summary><p>Al menos 2 horas antes de la salida de tu vuelo. En <b>Ver mi reserva</b> aparece la hora límite calculada para tu vuelo.</p></details>
+    <details><summary>¿Qué necesito llevar?</summary><p>Una identificación oficial vigente (INE o pasaporte) con el mismo nombre de tu reserva, y tu clave de reserva o pase de abordar.</p></details>
+    <details><summary>¿Los horarios están en hora de qué ciudad?</summary><p>Cada horario está en la hora local del aeropuerto. En estas fechas, Tijuana tiene 1 hora menos que la Ciudad de México: si sales de Tijuana a las 12:39, en la Ciudad de México son las 13:39.</p></details>
+    <details><summary>No encuentro mi nombre, ¿qué hago?</summary><p>Escribe tu nombre o apellido completo, sin abreviar (por ejemplo, <b>GARCIA</b> en lugar de <b>GAR</b>). Los acentos no importan. Si aun así no apareces o algún dato está mal, contacta a tu coordinador de Viajes El Corte Inglés.</p></details>
+  </section>
+  <p class="foot">Horarios en hora local de cada aeropuerto.</p>
+</main>
+
+<script src="parse.js"></script>
+<script>
+let DATA = [];
+const $ = s => document.querySelector(s);
+const norm = s => (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
+const esc = s => String(s??'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const DIA = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+function fmtDate(s){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); if(!m) return s||''; const d=new Date(Date.UTC(+m[1],m[2]-1,+m[3])); return `${DIA[d.getUTCDay()]} ${+m[3]} ${MES[m[2]-1]}`; }
+const AP = {MEX:'Cd. de México',TIJ:'Tijuana',GDL:'Guadalajara',MTY:'Monterrey',HMO:'Hermosillo',LMM:'Los Mochis',TLC:'Toluca',PBC:'Puebla',NLU:'AIFA',CUN:'Cancún',SJD:'Los Cabos',MID:'Mérida',QRO:'Querétaro',BJX:'León',CUL:'Culiacán',MZT:'Mazatlán',VER:'Veracruz',OAX:'Oaxaca',VSA:'Villahermosa',CJS:'Cd. Juárez',CUU:'Chihuahua',TRC:'Torreón',SLP:'San Luis Potosí',AGU:'Aguascalientes',MXL:'Mexicali',PVR:'Puerto Vallarta'};
+const legs = r => [r.c1,r.ida,r.reg,r.c2].filter(Boolean);
+const confirmed = r => /CONFIRM/.test(r.st);
+const state = {sel:null, q:'', st:'', ida:'', reg:'', view:'pax', hits:new Map()};
+
+function hl(text){
+  text = String(text??''); if(!state.q) return esc(text);
+  const terms = norm(state.q).split(/\s+/).filter(Boolean), n = norm(text), mk = new Array(text.length).fill(false);
+  terms.forEach(t=>{let i=0;while((i=n.indexOf(t,i))>-1){for(let j=i;j<i+t.length;j++)mk[j]=true;i+=t.length;}});
+  let o='',op=false; for(let i=0;i<text.length;i++){ if(mk[i]&&!op){o+='<mark>';op=true} if(!mk[i]&&op){o+='</mark>';op=false} o+=esc(text[i]); }
+  return o+(op?'</mark>':'');
+}
+
+function segHTML(l, conn){
+  return `<div class="seg-f">
+    <span class="fl">${esc(l.v)}</span>
+    <div class="date">${fmtDate(l.f)}</div>
+    <div class="route"><span title="${esc(AP[l.o]||'')}">${esc(l.o||'—')}</span><i></i><span title="${esc(AP[l.d]||'')}">${esc(l.d)}</span></div>
+    <div class="hrs"><span>Sale<b>${l.s||'—'}</b></span>${conn?`<span class="conn">${conn}</span>`:''}<span>Llega<b>${l.l||'—'}</b></span></div>
+  </div>`;
+}
+function legBlock(cls, title, main, conn, connFirst){
+  if(!main) return `<div class="leg ${cls}"><h4>${title}</h4><div class="none">Sin vuelo asignado todavía</div></div>`;
+  const parts = conn ? (connFirst ? [segHTML(conn,'Conexión'), segHTML(main,'')] : [segHTML(main,''), segHTML(conn,'Conexión')]) : [segHTML(main,'')];
+  return `<div class="leg ${cls}"><h4>${title}</h4>${parts.join('')}</div>`;
+}
+function paxCard(r){
+  const keys = [];
+  const kf = (label, v) => v
+    ? `<span class="key"><small>${label}</small><b>${hl(v)}</b><button class="copy" data-copy="${esc(v)}">Copiar</button></span>`
+    : `<span class="key na"><small>${label}</small><b>—</b></span>`;
+  if(r.ci && r.cr && r.ci !== r.cr) keys.push(kf('Clave de reserva de ida', r.ci), kf('Clave de reserva de regreso', r.cr));
+  else if(r.ci || r.cr || confirmed(r)) keys.push(kf('Clave de reserva', r.ci || r.cr));
+  return `<article class="pax">
+    <div class="phead"><p class="name">${hl(r.n)}</p>
+      <div class="who">${[r.rol, r.rg].filter(Boolean).map(hl).join(' · ')}</div></div>
+    ${keys.length?`<div class="clave"><h4>Datos de la reserva</h4><div class="keys">${keys.join('')}</div></div>`:''}
+    <div class="legs">${legBlock('ida','Ida', r.ida, r.c1, true)}${legBlock('reg','Regreso', r.reg, r.c2, false)}</div>
+  </article>`;
+}
+const tcase = s => String(s||'').toLowerCase().replace(/(^|\s)\S/g, c => c.toUpperCase());
+function itinLine(lab, ls){
+  ls = ls.filter(Boolean);
+  if(!ls.length) return `<span class="il"><b class="ilab">${lab}</b><span class="iseg">Sin vuelo asignado</span></span>`;
+  return `<span class="il"><b class="ilab">${lab}</b>${ls.map(l=>`<span class="iseg"><span class="idt">${fmtDate(l.f)}</span> · <span class="ifl">${esc(l.v)}</span> · <b>${esc(l.o)}</b> ${l.s||''} → <b>${esc(l.d)}</b> ${l.l||''}</span>`).join('')}</span>`;
+}
+const NOTA = {
+  pe:{i:'🏨', s:'Noche de hotel a tu llegada', t:'Hospedaje a tu llegada'},
+  seg:{i:'🚐', s:'Traslado a la sede del evento', t:'Traslado a tu llegada'},
+  tr:{i:'🚗', s:'Traslado a tu regreso', t:'Traslado a tu regreso'} };
+function notasHTML(r){
+  if(!(r.notas||[]).length) return '';
+  return `<section class="notas" aria-label="Indicaciones especiales"><h3>Indicaciones especiales para ti</h3>${r.notas.map(n=>`<div class="nota"><span class="nota-i" aria-hidden="true">${NOTA[n.k].i}</span><div><p>${esc(n.t)}</p></div></div>`).join('')}</section>`;
+}
+function paxRow(r){
+  const i = DATA.indexOf(r);
+  return `<button class="prow" data-open="${i}" aria-label="Ver la reserva de ${esc(r.n)}">
+    <span class="prow-t"><span class="prow-n">${hl(r.n)}</span>${r.rg?`<span class="prow-c">${esc(r.rg)}</span>`:''}
+      <span class="itin">${itinLine('Ida', r.c1 ? [r.c1, r.ida] : [r.ida])}${itinLine('Regreso', r.c2 ? [r.reg, r.c2] : [r.reg])}</span>
+      ${(r.notas||[]).length?`<span class="nchips"><span class="nchip">📌 Indicaciones especiales para ti</span></span>`:''}</span>
+    <span class="prow-b">Ver mi reserva <span aria-hidden="true">›</span></span>
+  </button>`;
+}
+function detailView(r){
+  const q0 = state.q; state.q = ''; const card = paxCard(r); state.q = q0;
+  const first = tcase(splitName(r.n).nom.split(' ')[0] || r.n.split(' ')[0]);
+  return `<div class="detail">
+    <button class="back" id="back"><span aria-hidden="true">‹</span> Volver a la búsqueda</button>
+    <div class="dhello">
+      <p class="dk">Reserva personalizada</p>
+      <h2>Hola, ${esc(first)}</h2>
+      <p class="dsub">Estos son los datos de tu viaje. Guarda tu clave de reserva: la necesitarás para hacer check-in.</p>
+    </div>
+    ${countdownHTML(r)}
+    ${notasHTML(r)}
+    ${card}
+    ${tripSteps(r)}
+  </div>`;
+}
+/* ---------- Guía del viaje ---------- */
+// Diferencia con UTC en octubre de 2026 (Tijuana en horario de verano; CDMX sin horario de verano).
+const TZ = {TIJ:{off:-7,iana:'America/Tijuana',c:'Tijuana'},HMO:{off:-7,iana:'America/Hermosillo',c:'Hermosillo'},LMM:{off:-7,iana:'America/Mazatlan',c:'Los Mochis'},
+  MEX:{off:-6,iana:'America/Mexico_City',c:'Ciudad de México'},NLU:{off:-6,iana:'America/Mexico_City',c:'AIFA'},PBC:{off:-6,iana:'America/Mexico_City',c:'Puebla'},
+  TLC:{off:-6,iana:'America/Mexico_City',c:'Toluca'},GDL:{off:-6,iana:'America/Mexico_City',c:'Guadalajara'},MTY:{off:-6,iana:'America/Monterrey',c:'Monterrey'}};
+const tzOf = c => TZ[c] || {off:-6,iana:'America/Mexico_City',c:c};
+function when(l, which){ // Date absoluto de salida ('s') o llegada ('l')
+  const code = which==='s' ? l.o : l.d, hm = (which==='s'?l.s:l.l)||'00:00';
+  const [y,m,d] = l.f.split('-').map(Number), [H,M] = hm.split(':').map(Number);
+  return new Date(Date.UTC(y,m-1,d,H,M) - tzOf(code).off*3600e3);
+}
+function fmtAt(date, code){ // fecha y hora en la zona del aeropuerto
+  const o = tzOf(code).off, x = new Date(date.getTime() + o*3600e3);
+  const p=n=>String(n).padStart(2,'0');
+  return `${DIA[x.getUTCDay()]} ${x.getUTCDate()} ${MES[x.getUTCMonth()]}, ${p(x.getUTCHours())}:${p(x.getUTCMinutes())}`;
+}
+function airline(v){ const s=(v||'').toUpperCase();
+  if(/AEROMEXICO|^AM\b/.test(s)) return {n:'Aeroméxico',u:'https://aeromexico.com/es-mx'};
+  if(/VOLARIS|^Y4\b/.test(s)) return {n:'Volaris',u:'https://www.volaris.com/'};
+  if(/VIVA|^VB\b/.test(s)) return {n:'Viva Aerobus',u:'https://www.vivaaerobus.com/es-mx'};
+  return null; }
+function relTxt(ms){ const h=Math.round(ms/36e5); if(h<1) return 'en menos de 1 hora'; if(h<48) return `en ${h} h`; return `en ${Math.round(h/24)} días`; }
+function countdownHTML(r){
+  const first = r.c1 || r.ida, last = r.reg;
+  if(!first) return '';
+  const now = new Date(), dep = when(first,'s'), back = last ? when(last,'l') : null;
+  let big, small;
+  if(now < dep){ const days = Math.ceil((dep-now)/864e5);
+    big = days<=1 ? 'Tu vuelo sale en menos de 24 horas' : `Faltan <b>${days}</b> días para tu viaje`;
+    small = `Salida: ${fmtAt(dep, first.o)} desde ${tzOf(first.o).c}`; }
+  else if(back && now < back){ big = 'Estás de viaje'; small = `Tu regreso: ${fmtAt(when(last,'s'), last.o)}`; }
+  else { big = 'Tu viaje ya terminó'; small = '¡Gracias por viajar con nosotros!'; }
+  return `<div class="count-card"><div class="cc-big">${big}</div><div class="cc-small">${esc(small)}</div></div>`;
+}
+function stepBlock(title, legs){
+  legs = legs.filter(Boolean); if(!legs.length) return '';
+  const l0 = legs[0], lz = legs[legs.length-1], dep = when(l0,'s'), now = new Date();
+  const ci = new Date(dep - 24*36e5), apt = new Date(dep - 2*36e5), al = airline(l0.v);
+  const st = (t0,t1) => now>=t1 ? 'done' : now>=t0 ? 'now' : 'next';
+  const ciState = st(ci, dep);
+  const steps = [
+    {k:ciState, t:'Check-in en línea', d:`Abre ${fmtAt(ci,l0.o)} (24 h antes)`, x: ciState==='now' ? 'Disponible ahora' : ciState==='next' ? 'Abre '+relTxt(ci-now) : ''},
+    {k:st(apt,dep), t:'Llega al aeropuerto', d:`A más tardar ${fmtAt(apt,l0.o)} · ${tzOf(l0.o).c}`, x:''},
+    ...legs.map(l=>({k:st(when(l,'s'),when(l,'l')), t:`Vuelo ${esc(l.v)}`, d:`${esc(l.o)} ${l.s} → ${esc(l.d)} ${l.l} · ${fmtDate(l.f)}`, x:''})),
+    {k: now>=when(lz,'l') ? 'done':'next', t:`Llegada a ${tzOf(lz.d).c}`, d:`${fmtAt(when(lz,'l'),lz.d)} (hora local)`, x:''}
+  ];
+  return `<section class="steps">
+    <h3>${title}</h3>
+    <ol>${steps.map(s=>`<li class="st-${s.k}"><span class="dot" aria-hidden="true"></span><div><b>${s.t}</b>${s.x?` <span class="pill-now">${s.x}</span>`:''}<div class="sd">${s.d}</div></div></li>`).join('')}</ol>
+    ${al?`<a class="abtn" href="${al.u}" target="_blank" rel="noopener">Hacer check-in en ${al.n} <span aria-hidden="true">↗</span></a>`:''}
+  </section>`;
+}
+function tripSteps(r){
+  const a = stepBlock('Tu viaje de ida, paso a paso', [r.c1, r.ida]);
+  const b = stepBlock('Tu regreso, paso a paso', [r.reg, r.c2]);
+  if(!a && !b) return '';
+  return `<div class="guide">${a}${b}</div>
+    <div class="dactions"><button class="abtn2" data-ics="${DATA.indexOf(r)}">📅 Agregar vuelos a mi calendario</button></div>`;
+}
+function icsFor(r){
+  const p=n=>String(n).padStart(2,'0'), z=d=>`${d.getUTCFullYear()}${p(d.getUTCMonth()+1)}${p(d.getUTCDate())}T${p(d.getUTCHours())}${p(d.getUTCMinutes())}00Z`;
+  const legs=[r.c1,r.ida,r.reg,r.c2].filter(Boolean), stamp=z(new Date());
+  const ev = legs.map((l,i)=>{ const code = r.reg===l||r.c2===l ? (r.cr||r.ci) : (r.ci||r.cr);
+    return ['BEGIN:VEVENT',`UID:${Date.now()}-${i}@manifiestodevuelos.com`,`DTSTAMP:${stamp}`,`DTSTART:${z(when(l,'s'))}`,`DTEND:${z(when(l,'l'))}`,
+      `SUMMARY:Vuelo ${l.v} ${l.o}-${l.d}`,`DESCRIPTION:Clave de reserva: ${code||'-'}\\nCheck-in 24 h antes. Llega al aeropuerto 2 h antes.`,`LOCATION:Aeropuerto ${tzOf(l.o).c} (${l.o})`,
+      'BEGIN:VALARM','TRIGGER:-PT24H','ACTION:DISPLAY','DESCRIPTION:Ya puedes hacer check-in','END:VALARM','END:VEVENT'].join('\r\n'); });
+  return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Viajes El Corte Ingles//Manifiesto//ES','CALSCALE:GREGORIAN',...ev,'END:VCALENDAR'].join('\r\n');
+}
+function flightView(rows){
+  const g = new Map();
+  rows.forEach(r=>{ [['ida','Ida'],['c1','Conexión ida'],['reg','Regreso'],['c2','Conexión regreso']].forEach(([k,lab])=>{ const l=r[k]; if(!l) return;
+    const key=l.f+'|'+l.s+'|'+l.v+'|'+lab; if(!g.has(key)) g.set(key,{l,lab,list:[]}); g.get(key).list.push(r); }); });
+  const groups=[...g.values()].sort((a,b)=>(a.l.f+a.l.l+a.l.s).localeCompare(b.l.f+b.l.l+b.l.s));
+  if(!groups.length) return `<div class="empty">Estas personas aún no tienen vuelo asignado.</div>`;
+  return groups.map(({l,lab,list})=>`<section class="flight">
+    <div class="fhead"><span class="tag-dir">${lab}</span><div class="fcode">${hl(l.v)}</div>
+      <div class="froute">${fmtDate(l.f)} · ${esc(l.o)} → ${esc(l.d)} · ${list.length} pax</div>
+      <div class="fdep"><div><span>Sale</span><b>${l.s}</b></div><div><span>Llega</span><b>${l.l}</b></div></div></div>
+    <ul class="names">${list.map(r=>`<li><span>${hl(r.n)}</span><code>${(()=>{const c=/^Regreso|regreso/.test(lab)?r.cr:r.ci; return c?`<small>CLAVE</small>${hl(c)}`:''})()}</code></li>`).join('')}</ul>
+  </section>`).join('');
+}
+const LEGCOLS = [['ida','Ida'],['reg','Regreso'],['c1','Conexión ida'],['c2','Conexión regreso']];
+// Apellidos = últimas dos palabras del nombre más partículas previas (DE, LA, DEL...).
+const PART = new Set(['DE','LA','DEL','LAS','LOS','Y','SAN']);
+function splitName(n){
+  const w = n.split(/\s+/).filter(Boolean); if(w.length<3) return {ap:w.slice(1).join(' '), nom:w[0]||''};
+  let i = w.length-2; while(i>1 && PART.has(w[i-1])) i--;
+  return {ap:w.slice(i).join(' '), nom:w.slice(0,i).join(' ')};
+}
+const byApellido = rows => rows.map(r=>({r, ...splitName(r.n)})).sort((x,y)=>norm(x.ap).localeCompare(norm(y.ap),'es') || norm(x.nom).localeCompare(norm(y.nom),'es'));
+function tableView(rows){
+  const body = byApellido(rows).map(({r,ap,nom},i)=>`<tr><td>${i+1}</td><td><b>${hl(ap)}</b>, ${hl(nom)}</td>
+    <td class="k g">${hl(r.ci||'—')}</td><td class="k">${hl(r.cr||'—')}</td></tr>`).join('');
+  return `<div class="tbar"><button id="copytable">Copiar tabla para Excel</button></div><div class="tablewrap"><table class="rep simple"><thead><tr><th>#</th><th>Apellidos, nombre</th><th class="g">Clave ida</th><th>Clave regreso</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function tableTSV(rows){
+  return [['Apellidos','Nombre','Clave de reserva ida','Clave de reserva regreso']].concat(byApellido(rows).map(({r,ap,nom})=>[ap, nom, r.ci||'', r.cr||''])).map(a=>a.join('\t')).join('\n');
+}
+function filtered(){
+  const terms = norm(state.q).split(/\s+/).filter(Boolean);
+  return DATA.filter(r =>
+    (!state.st || (state.st==='CONF') === confirmed(r)) &&
+    (!state.ida || (r.ida&&r.ida.v===state.ida) || (r.c1&&r.c1.v===state.ida)) &&
+    (!state.reg || (r.reg&&r.reg.v===state.reg) || (r.c2&&r.c2.v===state.reg)) &&
+    (!terms.length || terms.every(t=>r._w.has(t))));
+}
+function render(){
+  const ctrl = document.querySelector('.controls');
+  if(state.sel != null && DATA[state.sel]){
+    ctrl.hidden = true; $('#out').innerHTML = detailView(DATA[state.sel]); return;
+  }
+  ctrl.hidden = false;
+  const rows = filtered();
+  $('#count').innerHTML = `<b>${rows.length}</b> resultado${rows.length===1?'':'s'}`;
+  $('#clear').hidden = !state.q;
+  if(!rows.length){ $('#out').innerHTML = `<div class="empty"><b>No encontramos a nadie${state.q?` con “${esc(state.q)}”`:''}.</b><br>Escribe tu nombre o apellido completo, sin abreviar (por ejemplo <b>GARCIA</b>, no <b>GAR</b>). Los acentos no importan.</div>`; return; }
+  $('#out').innerHTML = state.view==='flight' ? flightView(rows) : state.view==='table' ? tableView(rows) : `<div class="plist">${rows.map(paxRow).join('')}</div>`;
+}
+function fillSelect(sel, keys, label){
+  const m = new Map(); DATA.forEach(r=>keys.forEach(k=>{ const l=r[k]; if(l && !m.has(l.v)) m.set(l.v,l); }));
+  const opts=[...m.values()].sort((a,b)=>(a.f+a.s).localeCompare(b.f+b.s));
+  sel.innerHTML = `<option value="">${label}</option>` + opts.map(l=>`<option value="${esc(l.v)}">${esc(l.v)} · ${esc(l.o)}→${esc(l.d)} · ${fmtDate(l.f)}</option>`).join('');
+}
+function init(){
+  // Búsqueda solo por nombre: cada palabra escrita debe ser una palabra completa del nombre.
+  DATA.forEach(r => { r._w = new Set(norm(r.n).split(/\s+/).filter(Boolean)); });
+  // Orden por llegada: fecha y hora en que aterriza el vuelo de ida; sin vuelo al final.
+  const arr = r => r.ida ? r.ida.f+' '+(r.ida.l||r.ida.s) : '9999';
+  DATA.sort((a,b)=> arr(a).localeCompare(arr(b)) || a.n.localeCompare(b.n,'es'));
+  const conf = DATA.filter(confirmed).length;
+  const fl = new Set(DATA.flatMap(r=>legs(r).map(l=>l.v+l.f)));
+  fillSelect($('#fida'),['ida','c1'],'Ida: todos los vuelos');
+  fillSelect($('#freg'),['reg','c2'],'Regreso: todos los vuelos');
+  render();
+}
+let t;
+let seq=0;
+async function findKeys(q){
+  const my=++seq, hits=new Map();
+  const cands=new Set(); const whole=normClave(q); if(whole.length>=5&&whole.length<=14) cands.add(whole);
+  q.split(/[\s,;]+/).forEach(p=>{const c=normClave(p); if(c.length>=5&&c.length<=14) cands.add(c);});
+  for(const c of cands){ let h; try{ h=await claveHash(c); }catch(e){ continue; } if(my!==seq) return;
+    DATA.forEach(r=>{ if(r.k&&r.k.includes(h)&&!hits.has(r)) hits.set(r,c); }); }
+  if(my!==seq) return; state.hits=hits; render();
+}
+$('#q').addEventListener('input', e=>{clearTimeout(t); t=setTimeout(()=>{state.q=e.target.value.trim(); state.hits=new Map(); render();},150)});
+$('#clear').addEventListener('click', ()=>{$('#q').value=''; state.q=''; state.hits=new Map(); seq++; render(); $('#q').focus()});
+$('#fida').addEventListener('change', e=>{state.ida=e.target.value; render()});
+$('#freg').addEventListener('change', e=>{state.reg=e.target.value; render()});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{ state.view=b.dataset.view;
+  document.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',x===b)); render()}));
+$('#out').addEventListener('click', e=>{
+  const c = e.target.closest('[data-copy]');
+  if(c){ const v=c.dataset.copy; Promise.resolve().then(()=>navigator.clipboard.writeText(v)).then(()=>{c.textContent='Copiada'; setTimeout(()=>c.textContent='Copiar',1500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(c.previousElementSibling); s.removeAllRanges(); s.addRange(rg); }); return; }
+  if(e.target.id==='copytable'){ const b=e.target; Promise.resolve().then(()=>navigator.clipboard.writeText(tableTSV(filtered()))).then(()=>{b.textContent='Tabla copiada: pégala en Excel'; setTimeout(()=>b.textContent='Copiar tabla para Excel',2500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(document.querySelector('table.rep')); s.removeAllRanges(); s.addRange(rg); b.textContent='Tabla seleccionada: usa Ctrl+C'; }); return; }
+  const ic = e.target.closest('[data-ics]');
+  if(ic){ const r=DATA[+ic.dataset.ics]; const blob=new Blob([icsFor(r)],{type:'text/calendar'}); const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='mis-vuelos.ics'; document.body.appendChild(a); a.click(); a.remove(); ic.textContent='✓ Archivo de calendario descargado'; return; }
+  const o = e.target.closest('[data-open]');
+  if(o){ openPax(+o.dataset.open); return; }
+  if(e.target.closest('#back')){ if(history.state && history.state.sel!=null) history.back(); else closePax(); return; }
+  const f = e.target.closest('[data-flight]');
+  if(f){ state.q=f.dataset.flight; $('#q').value=state.q; window.scrollTo({top:0}); render(); }
+});
+function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
+function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
+window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
+/* ---------- Agenda ---------- */
+const AGENDA = {
+  14:{d:'Miércoles 14 de octubre', f:'2026-10-14', it:[
+    ['14:00','17:00','Sesión de trabajo','Working lunch'],['17:00','18:00','Tiempo libre',''],['18:00','18:45','Traslado a cena','',1],
+    ['18:45','21:00','Cena de bienvenida',''],['21:00','21:45','Traslado al hotel','',1]]},
+  15:{d:'Jueves 15 de octubre', f:'2026-10-15', it:[
+    ['08:00','09:00','Desayuno','Hotel sede'],['09:00','14:00','Sesión de trabajo','Working lunch'],['14:00','14:45','Traslado a tour','',1],
+    ['14:45','17:00','Tour viñedo','Considera zapato cómodo (botas)'],['17:00','17:45','Traslado a cena','',1],['17:45','21:00','Cena de cierre','Considera chamarra'],['21:00','21:45','Traslado al hotel','',1]]},
+  16:{d:'Viernes 16 de octubre', f:'2026-10-16', it:[
+    ['','','Desayuno','Hotel sede','', 'Durante la mañana'],['','','Regreso a tu ciudad de origen','Consulta tu vuelo de regreso en el buscador','', 'Durante el día']]}
+};
+const ENS = -7; // Ensenada en octubre: UTC-7
+function nowEns(){ const n=new Date(Date.now()+ENS*3600e3); const p=x=>String(x).padStart(2,'0'); return {f:`${n.getUTCFullYear()}-${p(n.getUTCMonth()+1)}-${p(n.getUTCDate())}`, h:`${p(n.getUTCHours())}:${p(n.getUTCMinutes())}`}; }
+function renderAgenda(day){
+  const D=AGENDA[day], now=nowEns();
+  document.querySelectorAll('.ag-tabs [data-day]').forEach(b=>{ const on=b.dataset.day==day; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; });
+  document.getElementById('ag-days').innerHTML = `<div class="ag-day" role="tabpanel" id="day-${day}" aria-labelledby="tab-${day}"><h3>${D.d}</h3><ol class="ag-list">${D.it.map(([a,b,t,s,tr,lab])=>{
+    const live = now.f===D.f && a && now.h>=a && now.h<b, past = now.f>D.f || (now.f===D.f && b && now.h>=b);
+    return `<li class="${tr?'tr':''}${live?' live':''}${past?' past':''}"><span class="ag-h">${lab?lab:`${a}<i>–${b}</i>`}</span><span class="ag-t"><b>${t}</b>${s?`<small>${s}</small>`:''}${live?'<em>Ahora</em>':''}</span></li>`; }).join('')}</ol></div>`;
+}
+(function(){ const today=nowEns().f; const d = today>='2026-10-16' ? 16 : today==='2026-10-15' ? 15 : 14;
+  document.querySelector('.ag-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-day]'); if(b) renderAgenda(b.dataset.day);});
+  document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
+    const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
+  renderAgenda(d); })();
+const APP_V = 42;
+fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
+  if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
+    if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
+  DATA=j.filas; if(j.evento) $('#ev').textContent=j.evento; $('#upd').textContent='Actualizado: '+j.actualizado; init(); })
+  .catch(()=>{ $('#out').innerHTML='<div class="empty">No se pudo cargar la información. Recarga la página.</div>'; });
+</script>
 </body>
 </html>

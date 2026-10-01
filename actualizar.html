@@ -4,25 +4,78 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Manifiesto Evento CC IP Foráneo</title>
+<title>Actualizar manifiesto CC IP Foráneo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-:root{--green:#126B30;--ink:#16301F;--muted:#55705E;--soft:#E6F2EA}
+:root{--bg:#FFFFFF;--surface:#fff;--ink:#16301F;--muted:#5C6B80;--line:#D5DCE6;--board:#126B30;--amber:#F2B233;--ok:#1B7F4C;--bad:#B3261E}
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:#fff;color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column}
-header{padding:18px 16px 14px;border-bottom:4px solid var(--green)}
-.logos{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logos img{display:block;height:auto}
-.eci{width:min(280px,50vw)}.ml{width:min(180px,34vw)}
-main{flex:1;display:grid;place-items:center;padding:32px 16px}
-.box{max-width:520px;text-align:center;background:var(--soft);border:1px solid #B9D9C3;border-radius:14px;padding:28px 22px}
-.ic{font-size:40px;line-height:1}
-h1{margin:12px 0 6px;font-size:24px;color:var(--green);text-transform:uppercase;letter-spacing:.03em}
-p{margin:0;color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:28px 48px}
+h1{font-size:26px;margin:0 0 6px}
+p{margin:0 0 12px;color:var(--muted)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;margin-top:18px}
+ol{padding-left:20px;margin:0}
+ol li{margin-bottom:8px}
+input[type=file]{font:inherit;width:100%}
+button{font:600 16px inherit;background:var(--board);color:#fff;border:0;border-radius:8px;padding:12px 18px;cursor:pointer;margin-top:12px}
+button:disabled{opacity:.4;cursor:default}
+#msg{margin-top:12px;font-weight:500}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+code{background:#E3E8EF;padding:1px 5px;border-radius:4px}
 </style>
 </head>
 <body>
-<header><div class="logos"><img class="eci" src="logo-eci.png" alt="Viajes El Corte Inglés" width="900" height="126"><img class="ml" src="logo-metlife-v2.png" alt="MetLife" width="900" height="175"></div></header>
-<main><div class="box"><div class="ic" aria-hidden="true">🔒</div><h1>Página no disponible por el momento</h1><p>La consulta de vuelos está temporalmente cerrada. Vuelve a intentarlo más tarde o contacta a tu coordinador de Viajes El Corte Inglés.</p></div></main>
+<div class="wrap">
+  <h1>Actualizar vuelos del evento</h1>
+  <p>Convierte tu Excel de salidas en el archivo <code>data.json</code> que usa el buscador. El Excel no se sube a ningún lado; se procesa en tu computadora y teléfonos, correos, fechas de nacimiento y costos se descartan.</p>
+
+  <div class="box">
+    <label for="f"><b>1. Elige el Excel</b> (el reporte con la hoja <b>Concentrado de vuelos</b>)</label>
+    <input id="f" type="file" accept=".xlsx,.xlsm,.xls" style="margin-top:10px">
+    <label for="ev" style="display:block;margin-top:14px"><b>Nombre del evento</b> (opcional)</label>
+    <input id="ev" type="text" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px" placeholder="Manifiesto Evento CC IP Foráneo">
+    <button id="go" disabled>2. Descargar data.json</button>
+    <div id="msg"></div>
+  </div>
+
+  <div class="box">
+    <b>3. Súbelo a GitHub</b>
+    <ol style="margin-top:8px">
+      <li>Abre tu repositorio en github.com y entra a el repositorio <code>manifiesto-evento-cc-ip-foraneo</code>.</li>
+      <li>Da clic en <b>Add file → Upload files</b>.</li>
+      <li>Arrastra el <code>data.json</code> que descargaste (reemplaza al anterior).</li>
+      <li>Da clic en <b>Commit changes</b>. En 1–2 minutos el buscador muestra los datos nuevos, con el mismo link.</li>
+    </ol>
+  </div>
+</div>
+<script src="parse.js"></script>
+<script>
+const pad = n => String(n).padStart(2,'0');
+const clean = v => String(v ?? '').replace(/\s+/g,' ').trim();
+let out = null;
+document.getElementById('f').addEventListener('change', async e => {
+  const file = e.target.files[0]; const msg = document.getElementById('msg');
+  out = null; document.getElementById('go').disabled = true;
+  if (!file) return;
+  try {
+    const wb = XLSX.read(await file.arrayBuffer(), {type:'array'});
+    const name = wb.SheetNames.find(n => /concentrado/i.test(n)) || wb.SheetNames[0];
+    const grid = XLSX.utils.sheet_to_json(wb.Sheets[name], {header:1, raw:true, defval:null});
+    const rows = parseConcentrado(grid);
+    const now = new Date();
+    out = { actualizado: `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
+            app: 42, evento: clean(document.getElementById('ev').value) || 'Manifiesto Evento CC IP Foráneo', filas: rows };
+    const conf = rows.filter(r => /CONFIRM/.test(r.st)).length;
+    msg.className = 'ok'; msg.textContent = `Listo: ${rows.length} invitados (${conf} confirmados, ${rows.length-conf} pendientes), hoja "${name}".`;
+    document.getElementById('go').disabled = false;
+  } catch (err) { msg.className = 'bad'; msg.textContent = err.message; }
+});
+document.getElementById('go').addEventListener('click', () => {
+  if (!out) return;
+  const ev = clean(document.getElementById('ev').value); if (ev) out.evento = ev;
+  const blob = new Blob([JSON.stringify(out)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data.json'; a.click();
+});
+</script>
 </body>
 </html>
