@@ -339,7 +339,7 @@ table.rep{font-size:13px}
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
-    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a> <a class="agenda-link" href="agenda-cc26.pdf" download="Agenda-CC26.pdf">⬇ Descargar agenda</a>
+    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a> <a class="agenda-link" href="agenda-cc26.jpg" download="Agenda-CC26.jpg">⬇ Descargar agenda</a>
     <div class="sub" id="upd"></div>
   </div>
 </header>
@@ -386,7 +386,7 @@ table.rep{font-size:13px}
     <div class="ag-dl">
       <a class="ag-thumb" href="agenda-cc26.jpg" target="_blank" rel="noopener"><img src="agenda-cc26.jpg" alt="Agenda e información general del evento CC26" loading="lazy" width="1426" height="1600"></a>
       <div class="ag-dl-t"><b>Descarga la agenda completa</b><span>Agenda e información general del evento (hotel sede, clima y código de vestimenta).</span>
-        <div class="ag-dl-b"><a class="abtn2" href="agenda-cc26.jpg" download="Agenda-CC26.jpg">⬇ Descargar imagen</a><a class="abtn" href="agenda-cc26.pdf" download="Agenda-CC26.pdf">⬇ Descargar PDF</a></div></div>
+        <div class="ag-dl-b"><a class="abtn2" href="agenda-cc26.jpg" download="Agenda-CC26.jpg">⬇ Descargar agenda</a></div></div>
     </div>
   </section>
   <section class="info" aria-labelledby="inf-t">
@@ -699,7 +699,7 @@ function renderAgenda(day){
   document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
     const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
   renderAgenda(d); })();
-const APP_V = 38;
+const APP_V = 39;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
