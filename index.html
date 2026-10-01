@@ -342,7 +342,6 @@ table.rep{font-size:13px}
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
-    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a> <a class="agenda-link" href="agenda-cc26.pdf" download="Agenda-CC26.pdf">⬇ Descargar agenda (PDF)</a>
     <div class="sub" id="upd"></div>
   </div>
 </header>
@@ -697,7 +696,7 @@ function renderAgenda(day){
   document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
     const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
   renderAgenda(d); })();
-const APP_V = 40;
+const APP_V = 41;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
