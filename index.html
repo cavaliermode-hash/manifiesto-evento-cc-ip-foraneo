@@ -278,6 +278,45 @@ table.rep{font-size:13px}
 .nota p{margin:3px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .svc-sede{margin:8px 0 0;font:700 15px/1.35 var(--body);color:var(--green)}
 .svc-sede span{display:block;font:700 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* ---------- Agenda e información ---------- */
+.agenda-link{display:inline-block;margin-top:8px;font:700 13.5px var(--body);color:var(--green);text-decoration:none;border:1.5px solid var(--green);border-radius:99px;padding:5px 12px}
+.agenda-link:hover{background:var(--green);color:#fff}
+.agenda{margin-top:20px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);scroll-margin-top:16px}
+.ag-head{background:var(--green);color:#fff;padding:14px 16px}
+.ag-head h2{margin:0;font:700 22px/1.1 var(--display);letter-spacing:.05em;text-transform:uppercase}
+.ag-head p{margin:4px 0 0;font-size:13px;opacity:.9}
+.ag-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.ag-tabs button{border:0;background:var(--surface);padding:10px 6px;cursor:pointer;display:grid;justify-items:center;gap:0;color:var(--muted);border-bottom:3px solid transparent;font:inherit}
+.ag-tabs button b{font:700 26px/1 var(--display);color:inherit}
+.ag-tabs button span{font:600 12.5px var(--body);text-transform:uppercase;letter-spacing:.06em}
+.ag-tabs button[aria-selected="true"]{color:var(--green);border-bottom-color:var(--green);background:var(--green-soft)}
+.ag-tabs button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+.ag-day{padding:12px 16px 14px;animation:rise .25s ease both}
+.ag-day h3{margin:0 0 8px;font:700 16px var(--body);color:var(--ink)}
+.ag-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ag-list li{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;background:var(--green-soft);border-radius:8px;padding:10px 12px}
+.ag-h{font:700 15px var(--mono);color:var(--green);font-variant-numeric:tabular-nums}
+.ag-h i{font-style:normal}
+.ag-t b{display:block;font:700 16px/1.25 var(--body)}
+.ag-t small{display:block;font-size:13px;color:var(--muted);margin-top:1px}
+.ag-list li.tr{background:transparent;padding:2px 12px}
+.ag-list li.tr .ag-h{font-size:12.5px;color:var(--muted)}
+.ag-list li.tr .ag-t b{font:600 13.5px var(--body);color:var(--muted)}
+.ag-list li.tr .ag-t b::before{content:"🚐 "}
+.ag-list li.live{background:#FFF4D6;outline:2px solid #F2B233}
+.ag-list li.past{opacity:.55}
+.ag-t em{display:inline-block;margin-top:4px;font:700 11px var(--body);font-style:normal;background:#F2B233;color:#3A2600;border-radius:99px;padding:2px 8px}
+.info{margin-top:16px}
+.info h2{margin:0 0 8px;font:700 18px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.icard{display:grid;grid-template-columns:34px 1fr;gap:10px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.ii{font-size:24px;line-height:1.1}
+.ik{margin:0 0 3px;font:700 11.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.iv{margin:0;font-size:15px;line-height:1.45}
+.tmax{color:#B45309;font-size:18px}.tmin{color:#1D4ED8;font-size:18px}
+.icard ul{margin:2px 0 0;padding-left:18px;font-size:14.5px;line-height:1.5}
+@media (max-width:640px){.info-grid{grid-template-columns:1fr}.ag-list li{grid-template-columns:96px 1fr;gap:10px}.ag-h{font-size:13.5px}}
 </style>
 </head>
 <body>
@@ -290,6 +329,7 @@ table.rep{font-size:13px}
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
+    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a>
     <div class="sub" id="upd"></div>
   </div>
 </header>
@@ -323,6 +363,25 @@ table.rep{font-size:13px}
     <div class="svc">
       <span class="svc-i" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1"/><path d="M11 21v-3h2v3"/></svg></span>
       <div><p class="svc-k">Hospedaje</p><h3>Hospedaje coordinado por nuestro equipo.</h3><p class="svc-sede"><span>Sede del evento</span>Hotel Torre Lucerna Ensenada</p></div>
+    </div>
+  </section>
+  <section class="agenda" id="agenda" aria-labelledby="ag-t">
+    <div class="ag-head"><h2 id="ag-t">Agenda del evento</h2><p>CC26 · Consejo Consultivo · Ensenada, B.C. · Horarios en hora local de Ensenada</p></div>
+    <div class="ag-tabs" role="tablist" aria-label="Días del evento">
+      <button role="tab" id="tab-14" aria-controls="day-14" data-day="14"><b>14</b><span>Miércoles</span></button>
+      <button role="tab" id="tab-15" aria-controls="day-15" data-day="15"><b>15</b><span>Jueves</span></button>
+      <button role="tab" id="tab-16" aria-controls="day-16" data-day="16"><b>16</b><span>Viernes</span></button>
+    </div>
+    <div id="ag-days"></div>
+  </section>
+  <section class="info" aria-labelledby="inf-t">
+    <h2 id="inf-t">Información general</h2>
+    <div class="info-grid">
+      <div class="icard"><span class="ii" aria-hidden="true">🏨</span><div><p class="ik">Hotel sede</p><p class="iv">Lucerna Ensenada, Baja California</p></div></div>
+      <div class="icard"><span class="ii" aria-hidden="true">✈️</span><div><p class="ik">Vuelos desde tu ciudad de origen</p><p class="iv">A tu llegada al aeropuerto de Tijuana te pedimos localizar el logo de MetLife para trasladarte a Ensenada, B.C.</p></div></div>
+      <div class="icard"><span class="ii" aria-hidden="true">☀️</span><div><p class="ik">Clima</p><p class="iv"><b class="tmax">27°</b> máxima · <b class="tmin">14°</b> mínima</p></div></div>
+      <div class="icard dress"><span class="ii" aria-hidden="true">👔</span><div><p class="ik">Código de vestimenta</p>
+        <ul><li><b>Sesiones de trabajo:</b> casual de negocios.</li><li><b>Tour:</b> considera zapato cómodo (botas).</li><li><b>Cena:</b> casual de negocios (considera chamarra).</li></ul></div></div>
     </div>
   </section>
   <section class="important" aria-labelledby="imp-t">
@@ -600,7 +659,32 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 35;
+/* ---------- Agenda ---------- */
+const AGENDA = {
+  14:{d:'Miércoles 14 de octubre', f:'2026-10-14', it:[
+    ['14:00','17:00','Sesión de trabajo','Working lunch'],['17:00','18:00','Tiempo libre',''],['18:00','18:45','Traslado a cena','',1],
+    ['18:45','21:00','Cena de bienvenida',''],['21:00','21:45','Traslado al hotel','',1]]},
+  15:{d:'Jueves 15 de octubre', f:'2026-10-15', it:[
+    ['08:00','09:00','Desayuno','Hotel sede'],['09:00','14:00','Sesión de trabajo','Working lunch'],['14:00','14:45','Traslado a tour','',1],
+    ['14:45','17:00','Tour viñedo','Considera zapato cómodo (botas)'],['17:00','17:45','Traslado a cena','',1],['17:45','21:00','Cena de cierre','Considera chamarra'],['21:00','21:45','Traslado al hotel','',1]]},
+  16:{d:'Viernes 16 de octubre', f:'2026-10-16', it:[
+    ['','','Desayuno','Hotel sede','', 'Durante la mañana'],['','','Regreso a tu ciudad de origen','Consulta tu vuelo de regreso en el buscador','', 'Durante el día']]}
+};
+const ENS = -7; // Ensenada en octubre: UTC-7
+function nowEns(){ const n=new Date(Date.now()+ENS*3600e3); const p=x=>String(x).padStart(2,'0'); return {f:`${n.getUTCFullYear()}-${p(n.getUTCMonth()+1)}-${p(n.getUTCDate())}`, h:`${p(n.getUTCHours())}:${p(n.getUTCMinutes())}`}; }
+function renderAgenda(day){
+  const D=AGENDA[day], now=nowEns();
+  document.querySelectorAll('.ag-tabs [data-day]').forEach(b=>{ const on=b.dataset.day==day; b.setAttribute('aria-selected',on); b.tabIndex=on?0:-1; });
+  document.getElementById('ag-days').innerHTML = `<div class="ag-day" role="tabpanel" id="day-${day}" aria-labelledby="tab-${day}"><h3>${D.d}</h3><ol class="ag-list">${D.it.map(([a,b,t,s,tr,lab])=>{
+    const live = now.f===D.f && a && now.h>=a && now.h<b, past = now.f>D.f || (now.f===D.f && b && now.h>=b);
+    return `<li class="${tr?'tr':''}${live?' live':''}${past?' past':''}"><span class="ag-h">${lab?lab:`${a}<i>–${b}</i>`}</span><span class="ag-t"><b>${t}</b>${s?`<small>${s}</small>`:''}${live?'<em>Ahora</em>':''}</span></li>`; }).join('')}</ol></div>`;
+}
+(function(){ const today=nowEns().f; const d = today>='2026-10-16' ? 16 : today==='2026-10-15' ? 15 : 14;
+  document.querySelector('.ag-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-day]'); if(b) renderAgenda(b.dataset.day);});
+  document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
+    const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
+  renderAgenda(d); })();
+const APP_V = 36;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
