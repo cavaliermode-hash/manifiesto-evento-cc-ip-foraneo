@@ -41,6 +41,8 @@
     const iName = col('NOMBRE'), iSt = col('ESTATUS'), iRegion = col('REGION');
     const iRol = H.findIndex(h => h.startsWith('ROL'));
     const iTr = col('TRASLADO'), iPe = H.findIndex(h => h.startsWith('PERNOCTA')), iSeg = H.findIndex(h => h.startsWith('SEGUIMIENTO'));
+    // Texto aprobado para el traslado Tijuana → Ensenada (columna L).
+    const SEG_TXT = 'A su llegada a Tijuana se le va a desplazar al Hotel Lucerna Tijuana para que desayunen y a las 12:00 hrs será el traslado al Hotel Torre Lucerna Ensenada (trayecto de 1 h 30 min).';
     // Texto amigable: minúsculas con nombres propios corregidos; quita domicilios particulares.
     const KEEP = {TIJUANA:'Tijuana', ENSENADA:'Ensenada', LUCERNA:'Lucerna', HOTEL:'Hotel', TORRE:'Torre', CUPON:'cupón', METLIFE:'MetLife', SERA:'será'};
     const friendly = (s, quitarDomicilio) => {
@@ -73,7 +75,7 @@
                  st: clean(r[iSt]).toUpperCase(), rol: iRol >= 0 ? clean(r[iRol]) : '', rg: iRegion >= 0 && !empty(r[iRegion]) ? up(r[iRegion]) : '',
         c1: leg(r, C.c1), ida: leg(r, C.ida), reg: leg(r, C.reg), c2: leg(r, C.c2),
         ci: idaKey ? code(idaKey) : code(unaKey), cr: regKey ? code(regKey) : code(unaKey) };
-      x.notas = [['pe', iPe], ['seg', iSeg], ['tr', iTr]].map(([k, i]) => i >= 0 ? { k, t: friendly(r[i], k === 'tr') } : null).filter(n => n && n.t);
+      x.notas = [['pe', iPe], ['seg', iSeg], ['tr', iTr]].map(([k, i]) => i >= 0 ? { k, t: k === 'seg' && /DESAYUN/i.test(clean(r[i])) && /ENSENADA/i.test(clean(r[i])) ? SEG_TXT : friendly(r[i], k === 'tr') } : null).filter(n => n && n.t);
       if (!x.notas.length) delete x.notas;
       if (!x.cr && x.ci && x.reg) x.cr = x.ci; // sin reserva de regreso: es la misma clave de la ida
       x.cl = x.ci || x.cr; // compatibilidad con páginas guardadas en el navegador
