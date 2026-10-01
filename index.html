@@ -266,6 +266,16 @@ table.rep{font-size:13px}
 @media (prefers-reduced-motion:reduce){.svc{transition:none}}
 .svc-n{margin:8px 0 0;font-size:13px;line-height:1.4;color:var(--green-dark);background:var(--green-soft);border-left:3px solid var(--green);border-radius:4px;padding:6px 8px}
 [hidden]{display:none!important}
+
+.nchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nchip{font:600 12.5px var(--body);background:#FFF4D6;color:#6B4A00;border:1px solid #F2D58A;border-radius:99px;padding:3px 10px}
+.notas{margin:0 0 12px;border:1.5px solid #F2D58A;background:#FFFBEF;border-radius:12px;padding:12px 14px;animation:rise .28s ease both}
+.notas h3{margin:0 0 8px;font:700 16px/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:#6B4A00}
+.nota{display:grid;grid-template-columns:30px 1fr;gap:8px;padding:6px 0}
+.nota+.nota{border-top:1px dashed #F2D58A}
+.nota-i{font-size:22px;line-height:1.2}
+.nota b{font-size:15px}
+.nota p{margin:2px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -388,11 +398,20 @@ function itinLine(lab, ls){
   if(!ls.length) return `<span class="il"><b class="ilab">${lab}</b><span class="iseg">Sin vuelo asignado</span></span>`;
   return `<span class="il"><b class="ilab">${lab}</b>${ls.map(l=>`<span class="iseg"><span class="idt">${fmtDate(l.f)}</span> · <span class="ifl">${esc(l.v)}</span> · <b>${esc(l.o)}</b> ${l.s||''} → <b>${esc(l.d)}</b> ${l.l||''}</span>`).join('')}</span>`;
 }
+const NOTA = {
+  pe:{i:'🏨', s:'Noche de hotel a tu llegada', t:'Hospedaje a tu llegada'},
+  seg:{i:'🚐', s:'Traslado a la sede del evento', t:'Traslado a tu llegada'},
+  tr:{i:'🚗', s:'Traslado a tu regreso', t:'Traslado a tu regreso'} };
+function notasHTML(r){
+  if(!(r.notas||[]).length) return '';
+  return `<section class="notas" aria-label="Indicaciones especiales"><h3>Indicaciones especiales para ti</h3>${r.notas.map(n=>`<div class="nota"><span class="nota-i" aria-hidden="true">${NOTA[n.k].i}</span><div><b>${NOTA[n.k].t}</b><p>${esc(n.t)}</p></div></div>`).join('')}</section>`;
+}
 function paxRow(r){
   const i = DATA.indexOf(r);
   return `<button class="prow" data-open="${i}" aria-label="Ver la reserva de ${esc(r.n)}">
     <span class="prow-t"><span class="prow-n">${hl(r.n)}</span>${r.rg?`<span class="prow-c">${esc(r.rg)}</span>`:''}
-      <span class="itin">${itinLine('Ida', r.c1 ? [r.c1, r.ida] : [r.ida])}${itinLine('Regreso', r.c2 ? [r.reg, r.c2] : [r.reg])}</span></span>
+      <span class="itin">${itinLine('Ida', r.c1 ? [r.c1, r.ida] : [r.ida])}${itinLine('Regreso', r.c2 ? [r.reg, r.c2] : [r.reg])}</span>
+      ${(r.notas||[]).length?`<span class="nchips">${r.notas.map(n=>`<span class="nchip">${NOTA[n.k].i} ${NOTA[n.k].s}</span>`).join('')}</span>`:''}</span>
     <span class="prow-b">Ver mi reserva <span aria-hidden="true">›</span></span>
   </button>`;
 }
@@ -407,6 +426,7 @@ function detailView(r){
       <p class="dsub">Estos son los datos de tu viaje. Guarda tu clave de reserva: la necesitarás para hacer check-in.</p>
     </div>
     ${countdownHTML(r)}
+    ${notasHTML(r)}
     ${card}
     ${tripSteps(r)}
   </div>`;
@@ -578,7 +598,7 @@ $('#out').addEventListener('click', e=>{
 function openPax(i){ state.sel = i; try{ history.pushState({sel:i}, ''); }catch(e){} window.scrollTo({top:0}); render(); const b=document.getElementById('back'); if(b) b.focus({preventScroll:true}); }
 function closePax(){ state.sel = null; render(); const q=document.getElementById('q'); if(q) q.focus({preventScroll:true}); }
 window.addEventListener('popstate', e => { state.sel = e.state && e.state.sel!=null ? e.state.sel : null; render(); });
-const APP_V = 32;
+const APP_V = 33;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }

@@ -40,7 +40,19 @@
     const col = n => H.indexOf(n);
     const iName = col('NOMBRE'), iSt = col('ESTATUS'), iRegion = col('REGION');
     const iRol = H.findIndex(h => h.startsWith('ROL'));
-    const iTr = col('TRASLADO'), iPe = H.findIndex(h => h.startsWith('PERNOCTA'));
+    const iTr = col('TRASLADO'), iPe = H.findIndex(h => h.startsWith('PERNOCTA')), iSeg = H.findIndex(h => h.startsWith('SEGUIMIENTO'));
+    // Texto amigable: minúsculas con nombres propios corregidos; quita domicilios particulares.
+    const KEEP = {TIJUANA:'Tijuana', ENSENADA:'Ensenada', LUCERNA:'Lucerna', HOTEL:'Hotel', TORRE:'Torre', CUPON:'cupón', METLIFE:'MetLife'};
+    const friendly = s => {
+      let t = clean(s);
+      if (!t || t === '-') return '';
+      t = t.replace(/\s*DESPLAZO\b(?!\s+DE\s+\d).*$/i, ' al domicilio registrado'); // no publica direcciones particulares
+      t = t.split(' ').map(w => { const u = w.replace(/[.,]/g,'').toUpperCase(); const p = w.match(/[.,]+$/); const k = KEEP[u];
+        if (k) return k + (p ? p[0] : ''); return /[a-záéíóúñ]/.test(w) ? w : w.toLowerCase(); }).join(' ');
+      t = t.replace(/\b(\d{1,2})\s*hrs\b/gi, '$1:00 h').replace(/desplazo de (\d+):(\d+) minutos/i, '(trayecto de $1 h $2 min)')
+           .replace(/Hotel (Torre Lucerna) Hotel (Ensenada)/, 'Hotel $1 $2').replace(/\s+/g, ' ').trim();
+      return t.charAt(0).toUpperCase() + t.slice(1) + (/[.)]$/.test(t) ? '' : '.');
+    };
     const leg = (r, m) => {
       if (!m || empty(r[m['VUELO']])) return null;
       return { v: clean(r[m['VUELO']]).toUpperCase().replace(/VIVAAEROBUS/g, 'VIVA AEROBUS').replace(/\s+/g, ' '), f: toDate(r[m['FECHA']]), o: up(r[m['ORIGEN']] ?? ''), d: up(r[m['DESTINO']]),
@@ -61,6 +73,8 @@
                  st: clean(r[iSt]).toUpperCase(), rol: iRol >= 0 ? clean(r[iRol]) : '', rg: iRegion >= 0 && !empty(r[iRegion]) ? up(r[iRegion]) : '',
         c1: leg(r, C.c1), ida: leg(r, C.ida), reg: leg(r, C.reg), c2: leg(r, C.c2),
         ci: idaKey ? code(idaKey) : code(unaKey), cr: regKey ? code(regKey) : code(unaKey) };
+      x.notas = [['pe', iPe], ['seg', iSeg], ['tr', iTr]].map(([k, i]) => i >= 0 ? { k, t: friendly(r[i]) } : null).filter(n => n && n.t);
+      if (!x.notas.length) delete x.notas;
       if (!x.cr && x.ci && x.reg) x.cr = x.ci; // sin reserva de regreso: es la misma clave de la ida
       x.cl = x.ci || x.cr; // compatibilidad con páginas guardadas en el navegador
       if (x.c1 && x.ida && !x.ida.o) x.ida.o = x.c1.d;
