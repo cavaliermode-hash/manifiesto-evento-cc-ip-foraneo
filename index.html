@@ -317,6 +317,16 @@ table.rep{font-size:13px}
 .tmax{color:#B45309;font-size:18px}.tmin{color:#1D4ED8;font-size:18px}
 .icard ul{margin:2px 0 0;padding-left:18px;font-size:14.5px;line-height:1.5}
 @media (max-width:640px){.info-grid{grid-template-columns:1fr}.ag-list li{grid-template-columns:96px 1fr;gap:10px}.ag-h{font-size:13.5px}}
+
+.ag-dl{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;border-top:1px solid var(--line);padding:14px 16px;background:var(--green-soft)}
+.ag-thumb img{display:block;width:120px;height:auto;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s}
+.ag-thumb:hover img{transform:scale(1.03)}
+.ag-dl-t b{display:block;font-size:16px}
+.ag-dl-t span{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+.ag-dl-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ag-dl-b a{text-decoration:none}
+.ag-dl .abtn{margin-top:0;background:#fff}
+@media (max-width:480px){.ag-dl{grid-template-columns:84px 1fr}.ag-thumb img{width:84px}}
 </style>
 </head>
 <body>
@@ -329,7 +339,7 @@ table.rep{font-size:13px}
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Vuelos</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
-    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a>
+    <a class="agenda-link" href="#agenda">📅 Ver agenda del evento</a> <a class="agenda-link" href="agenda-cc26.pdf" download="Agenda-CC26.pdf">⬇ Descargar agenda</a>
     <div class="sub" id="upd"></div>
   </div>
 </header>
@@ -373,6 +383,11 @@ table.rep{font-size:13px}
       <button role="tab" id="tab-16" aria-controls="day-16" data-day="16"><b>16</b><span>Viernes</span></button>
     </div>
     <div id="ag-days"></div>
+    <div class="ag-dl">
+      <a class="ag-thumb" href="agenda-cc26.jpg" target="_blank" rel="noopener"><img src="agenda-cc26.jpg" alt="Agenda e información general del evento CC26" loading="lazy" width="1426" height="1600"></a>
+      <div class="ag-dl-t"><b>Descarga la agenda completa</b><span>Agenda e información general del evento (hotel sede, clima y código de vestimenta).</span>
+        <div class="ag-dl-b"><a class="abtn2" href="agenda-cc26.jpg" download="Agenda-CC26.jpg">⬇ Descargar imagen</a><a class="abtn" href="agenda-cc26.pdf" download="Agenda-CC26.pdf">⬇ Descargar PDF</a></div></div>
+    </div>
   </section>
   <section class="info" aria-labelledby="inf-t">
     <h2 id="inf-t">Información general</h2>
@@ -684,7 +699,7 @@ function renderAgenda(day){
   document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
     const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
   renderAgenda(d); })();
-const APP_V = 37;
+const APP_V = 38;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
