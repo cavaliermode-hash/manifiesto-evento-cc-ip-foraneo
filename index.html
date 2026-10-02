@@ -762,7 +762,7 @@ $('#out').addEventListener('submit', e=>{
   if(w){ e.preventDefault(); const inp = w.querySelector('input'), msg = document.getElementById('wa-msg'); let d = inp.value.replace(/\D/g,'');
     if(d.length === 12 && d.startsWith('52')) d = d.slice(2); if(d.length === 13 && d.startsWith('521')) d = d.slice(3);
     if(d && d.length !== 10){ msg.className='mb-msg bad'; msg.textContent='Escribe tu número a 10 dígitos, sin espacios, o déjalo vacío.'; inp.focus(); return; }
-    const url = 'https://wa.me/' + (d ? '52' + d : '') + '?text=' + encodeURIComponent(waTxt(DATA[+w.dataset.wa]));
+    const url = 'https://api.whatsapp.com/send?' + (d ? 'phone=52' + d + '&' : '') + 'text=' + encodeURIComponent(waTxt(DATA[+w.dataset.wa]));
     const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
     msg.className='mb-msg ok'; msg.textContent='Se abrió WhatsApp con tus datos. Revisa el mensaje y toca Enviar.'; return; }
   const f = e.target.closest('[data-mail]'); if(!f) return; e.preventDefault();
@@ -772,7 +772,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 51;
+const APP_V = 52;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
