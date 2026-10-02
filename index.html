@@ -355,8 +355,8 @@ table.rep{font-size:13px}
     <div class="logos">
       <img class="logo" src="logo-eci.png" alt="Viajes El Corte Inglés" width="900" height="126">
     </div>
-    <div class="eyebrow" id="ev">Vuelos del evento</div>
-    <h1>Vuelos</h1>
+    <div class="eyebrow" id="ev">Manifiesto de itinerario</div>
+    <h1>Evento CC IP Foráneo</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
     <div class="sub" id="upd"></div>
   </div>
@@ -772,11 +772,11 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 54;
+const APP_V = 55;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
-  DATA=j.filas; if(j.evento) $('#ev').textContent=j.evento; $('#upd').textContent='Actualizado: '+j.actualizado; init(); })
+  DATA=j.filas; $('#upd').textContent='Actualizado: '+j.actualizado; init(); })
   .catch(()=>{ $('#out').innerHTML='<div class="empty">No se pudo cargar la información. Recarga la página.</div>'; });
 </script>
 </body>
