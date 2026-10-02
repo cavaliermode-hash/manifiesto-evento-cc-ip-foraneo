@@ -344,6 +344,9 @@ table.rep{font-size:13px}
 .mb-copy{margin-top:8px;border:0;background:none;color:var(--green);font:600 13.5px var(--body);text-decoration:underline;cursor:pointer;padding:0}
 .mb-ta{display:block;width:100%;height:160px;margin-top:8px;font:13px/1.4 var(--mono);border:1px solid var(--line);border-radius:8px;padding:8px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mailbox.wa h3{color:#0B7A43}
+.wa-btn{background:#128C4B}
+.wa-btn:hover{background:#0B6B39}
 </style>
 </head>
 <body>
@@ -606,6 +609,16 @@ function mailBox(r){
     </form>
     <p class="mb-msg" id="mb-msg" role="status"></p>
     <button class="mb-copy" type="button" data-copytxt="${i}">¿No se abrió tu correo? Copia el texto</button>
+  </section>
+  <section class="mailbox wa" aria-labelledby="wa-t">
+    <h3 id="wa-t">💬 Envíatelo por WhatsApp</h3>
+    <p>Escribe tu número de celular a 10 dígitos y toca el botón: se abrirá WhatsApp con tus datos ya escritos. Si lo dejas vacío, podrás elegir el chat al que quieres mandarlo.</p>
+    <form class="mb-form" data-wa="${i}" novalidate>
+      <label class="sr" for="wa-tel">Tu número de celular (10 dígitos)</label>
+      <input id="wa-tel" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10 dígitos (opcional)" maxlength="16">
+      <button class="abtn2 wa-btn" type="submit">Enviar por WhatsApp</button>
+    </form>
+    <p class="mb-msg" id="wa-msg" role="status"></p>
   </section>`;
 }
 function icsFor(r){
@@ -746,6 +759,13 @@ function renderAgenda(day){
     const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
   renderAgenda(d); })();
 $('#out').addEventListener('submit', e=>{
+  const w = e.target.closest('[data-wa]');
+  if(w){ e.preventDefault(); const inp = w.querySelector('input'), msg = document.getElementById('wa-msg'); let d = inp.value.replace(/\D/g,'');
+    if(d.length === 12 && d.startsWith('52')) d = d.slice(2); if(d.length === 13 && d.startsWith('521')) d = d.slice(3);
+    if(d && d.length !== 10){ msg.className='mb-msg bad'; msg.textContent='Escribe tu número a 10 dígitos, sin espacios, o déjalo vacío.'; inp.focus(); return; }
+    const url = 'https://wa.me/' + (d ? '52' + d : '') + '?text=' + encodeURIComponent(resumenTxt(DATA[+w.dataset.wa]));
+    const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+    msg.className='mb-msg ok'; msg.textContent='Se abrió WhatsApp con tus datos. Revisa el mensaje y toca Enviar.'; return; }
   const f = e.target.closest('[data-mail]'); if(!f) return; e.preventDefault();
   const inp = f.querySelector('input'), msg = document.getElementById('mb-msg'), mail = inp.value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)){ msg.className='mb-msg bad'; msg.textContent='Escribe un correo válido, por ejemplo nombre@empresa.com'; inp.focus(); return; }
@@ -753,7 +773,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 44;
+const APP_V = 45;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
