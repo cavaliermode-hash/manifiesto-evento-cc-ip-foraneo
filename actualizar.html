@@ -64,7 +64,7 @@ document.getElementById('f').addEventListener('change', async e => {
     const rows = parseConcentrado(grid);
     const now = new Date();
     out = { actualizado: `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
-            app: 45, evento: clean(document.getElementById('ev').value) || 'Manifiesto Evento CC IP Foráneo', filas: rows };
+            app: 46, evento: clean(document.getElementById('ev').value) || 'Manifiesto Evento CC IP Foráneo', filas: rows };
     const conf = rows.filter(r => /CONFIRM/.test(r.st)).length;
     msg.className = 'ok'; msg.textContent = `Listo: ${rows.length} invitados (${conf} confirmados, ${rows.length-conf} pendientes), hoja "${name}".`;
     document.getElementById('go').disabled = false;

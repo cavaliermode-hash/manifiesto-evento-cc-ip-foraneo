@@ -511,8 +511,6 @@ function detailView(r){
   return `<div class="detail">
     <button class="back" id="back"><span aria-hidden="true">‹</span> Volver a la búsqueda</button>
     <div class="dhello">
-      <p class="dk">Reserva personalizada</p>
-      <h2>Hola, ${esc(first)}</h2>
       <p class="dsub">Estos son los datos de tu viaje. Guarda tu clave de reserva: la necesitarás para hacer check-in.</p>
     </div>
     ${countdownHTML(r)}
@@ -773,7 +771,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 45;
+const APP_V = 46;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
