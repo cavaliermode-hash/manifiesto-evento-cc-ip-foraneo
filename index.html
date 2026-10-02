@@ -331,6 +331,19 @@ table.rep{font-size:13px}
 .ag-pdf{flex:none;font:700 14px var(--body);background:#fff;color:var(--green);text-decoration:none;border-radius:8px;padding:9px 14px;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .ag-pdf:hover{background:var(--green-soft)}
 .nota p b.sede{font-weight:800;color:var(--ink)}
+
+.mailbox{margin-top:14px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface)}
+.mailbox h3{margin:0 0 4px;font:700 16px/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:var(--green)}
+.mailbox p{margin:0 0 10px;font-size:14px;color:var(--muted);max-width:70ch}
+.mb-form{display:flex;flex-wrap:wrap;gap:8px}
+.mb-form input{flex:1 1 220px;min-width:0;font:500 16px var(--body);padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;color:var(--ink);background:#fff}
+.mb-form input:focus{outline:none;border-color:var(--green)}
+.mb-msg{margin:8px 0 0!important;font-weight:600}
+.mb-msg:empty{display:none}
+.mb-msg.ok{color:var(--green)}.mb-msg.bad{color:#B3261E}
+.mb-copy{margin-top:8px;border:0;background:none;color:var(--green);font:600 13.5px var(--body);text-decoration:underline;cursor:pointer;padding:0}
+.mb-ta{display:block;width:100%;height:160px;margin-top:8px;font:13px/1.4 var(--mono);border:1px solid var(--line);border-radius:8px;padding:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -562,7 +575,38 @@ function tripSteps(r){
   const b = stepBlock('Tu regreso, paso a paso', [r.reg, r.c2]);
   if(!a && !b) return '';
   return `<div class="guide">${a}${b}</div>
-    <div class="dactions"><button class="abtn2" data-ics="${DATA.indexOf(r)}">📅 Agregar vuelos a mi calendario</button></div>`;
+    <div class="dactions"><button class="abtn2" data-ics="${DATA.indexOf(r)}">📅 Agregar vuelos a mi calendario</button></div>
+    ${mailBox(r)}`;
+}
+/* ---------- Enviar a mi correo ---------- */
+function resumenTxt(r){
+  const L = [], seg = (lab, l) => l && L.push(`${lab}: ${l.v} · ${fmtDate(l.f)} · ${l.o} ${l.s} → ${l.d} ${l.l}`);
+  L.push(`Hola, ${tcase(splitName(r.n).nom.split(' ')[0] || r.n)}:`, '', 'Estos son los datos de tu viaje al evento CC26 · Consejo Consultivo.', '', r.n);
+  if(r.ci && r.cr && r.ci !== r.cr) L.push(`Clave de reserva de ida: ${r.ci}`, `Clave de reserva de regreso: ${r.cr}`);
+  else if(r.ci || r.cr) L.push(`Clave de reserva: ${r.ci || r.cr}`);
+  L.push('', 'VUELOS'); seg('Ida (conexión)', r.c1); seg('Ida', r.ida); seg('Regreso', r.reg); seg('Regreso (conexión)', r.c2);
+  const first = r.c1 || r.ida;
+  if(first){ const d = when(first,'s'); L.push('', `Check-in en línea: abre ${fmtAt(new Date(d-24*36e5), first.o)} (24 h antes).`, `Llega al aeropuerto a más tardar: ${fmtAt(new Date(d-2*36e5), first.o)}.`); }
+  if((r.notas||[]).length){ L.push('', 'INDICACIONES ESPECIALES PARA TI'); r.notas.forEach(n => L.push('- ' + n.t)); }
+  L.push('', 'SEDE DEL EVENTO', 'Hotel Torre Lucerna Ensenada', '', 'PUNTOS IMPORTANTES',
+    '- El check-in podrá realizarse 24 horas antes de la salida, si la aerolínea lo permite. De lo contrario, preséntate 2 horas antes en los mostradores.',
+    '- Para administrar tu reserva usa únicamente las 6 letras de la clave en la página de la aerolínea.',
+    '', 'Consulta tu itinerario y la agenda del evento: ' + location.origin + location.pathname, '', 'Viajes El Corte Inglés');
+  return L.join('\n');
+}
+function mailBox(r){
+  const i = DATA.indexOf(r);
+  return `<section class="mailbox" aria-labelledby="mb-t">
+    <h3 id="mb-t">✉️ Recibe estos datos en tu correo</h3>
+    <p>Escribe tu correo y toca el botón. Se abrirá tu aplicación de correo con tu itinerario, tu clave de reserva y tus indicaciones ya escritos; solo toca <b>Enviar</b>.</p>
+    <form class="mb-form" data-mail="${i}" novalidate>
+      <label class="sr" for="mb-email">Tu correo electrónico</label>
+      <input id="mb-email" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required>
+      <button class="abtn2" type="submit">Enviar a mi correo</button>
+    </form>
+    <p class="mb-msg" id="mb-msg" role="status"></p>
+    <button class="mb-copy" type="button" data-copytxt="${i}">¿No se abrió tu correo? Copia el texto</button>
+  </section>`;
 }
 function icsFor(r){
   const p=n=>String(n).padStart(2,'0'), z=d=>`${d.getUTCFullYear()}${p(d.getUTCMonth()+1)}${p(d.getUTCDate())}T${p(d.getUTCHours())}${p(d.getUTCMinutes())}00Z`;
@@ -660,6 +704,10 @@ $('#out').addEventListener('click', e=>{
   const c = e.target.closest('[data-copy]');
   if(c){ const v=c.dataset.copy; Promise.resolve().then(()=>navigator.clipboard.writeText(v)).then(()=>{c.textContent='Copiada'; setTimeout(()=>c.textContent='Copiar',1500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(c.previousElementSibling); s.removeAllRanges(); s.addRange(rg); }); return; }
   if(e.target.id==='copytable'){ const b=e.target; Promise.resolve().then(()=>navigator.clipboard.writeText(tableTSV(filtered()))).then(()=>{b.textContent='Tabla copiada: pégala en Excel'; setTimeout(()=>b.textContent='Copiar tabla para Excel',2500)}).catch(()=>{ const s=window.getSelection(), rg=document.createRange(); rg.selectNodeContents(document.querySelector('table.rep')); s.removeAllRanges(); s.addRange(rg); b.textContent='Tabla seleccionada: usa Ctrl+C'; }); return; }
+  const ct = e.target.closest('[data-copytxt]');
+  if(ct){ const txt = resumenTxt(DATA[+ct.dataset.copytxt]);
+    Promise.resolve().then(()=>navigator.clipboard.writeText(txt)).then(()=>{ ct.textContent='✓ Texto copiado: pégalo en un correo o mensaje'; })
+      .catch(()=>{ const ta=document.createElement('textarea'); ta.value=txt; ta.className='mb-ta'; ta.readOnly=true; ct.after(ta); ta.select(); ct.textContent='Selecciona y copia el texto de abajo'; }); return; }
   const ic = e.target.closest('[data-ics]');
   if(ic){ const r=DATA[+ic.dataset.ics]; const blob=new Blob([icsFor(r)],{type:'text/calendar'}); const a=document.createElement('a');
     a.href=URL.createObjectURL(blob); a.download='mis-vuelos.ics'; document.body.appendChild(a); a.click(); a.remove(); ic.textContent='✓ Archivo de calendario descargado'; return; }
@@ -697,7 +745,15 @@ function renderAgenda(day){
   document.querySelector('.ag-tabs').addEventListener('keydown',e=>{ if(!/Arrow(Left|Right)/.test(e.key)) return; const days=[14,15,16]; const cur=+document.querySelector('.ag-tabs [aria-selected="true"]').dataset.day;
     const nx=days[(days.indexOf(cur)+(e.key==='ArrowRight'?1:2))%3]; renderAgenda(nx); document.getElementById('tab-'+nx).focus(); });
   renderAgenda(d); })();
-const APP_V = 43;
+$('#out').addEventListener('submit', e=>{
+  const f = e.target.closest('[data-mail]'); if(!f) return; e.preventDefault();
+  const inp = f.querySelector('input'), msg = document.getElementById('mb-msg'), mail = inp.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)){ msg.className='mb-msg bad'; msg.textContent='Escribe un correo válido, por ejemplo nombre@empresa.com'; inp.focus(); return; }
+  const r = DATA[+f.dataset.mail];
+  location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
+  msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
+});
+const APP_V = 44;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
