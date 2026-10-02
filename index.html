@@ -794,18 +794,16 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 60;
+const APP_V = 61;
 const PIN_KEY = 'manifiesto-pin';
 const gate = $('#gate'), gmsg = $('#gate-msg'), gin = $('#gate-pin');
-function savedPin(){ try{ return localStorage.getItem(PIN_KEY) || ''; }catch(e){ return ''; } }
+try{ localStorage.removeItem(PIN_KEY); }catch(e){}
 function showGate(msg){ gate.hidden = false; gmsg.textContent = msg || ''; gin.value = ''; setTimeout(()=>gin.focus(), 50); }
 let PACK = null;
 async function unlock(pin, fromSaved){
   try{ const d = await Cifra.descifrar(PACK.enc, pin);
-    try{ localStorage.setItem(PIN_KEY, pin); }catch(e){}
     DATA = d.filas; gate.hidden = true; $('#upd').textContent = 'Actualizado: ' + PACK.actualizado; init(); }
-  catch(e){ try{ localStorage.removeItem(PIN_KEY); }catch(_){}
-    showGate(fromSaved ? 'El PIN cambió. Escribe el nuevo.' : 'PIN incorrecto. Revísalo e intenta de nuevo.'); }
+  catch(e){ showGate('PIN incorrecto. Revísalo e intenta de nuevo.'); }
 }
 $('#gate-form').addEventListener('submit', e => { e.preventDefault(); const v = gin.value.trim();
   if(!v){ gmsg.textContent = 'Escribe el PIN.'; return; }
@@ -814,7 +812,7 @@ $('#gate-form').addEventListener('submit', e => { e.preventDefault(); const v = 
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
-  PACK = j; const p = savedPin(); if(p) unlock(p, true); else showGate(''); })
+  PACK = j; showGate(''); })
   .catch(()=>{ gate.hidden = true; $('#out').innerHTML='<div class="empty">No se pudo cargar la información. Recarga la página.</div>'; });
 </script>
 </body>
