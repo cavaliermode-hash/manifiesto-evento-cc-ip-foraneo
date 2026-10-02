@@ -27,13 +27,15 @@ code{background:#E3E8EF;padding:1px 5px;border-radius:4px}
 <body>
 <div class="wrap">
   <h1>Actualizar vuelos del evento</h1>
-  <p>Convierte tu Excel de salidas en el archivo <code>data.json</code> que usa el buscador. El Excel no se sube a ningún lado; se procesa en tu computadora y teléfonos, correos, fechas de nacimiento y costos se descartan.</p>
+  <p>Convierte tu Excel de salidas en el archivo <code>data.json</code> que usa el buscador. El Excel no se sube a ningún lado; se procesa en tu computadora y teléfonos, correos, fechas de nacimiento y costos se descartan. Los datos se guardan cifrados con el PIN de acceso.</p>
 
   <div class="box">
     <label for="f"><b>1. Elige el Excel</b> (el reporte con la hoja <b>Concentrado de vuelos</b>)</label>
     <input id="f" type="file" accept=".xlsx,.xlsm,.xls" style="margin-top:10px">
     <label for="ev" style="display:block;margin-top:14px"><b>Nombre del evento</b> (opcional)</label>
     <input id="ev" type="text" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px" placeholder="Manifiesto Evento CC IP Foráneo">
+    <label for="pin" style="display:block;margin-top:14px"><b>PIN de acceso</b> (el mismo que tienen los invitados)</label>
+    <input id="pin" type="password" autocomplete="off" style="width:100%;font:inherit;padding:8px;border:1px solid var(--line);border-radius:6px">
     <button id="go" disabled>2. Descargar data.json</button>
     <div id="msg"></div>
   </div>
@@ -49,6 +51,7 @@ code{background:#E3E8EF;padding:1px 5px;border-radius:4px}
   </div>
 </div>
 <script src="parse.js"></script>
+<script src="cifra.js"></script>
 <script>
 const pad = n => String(n).padStart(2,'0');
 const clean = v => String(v ?? '').replace(/\s+/g,' ').trim();
@@ -64,16 +67,19 @@ document.getElementById('f').addEventListener('change', async e => {
     const rows = parseConcentrado(grid);
     const now = new Date();
     out = { actualizado: `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
-            app: 59, evento: clean(document.getElementById('ev').value) || 'Manifiesto Evento CC IP Foráneo', filas: rows };
+            app: 60, evento: clean(document.getElementById('ev').value) || 'Manifiesto Evento CC IP Foráneo', filas: rows };
     const conf = rows.filter(r => /CONFIRM/.test(r.st)).length;
     msg.className = 'ok'; msg.textContent = `Listo: ${rows.length} invitados (${conf} confirmados, ${rows.length-conf} pendientes), hoja "${name}".`;
     document.getElementById('go').disabled = false;
   } catch (err) { msg.className = 'bad'; msg.textContent = err.message; }
 });
-document.getElementById('go').addEventListener('click', () => {
+document.getElementById('go').addEventListener('click', async () => {
   if (!out) return;
+  const pin = document.getElementById('pin').value.trim(), msg = document.getElementById('msg');
+  if (!pin) { msg.className = 'bad'; msg.textContent = 'Escribe el PIN de acceso para cifrar los datos.'; return; }
   const ev = clean(document.getElementById('ev').value); if (ev) out.evento = ev;
-  const blob = new Blob([JSON.stringify(out)], {type:'application/json'});
+  const pack = { actualizado: out.actualizado, app: out.app, evento: out.evento, enc: await Cifra.cifrar({filas: out.filas}, pin) };
+  const blob = new Blob([JSON.stringify(pack)], {type:'application/json'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data.json'; a.click();
 });
 </script>
