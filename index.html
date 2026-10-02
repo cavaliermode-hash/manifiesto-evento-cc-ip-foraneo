@@ -347,6 +347,8 @@ table.rep{font-size:13px}
 .mailbox.wa h3{color:#0B7A43}
 .wa-btn{background:#128C4B}
 .wa-btn:hover{background:#0B6B39}
+.pk-btn{display:inline-block;margin-top:10px;background:var(--green);color:#fff;font:600 14px/1 var(--body);text-decoration:none;border-radius:8px;padding:10px 14px}
+.pk-btn:hover{background:var(--green-dark)}
 </style>
 </head>
 <body>
@@ -359,6 +361,7 @@ table.rep{font-size:13px}
     <h1>Evento CC IP Foráneo</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
     <div class="sub" id="upd"></div>
+    <a class="pk-btn" href="pickup.html" target="_blank" rel="noopener">🚐 Horarios de pick up · regreso 16 oct ↗</a>
   </div>
 </header>
 
@@ -772,7 +775,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 57;
+const APP_V = 58;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
