@@ -614,18 +614,7 @@ function waTxt(r){
 }
 function mailBox(r){
   const i = DATA.indexOf(r);
-  return `<section class="mailbox" aria-labelledby="mb-t">
-    <h3 id="mb-t">✉️ Recibe estos datos en tu correo</h3>
-    <p>Escribe tu correo y toca el botón. Se abrirá tu aplicación de correo con tu itinerario, tu clave de reserva y tus indicaciones ya escritos; solo toca <b>Enviar</b>.</p>
-    <form class="mb-form" data-mail="${i}" novalidate>
-      <label class="sr" for="mb-email">Tu correo electrónico</label>
-      <input id="mb-email" type="email" inputmode="email" autocomplete="email" placeholder="tucorreo@ejemplo.com" required>
-      <button class="abtn2" type="submit">Enviar a mi correo</button>
-    </form>
-    <p class="mb-msg" id="mb-msg" role="status"></p>
-    <button class="mb-copy" type="button" data-copytxt="${i}">¿No se abrió tu correo? Copia el texto</button>
-  </section>
-  <section class="mailbox wa" aria-labelledby="wa-t">
+  return `<section class="mailbox wa" aria-labelledby="wa-t">
     <h3 id="wa-t">💬 Envíatelo por WhatsApp</h3>
     <p>Escribe tu número de celular a 10 dígitos y toca el botón: se abrirá WhatsApp con tu clave, tus vuelos, tus indicaciones y el enlace a la <b>agenda del evento (PDF)</b>. Si lo dejas vacío, podrás elegir el chat al que quieres mandarlo.</p>
     <form class="mb-form" data-wa="${i}" novalidate>
@@ -788,7 +777,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 48;
+const APP_V = 49;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
