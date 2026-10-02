@@ -582,7 +582,7 @@ function tripSteps(r){
 /* ---------- Enviar a mi correo ---------- */
 function resumenTxt(r){
   const L = [], seg = (lab, l) => l && L.push(`${lab}: ${l.v} · ${fmtDate(l.f)} · ${l.o} ${l.s} → ${l.d} ${l.l}`);
-  L.push(`Hola, ${tcase(splitName(r.n).nom.split(' ')[0] || r.n)}:`, '', 'Estos son los datos de tu viaje al evento CC26 · Consejo Consultivo.', '', r.n);
+  L.push(`Hola, ${tcase(r.n)}:`, '', 'Estos son los datos de tu viaje al evento CC26 · Consejo Consultivo.', '');
   if(r.ci && r.cr && r.ci !== r.cr) L.push(`Clave de reserva de ida: ${r.ci}`, `Clave de reserva de regreso: ${r.cr}`);
   else if(r.ci || r.cr) L.push(`Clave de reserva: ${r.ci || r.cr}`);
   L.push('', 'VUELOS'); seg('Ida (conexión)', r.c1); seg('Ida', r.ida); seg('Regreso', r.reg); seg('Regreso (conexión)', r.c2);
@@ -598,14 +598,14 @@ function resumenTxt(r){
 function waTxt(r){
   const L = [], base = location.origin + location.pathname.replace(/[^\/]*$/, '');
   const seg = (ic, lab, l) => l && L.push(`${ic} *${lab}:* ${l.v}`, `    📅 ${fmtDate(l.f)}`, `    ${l.o} ${l.s} → ${l.d} ${l.l}`);
-  L.push(`👋 Hola, *${tcase(splitName(r.n).nom.split(' ')[0] || r.n)}*`, '', '✈️ *Tu viaje al CC26 · Consejo Consultivo*', r.n, '');
+  L.push(`👋 Hola, *${tcase(r.n)}*`, '', '✈️ *Tu viaje al CC26 · Consejo Consultivo*', '');
   if(r.ci && r.cr && r.ci !== r.cr) L.push(`🔑 *Clave de reserva de ida:* ${r.ci}`, `🔑 *Clave de reserva de regreso:* ${r.cr}`);
   else if(r.ci || r.cr) L.push(`🔑 *Clave de reserva:* ${r.ci || r.cr}`);
   L.push(''); seg('🛫', 'Ida (conexión)', r.c1); seg('🛫', 'Ida', r.ida); seg('🛬', 'Regreso', r.reg); seg('🛬', 'Regreso (conexión)', r.c2);
   const first = r.c1 || r.ida;
-  if(first){ const d = when(first,'s'), al = airline(first.v);
+  if(first){ const d = when(first,'s');
     L.push('', `⏰ *Check-in en línea:* abre ${fmtAt(new Date(d-24*36e5), first.o)}`, `🧳 *Llega al aeropuerto:* a más tardar ${fmtAt(new Date(d-2*36e5), first.o)}`);
-    if(al) L.push(`👉 Haz tu check-in en ${al.n}: ${al.u}`); }
+ }
   if((r.notas||[]).length){ L.push('', '📌 *Indicaciones especiales para ti*'); r.notas.forEach(n => L.push('• ' + n.t.replace(/Hotel Torre Lucerna Ensenada/g, '*Hotel Torre Lucerna Ensenada*'))); }
   L.push('', '🏨 *Sede del evento:* Hotel Torre Lucerna Ensenada', '',
     '🗓️ *Agenda del evento (PDF):*', base + 'agenda-cc26.pdf', '',
@@ -627,7 +627,7 @@ function mailBox(r){
   </section>
   <section class="mailbox wa" aria-labelledby="wa-t">
     <h3 id="wa-t">💬 Envíatelo por WhatsApp</h3>
-    <p>Escribe tu número de celular a 10 dígitos y toca el botón: se abrirá WhatsApp con tu clave, tus vuelos, tus indicaciones y los enlaces a la <b>agenda del evento (PDF)</b> y al check-in de tu aerolínea. Si lo dejas vacío, podrás elegir el chat al que quieres mandarlo.</p>
+    <p>Escribe tu número de celular a 10 dígitos y toca el botón: se abrirá WhatsApp con tu clave, tus vuelos, tus indicaciones y el enlace a la <b>agenda del evento (PDF)</b>. Si lo dejas vacío, podrás elegir el chat al que quieres mandarlo.</p>
     <form class="mb-form" data-wa="${i}" novalidate>
       <label class="sr" for="wa-tel">Tu número de celular (10 dígitos)</label>
       <input id="wa-tel" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="10 dígitos (opcional)" maxlength="16">
@@ -788,7 +788,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 47;
+const APP_V = 48;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
