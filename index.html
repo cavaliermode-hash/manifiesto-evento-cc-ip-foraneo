@@ -626,7 +626,9 @@ function waTxt(r){
   if((r.notas||[]).length){ L.push('', '📌 *Indicaciones especiales para ti*'); r.notas.forEach(n => L.push('• ' + n.t.replace(/Hotel Torre Lucerna Ensenada/g, '*Hotel Torre Lucerna Ensenada*'))); }
   L.push('', '🏨 *Sede del evento:* Hotel Torre Lucerna Ensenada', '',
     '🗓️ *Agenda del evento (PDF):*', base + 'agenda-cc26.pdf', '',
-    '🔎 *Consulta tu reserva cuando quieras:*', base, '', '_Viajes El Corte Inglés_');
+    '🔎 *Consulta tu reserva cuando quieras:*', base, '',
+    '*Importante.-* Le recordamos que MetLife cubre únicamente las noches de hotel y traslados terrestres que estén dentro del evento o por ruta.', '',
+    'Le enviamos un cordial saludo deseándole un buen viaje y nos reiteramos a sus órdenes.', '', '_Viajes El Corte Inglés_');
   return L.join('\n');
 }
 function mailBox(r){
@@ -794,7 +796,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 61;
+const APP_V = 62;
 const PIN_KEY = 'manifiesto-pin';
 const gate = $('#gate'), gmsg = $('#gate-msg'), gin = $('#gate-pin');
 try{ localStorage.removeItem(PIN_KEY); }catch(e){}
