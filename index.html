@@ -354,7 +354,6 @@ table.rep{font-size:13px}
   <div class="wrap">
     <div class="logos">
       <img class="logo" src="logo-eci.png" alt="Viajes El Corte Inglés" width="900" height="126">
-      <img class="logo-client" src="logo-metlife-v2.png" alt="MetLife" width="900" height="175">
     </div>
     <div class="eyebrow" id="ev">Vuelos del evento</div>
     <h1>Vuelos</h1>
@@ -772,7 +771,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 52;
+const APP_V = 53;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
