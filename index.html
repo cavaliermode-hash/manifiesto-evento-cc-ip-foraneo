@@ -568,7 +568,6 @@ function stepBlock(title, legs){
   return `<section class="steps">
     <h3>${title}</h3>
     <ol>${steps.map(s=>`<li class="st-${s.k}"><span class="dot" aria-hidden="true"></span><div><b>${s.t}</b>${s.x?` <span class="pill-now">${s.x}</span>`:''}<div class="sd">${s.d}</div></div></li>`).join('')}</ol>
-    ${al?`<a class="abtn" href="${al.u}" target="_blank" rel="noopener">Hacer check-in en ${al.n} <span aria-hidden="true">↗</span></a>`:''}
   </section>`;
 }
 function tripSteps(r){
@@ -777,7 +776,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 49;
+const APP_V = 50;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
