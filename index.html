@@ -601,10 +601,6 @@ function waTxt(r){
   if(r.ci && r.cr && r.ci !== r.cr) L.push(`🔑 *Clave de reserva de ida:* ${r.ci}`, `🔑 *Clave de reserva de regreso:* ${r.cr}`);
   else if(r.ci || r.cr) L.push(`🔑 *Clave de reserva:* ${r.ci || r.cr}`);
   L.push(''); seg('🛫', 'Ida (conexión)', r.c1); seg('🛫', 'Ida', r.ida); seg('🛬', 'Regreso', r.reg); seg('🛬', 'Regreso (conexión)', r.c2);
-  const first = r.c1 || r.ida;
-  if(first){ const d = when(first,'s');
-    L.push('', `⏰ *Check-in en línea:* abre ${fmtAt(new Date(d-24*36e5), first.o)}`, `🧳 *Llega al aeropuerto:* a más tardar ${fmtAt(new Date(d-2*36e5), first.o)}`);
- }
   if((r.notas||[]).length){ L.push('', '📌 *Indicaciones especiales para ti*'); r.notas.forEach(n => L.push('• ' + n.t.replace(/Hotel Torre Lucerna Ensenada/g, '*Hotel Torre Lucerna Ensenada*'))); }
   L.push('', '🏨 *Sede del evento:* Hotel Torre Lucerna Ensenada', '',
     '🗓️ *Agenda del evento (PDF):*', base + 'agenda-cc26.pdf', '',
@@ -776,7 +772,7 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 50;
+const APP_V = 51;
 fetch('data.json?v='+Date.now()).then(r=>r.json()).then(j=>{
   if(j.app && j.app > APP_V){ let tried=false; try{ tried=sessionStorage.getItem('reload'+j.app)==='1'; sessionStorage.setItem('reload'+j.app,'1'); }catch(e){}
     if(!tried){ location.replace(location.pathname+'?v='+j.app+Date.now()); return; } }
