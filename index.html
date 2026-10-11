@@ -357,6 +357,43 @@ table.rep{font-size:13px}
 .gate-box button{width:100%;margin-top:12px;background:var(--green);color:#fff;border:0;border-radius:8px;padding:13px;font:600 16px/1 var(--body);cursor:pointer}
 .gate-box button:hover{background:var(--green-dark)}
 #gate-msg{min-height:1.4em;margin:10px 0 0;color:#A12B1F;font-size:14px}
+.tabs{display:flex;gap:6px;padding-block:10px 0;flex-wrap:wrap}
+.tabs button{font:600 15px/1 var(--body);padding:10px 16px;border-radius:999px;border:1px solid var(--green-line);background:#fff;color:var(--green-dark);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--green);border-color:var(--green);color:#fff}
+body.vctl .controls, body.vctl main.wrap{display:none}
+.ctl{padding-block:12px 40px}
+.ctl h2.ct{margin:4px 0 2px;font:700 26px/1 var(--display);text-transform:uppercase;color:var(--green)}
+.ctl .cs{color:var(--muted);margin:0 0 10px;font-size:14px}
+.cstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:sticky;top:0;z-index:5;background:#fff;padding-block:8px}
+.cstat{border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center;cursor:pointer;background:#fff;font:inherit;color:inherit}
+.cstat b{display:block;font:700 22px/1.1 var(--mono)}
+.cstat span{font-size:12px;color:var(--muted)}
+.cstat[aria-pressed="true"]{border-color:var(--green);box-shadow:inset 0 0 0 2px var(--green)}
+.cstat.ok b{color:var(--green)} .cstat.ns b{color:#B3261E} .cstat.pe b{color:#8A5A00}
+.cday{margin:18px 0 8px;font:700 20px/1 var(--display);text-transform:uppercase;color:var(--green-dark);letter-spacing:.03em}
+.cfl{border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.cfh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding:10px 12px;background:var(--green-soft)}
+.cfh .t{font:700 22px/1 var(--mono);color:var(--green)}
+.cfh .v{font:700 18px/1.1 var(--display);letter-spacing:.03em}
+.cfh .r{font-size:14px;color:var(--muted)}
+.cfh .c{margin-left:auto;font:600 13px/1 var(--body);color:var(--green-dark)}
+.cpx{display:flex;align-items:center;gap:10px;padding:9px 12px;border-top:1px solid var(--line)}
+.cpx.st-ok{background:#F2F9F4} .cpx.st-ns{background:#FBE9E7}
+.cpx .who{flex:1;min-width:0}
+.cpx .who b{display:block;font-size:15px}
+.cpx .who small{color:var(--muted);font-size:13px}
+.ctag{display:inline-block;margin-left:6px;font:600 11px/1 var(--body);padding:3px 6px;border-radius:999px;background:#FFF4D6;color:#8A5A00;vertical-align:2px}
+.cbtns{display:flex;gap:6px;flex-shrink:0}
+.cbtns button{font:600 13px/1 var(--body);border-radius:8px;padding:9px 10px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);min-width:84px}
+.cbtns .bok[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.cbtns .bns[aria-pressed="true"]{background:#B3261E;border-color:#B3261E;color:#fff}
+.ctools{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.ctools button{font:600 14px/1 var(--body);border-radius:8px;padding:11px 14px;cursor:pointer;border:1px solid var(--green);background:var(--green);color:#fff}
+.ctools .sec{background:#fff;color:var(--green)}
+.cnote{color:var(--muted);font-size:13px;margin-top:10px}
+#cmsg{color:var(--green-dark);font-weight:600;min-height:1.2em;margin-top:8px}
+@media (max-width:480px){.cbtns button{min-width:0;padding:9px 8px}.cpx{gap:8px}}
+@media print{.tabs,.cstats,.ctools,.cnote,.cbtns{display:none!important}.cpx.st-ok .who b::after{content:" ✓ check-in"}.cpx.st-ns .who b::after{content:" ✗ no show"}}
 </style>
 </head>
 <body>
@@ -380,8 +417,31 @@ table.rep{font-size:13px}
     <h1>Evento CC IP Foráneo</h1>
     <p class="sub">Escribe tu nombre (palabras completas)</p>
     <div class="sub" id="upd"></div>
+    <nav class="tabs" role="tablist" aria-label="Apartados">
+      <button role="tab" data-tab="man" aria-selected="true">Manifiesto</button>
+      <button role="tab" data-tab="lle" aria-selected="false">Llegadas</button>
+      <button role="tab" data-tab="sal" aria-selected="false">Salidas</button>
+    </nav>
   </div>
 </header>
+<section class="wrap ctl" id="ctl" hidden>
+  <h2 class="ct" id="ct-t"></h2>
+  <p class="cs" id="ct-s"></p>
+  <div class="cstats" role="group" aria-label="Filtrar">
+    <button class="cstat" data-f="all" aria-pressed="true"><b id="cs-all">0</b><span>Total</span></button>
+    <button class="cstat ok" data-f="ok" aria-pressed="false"><b id="cs-ok">0</b><span>Check-in</span></button>
+    <button class="cstat ns" data-f="ns" aria-pressed="false"><b id="cs-ns">0</b><span>No show</span></button>
+    <button class="cstat pe" data-f="pe" aria-pressed="false"><b id="cs-pe">0</b><span>Pendientes</span></button>
+  </div>
+  <div id="cout"></div>
+  <div class="ctools">
+    <button id="ccopy">Copiar resumen para WhatsApp</button>
+    <button id="cprint" class="sec">Imprimir</button>
+    <button id="creset" class="sec">Borrar marcas</button>
+  </div>
+  <p id="cmsg" role="status"></p>
+  <p class="cnote">Las marcas de "Check-in" y "No show" se guardan solo en este dispositivo. Para compartirlas con el equipo usa "Copiar resumen".</p>
+</section>
 
 <div class="controls">
   <div class="wrap">
@@ -796,7 +856,72 @@ $('#out').addEventListener('submit', e=>{
   location.href = 'mailto:' + encodeURIComponent(mail) + '?subject=' + encodeURIComponent('Mi vuelo · CC26 Consejo Consultivo') + '&body=' + encodeURIComponent(resumenTxt(r).replace(/\n/g, '\r\n'));
   msg.className='mb-msg ok'; msg.textContent='Se abrió tu aplicación de correo con tus datos. Revisa el mensaje y toca Enviar.';
 });
-const APP_V = 64;
+/* ---------- Apartados: Llegadas / Salidas (control check-in / no show) ---------- */
+const CTL = {tab:'man', filter:'all', marks:{lle:{}, sal:{}}};
+try{ CTL.marks = Object.assign(CTL.marks, JSON.parse(localStorage.getItem('ctl-cc26') || '{}')); }catch(e){}
+const ctlSave = () => { try{ localStorage.setItem('ctl-cc26', JSON.stringify(CTL.marks)); }catch(e){} };
+const ctlLeg = r => CTL.tab === 'lle' ? r.ida : r.reg;
+const ctlHora = l => String((CTL.tab === 'lle' ? l.l : l.s) || '').padStart(5,'0');
+const ctlSt = n => CTL.marks[CTL.tab][n] || 'pe';
+function ctlGroups(){
+  const g = {};
+  DATA.forEach(r => { const l = ctlLeg(r); if(!l || !l.f) return;
+    const k = l.f + '|' + ctlHora(l) + '|' + l.v; (g[k] = g[k] || {l, pax: []}).pax.push(r); });
+  return Object.keys(g).sort().map(k => { g[k].pax.sort((a,b) => a.n.localeCompare(b.n,'es')); return g[k]; });
+}
+function ctlRender(){
+  const lle = CTL.tab === 'lle';
+  $('#ct-t').textContent = lle ? 'Llegadas' : 'Salidas';
+  $('#ct-s').textContent = lle ? 'Vuelos de llegada a Tijuana en orden de fecha y hora de llegada.' : 'Vuelos de regreso desde Tijuana en orden de fecha y hora de salida.';
+  const all = DATA.filter(r => ctlLeg(r)), c = {ok:0, ns:0, pe:0};
+  all.forEach(r => c[ctlSt(r.n)]++);
+  $('#cs-all').textContent = all.length; $('#cs-ok').textContent = c.ok; $('#cs-ns').textContent = c.ns; $('#cs-pe').textContent = c.pe;
+  let html = '', day = '';
+  ctlGroups().forEach(G => {
+    const pax = G.pax.filter(r => CTL.filter === 'all' || ctlSt(r.n) === CTL.filter); if(!pax.length) return;
+    const l = G.l, ok = G.pax.filter(r => ctlSt(r.n) === 'ok').length;
+    if(l.f !== day){ html += `<h3 class="cday">${esc(fmtDate(l.f))}</h3>`; day = l.f; }
+    html += `<section class="cfl"><div class="cfh"><span class="t">${esc(ctlHora(l))}</span><span class="v">${esc(l.v)}</span>
+      <span class="r">${esc(l.o)} ${esc(l.s)} → ${esc(l.d)} ${esc(l.l)}</span><span class="c">${ok}/${G.pax.length} check-in</span></div>` +
+      pax.map(r => { const s = ctlSt(r.n), cx = lle ? r.c1 : r.c2;
+        const con = cx ? ` · conexión ${esc(cx.v)} ${lle ? 'desde ' + esc(cx.o) : 'a ' + esc(cx.d)}` : '';
+        const clave = lle ? (r.ci || r.cr) : (r.cr || r.ci);
+        const pern = lle && (r.notas||[]).some(n => n.k === 'pe') ? '<span class="ctag">Pernocta TIJ</span>' : '';
+        return `<div class="cpx st-${s}"><div class="who"><b>${esc(r.n)}${pern}</b><small>${esc(tcase(r.rg))} · Clave ${esc(clave || '—')}${con}</small></div>
+          <div class="cbtns"><button class="bok" data-n="${esc(r.n)}" data-s="ok" aria-pressed="${s==='ok'}">✓ Check-in</button>
+          <button class="bns" data-n="${esc(r.n)}" data-s="ns" aria-pressed="${s==='ns'}">✗ No show</button></div></div>`; }).join('') + '</section>';
+  });
+  $('#cout').innerHTML = html || '<p class="cnote">No hay invitados en este filtro.</p>';
+}
+function ctlTab(t){
+  CTL.tab = t; CTL.filter = 'all';
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === t));
+  document.querySelectorAll('.cstat').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === 'all'));
+  const on = t !== 'man'; document.body.classList.toggle('vctl', on); $('#ctl').hidden = !on; $('#cmsg').textContent = '';
+  if(on) ctlRender();
+}
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => ctlTab(b.dataset.tab)));
+document.querySelectorAll('.cstat').forEach(b => b.addEventListener('click', () => {
+  CTL.filter = b.dataset.f; document.querySelectorAll('.cstat').forEach(x => x.setAttribute('aria-pressed', x === b)); ctlRender(); }));
+$('#cout').addEventListener('click', e => { const b = e.target.closest('button[data-n]'); if(!b) return;
+  const m = CTL.marks[CTL.tab], n = b.dataset.n; if(m[n] === b.dataset.s) delete m[n]; else m[n] = b.dataset.s; ctlSave(); ctlRender(); });
+function ctlResumen(){
+  const lle = CTL.tab === 'lle', all = DATA.filter(r => ctlLeg(r)), c = {ok:0, ns:0, pe:0}; all.forEach(r => c[ctlSt(r.n)]++);
+  const L = [`*${lle ? 'Llegadas' : 'Salidas'} · CC26*`, '', `Total ${all.length} · Check-in ${c.ok} · No show ${c.ns} · Pendientes ${c.pe}`];
+  let day = '';
+  ctlGroups().forEach(G => { const l = G.l;
+    if(l.f !== day){ L.push('', '*' + fmtDate(l.f) + '*'); day = l.f; }
+    L.push(`${ctlHora(l)} ${l.v} (${l.o} → ${l.d})`);
+    G.pax.forEach(r => { const s = ctlSt(r.n); L.push(`  ${s==='ok'?'✅':s==='ns'?'❌':'⏳'} ${tcase(r.n)}`); }); });
+  return L.join('\n');
+}
+$('#ccopy').addEventListener('click', async () => { const t = ctlResumen();
+  try{ await navigator.clipboard.writeText(t); }
+  catch(e){ const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); a.remove(); }
+  $('#cmsg').textContent = 'Resumen copiado. Pégalo en WhatsApp.'; });
+$('#cprint').addEventListener('click', () => window.print());
+$('#creset').addEventListener('click', () => { if(confirm('¿Borrar las marcas de ' + (CTL.tab === 'lle' ? 'Llegadas' : 'Salidas') + ' en este dispositivo?')){ CTL.marks[CTL.tab] = {}; ctlSave(); ctlRender(); $('#cmsg').textContent = 'Marcas borradas.'; } });
+const APP_V = 65;
 const PIN_KEY = 'manifiesto-pin';
 const gate = $('#gate'), gmsg = $('#gate-msg'), gin = $('#gate-pin');
 try{ localStorage.removeItem(PIN_KEY); }catch(e){}
